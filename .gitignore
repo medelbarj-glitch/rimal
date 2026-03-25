@@ -41,3 +41,5 @@ ated/prisma
 
 # env
 *.env
+
+/public/uploads/
