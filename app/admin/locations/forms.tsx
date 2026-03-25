@@ -45,10 +45,18 @@ export function AddLocationForm() {
                 <label className="form-label">Adresse (Optionnel)</label>
                 <input name="adresse" type="text" placeholder="Adresse complète..." />
             </div>
+            
+            {/* Modification : Remplacement de l'URL par un upload de fichier */}
             <div className="form-group">
-                <label className="form-label">URL de l'image (Optionnel)</label>
-                <input name="imageUrl" type="text" placeholder="https://..." />
+                <label className="form-label">Image d'illustration (Optionnel)</label>
+                <input 
+                    name="imageFile" 
+                    type="file" 
+                    accept="image/png, image/jpeg, image/webp"
+                    style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
+                />
             </div>
+            
             <SubmitButton label="Créer le Lieu" loadingLabel="Création..." />
         </form>
     );
@@ -77,13 +85,27 @@ export function LocationItem({ location }: { location: Location }) {
                             <input name="fraisSupplementaires" defaultValue={location.fraisSupplementaires} type="number" />
                         </div>
                     </div>
+                    
+                    {/* Restructuration : Déplacé l'adresse et l'image dans une ligne pour gagner de la place si tu le souhaites, sinon on les garde en colonne */}
                     <div className="form-group">
                         <label className="form-label">Adresse</label>
                         <input name="adresse" defaultValue={location.adresse || ''} type="text" />
                     </div>
+
+                    {/* Modification : Remplacement de l'URL par un upload de fichier */}
                     <div className="form-group">
-                        <label className="form-label">URL Image</label>
-                        <input name="imageUrl" defaultValue={location.imageUrl || ''} type="text" />
+                        <label className="form-label">Remplacer l'image (Optionnel)</label>
+                        <input 
+                            name="imageFile" 
+                            type="file" 
+                            accept="image/png, image/jpeg, image/webp"
+                            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
+                        />
+                        {location.imageUrl && (
+                            <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+                                Laissez vide pour conserver l'image actuelle.
+                            </small>
+                        )}
                     </div>
 
                     <div className="form-actions" style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>

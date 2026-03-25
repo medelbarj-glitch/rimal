@@ -49,8 +49,13 @@ export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
 
             <div className="form-row">
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Image URL</label>
-                    <input name="imageUrl" type="text" defaultValue={modele.imageUrl || ''} />
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Remplacer l'Image (Optionnel)</label>
+                    <input
+                        type="file"
+                        name="imageFile"
+                        accept="image/png, image/jpeg, image/webp"
+                        style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%' }}
+                    />
                 </div>
                 <div className="form-group">
                     <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Nombre de Places</label>

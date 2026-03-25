@@ -43,3 +43,5 @@ ated/prisma
 *.env
 
 /public/uploads/
+/public/vehicles/
+/public/locations/

@@ -58,8 +58,13 @@ export function AddModelForm() {
 
             <div className="form-row">
                 <div className="form-group">
-                    <label className="form-label">Image URL</label>
-                    <input name="imageUrl" type="text" placeholder="https://..." />
+                    <label className="form-label">Image (Upload)</label>
+                    <input
+                        type="file"
+                        name="imageFile"
+                        accept="image/png, image/jpeg, image/webp"
+                        style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%' }}
+                    />
                 </div>
                 <div className="form-group">
                     <label className="form-label">Nombre de Places</label>
