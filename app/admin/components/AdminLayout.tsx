@@ -40,7 +40,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                 {/* Sidebar */}
                 <div className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
                     <div className="sidebar-header">
-                        <h2>RIMAL</h2>
+                        <h2>BOUDERBA RENTAL</h2>
                         <span>Admin Panel</span>
                         <button className="close-sidebar-btn" onClick={() => setIsSidebarOpen(false)}>
                             <i className="fas fa-times"></i>
