@@ -143,7 +143,7 @@ export function VehicleItem({ vehicle }: { vehicle: any }) {
         switch (status) {
             case 'DISPONIBLE': return 'available';
             case 'MAINTENANCE': return 'unavailable';
-            case 'LOUE': return 'unavailable'; // Or another color if you prefer
+            case 'LOUE': return 'unavailable';
             case 'RETIRE': return 'retired';
             default: return '';
         }
