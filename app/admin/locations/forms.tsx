@@ -25,8 +25,13 @@ export function AddLocationForm() {
     return (
         <form
             action={async (formData) => {
-                await createLocation(formData);
-                formRef.current?.reset();
+                try {
+                    await createLocation(formData);
+                    formRef.current?.reset();
+                } catch (error) {
+                    console.error("Erreur de création:", error);
+                    alert("Une erreur est survenue lors de la création du lieu. Vérifiez votre connexion ou l'image.");
+                }
             }}
             ref={formRef}
             className="admin-form-container compact"
@@ -46,7 +51,6 @@ export function AddLocationForm() {
                 <input name="adresse" type="text" placeholder="Adresse complète..." />
             </div>
             
-            {/* Modification : Remplacement de l'URL par un upload de fichier */}
             <div className="form-group">
                 <label className="form-label">Image d'illustration (Optionnel)</label>
                 <input 
@@ -70,8 +74,13 @@ export function LocationItem({ location }: { location: Location }) {
             <div className="data-item editing" style={{ display: 'block' }}>
                 <form
                     action={async (formData) => {
-                        await updateLocation(location.id, formData);
-                        setIsEditing(false);
+                        try {
+                            await updateLocation(location.id, formData);
+                            setIsEditing(false);
+                        } catch (error) {
+                            console.error("Erreur de mise à jour:", error);
+                            alert("Impossible de mettre à jour ce lieu.");
+                        }
                     }}
                     className="edit-form"
                 >
@@ -86,13 +95,11 @@ export function LocationItem({ location }: { location: Location }) {
                         </div>
                     </div>
                     
-                    {/* Restructuration : Déplacé l'adresse et l'image dans une ligne pour gagner de la place si tu le souhaites, sinon on les garde en colonne */}
                     <div className="form-group">
                         <label className="form-label">Adresse</label>
                         <input name="adresse" defaultValue={location.adresse || ''} type="text" />
                     </div>
 
-                    {/* Modification : Remplacement de l'URL par un upload de fichier */}
                     <div className="form-group">
                         <label className="form-label">Remplacer l'image (Optionnel)</label>
                         <input 
@@ -161,9 +168,14 @@ export function LocationItem({ location }: { location: Location }) {
 export function DeleteLocationButton({ id }: { id: number }) {
     return (
         <button
-            onClick={() => {
+            onClick={async () => {
                 if (confirm('Êtes-vous sûr de vouloir supprimer ce lieu ?')) {
-                    deleteLocation(id)
+                    try {
+                        await deleteLocation(id);
+                    } catch (error) {
+                        console.error("Erreur de suppression:", error);
+                        alert("Impossible de supprimer ce lieu. Des réservations y sont peut-être déjà liées.");
+                    }
                 }
             }}
             className="btn-danger"
