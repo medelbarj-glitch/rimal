@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 // Importe le type de données que Prisma nous donne
 import { ModeleVoiture, Location } from '@prisma/client';
+import { getSettings } from '@/app/actions/settingsActions';
 
 // 1. Définir les "props" que ce composant reçoit
 // Il a besoin de la liste des voitures (récupérée par le serveur)
@@ -19,7 +20,22 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
   // 2. Remplacer les querySelector par des états React
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('vehicules'); // 'vehicules' est l'onglet par défaut
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string>('/default-logo.png');
+
+  // Récupération du logo depuis la DB au montage du composant
+  useEffect(() => {
+    async function loadLogo() {
+      try {
+        const settings = await getSettings();
+        if (settings?.logoUrl) {
+          setLogoUrl(settings.logoUrl);
+        }
+      } catch (error) {
+        console.error("Erreur chargement logo:", error);
+      }
+    }
+    loadLogo();
+  }, []);
 
   // 3. Remplacer les addEventListener par des fonctions
   const openMenu = () => {
@@ -46,18 +62,6 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
       document.body.classList.remove('no-scroll');
     };
   }, [isMenuOpen]); // On surveille la variable 'isMenuOpen'
-
-  useEffect(() => {
-    // Fetch global settings for logo
-    fetch('/api/settings')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && data.logoUrl) {
-          setLogoUrl(data.logoUrl);
-        }
-      })
-      .catch((err) => console.error('Error fetching settings:', err));
-  }, []);
 
   function toSentenceCase(str: string): string {
     if (!str) return ''; // Gère les cas où la chaîne est vide
