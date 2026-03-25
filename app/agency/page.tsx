@@ -2,6 +2,8 @@ import React from 'react';
 import { prisma } from '../../lib/prisma';
 import { NavbarAndMenu } from '../components/Menu';
 import '../../styles/agency.css'; // Import custom styles
+import fs from 'fs/promises';
+import path from 'path';
 
 export const metadata = {
     title: "Notre Agence | Bouderba Rental Cars",
@@ -11,6 +13,17 @@ export const metadata = {
 export default async function AgencePage() {
     const voitures = await prisma.modeleVoiture.findMany();
     const locations = await prisma.location.findMany();
+
+    let settings = { phoneNumber: "+212 6 00 00 00 00" };
+    try {
+        const filePath = path.join(process.cwd(), 'data', 'settings.json');
+        const content = await fs.readFile(filePath, 'utf8');
+        settings = JSON.parse(content);
+    } catch (e) {
+        console.error("Failed to load settings in AgencePage");
+    }
+
+    const cleanPhoneNumber = settings.phoneNumber.replace(/[^0-9+]/g, '');
 
     return (
         <div className="agence-container">
@@ -81,8 +94,8 @@ export default async function AgencePage() {
                                     <div className="agence-detail-icon"><i className="fas fa-phone-alt fa-lg"></i></div>
                                     <div>
                                         <p className="agence-label">Téléphone</p>
-                                        <a href="tel:+212600000000" className="agence-value">
-                                            +212 6 00 00 00 00
+                                        <a href={`tel:${cleanPhoneNumber}`} className="agence-value">
+                                            {settings.phoneNumber}
                                         </a>
                                     </div>
                                 </div>

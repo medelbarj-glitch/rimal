@@ -65,6 +65,9 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                         <Link href="/admin/style" className={`nav-item ${isActive('/admin/style')}`} onClick={() => setIsSidebarOpen(false)}>
                             <i className="fas fa-paint-brush"></i> Style
                         </Link>
+                        <Link href="/admin/settings" className={`nav-item ${isActive('/admin/settings')}`} onClick={() => setIsSidebarOpen(false)}>
+                            <i className="fas fa-cogs"></i> Paramètres
+                        </Link>
                         <Link href="/" className="nav-item return-site">
                             <i className="fas fa-arrow-left"></i> Retour au site
                         </Link>

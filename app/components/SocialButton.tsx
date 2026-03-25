@@ -1,10 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 export function SocialButton() {
-    const phoneNumber = "212600000000"; // REPLACE WITH ACTUAL NUMBER
+    const [phoneNumber, setPhoneNumber] = useState('+212600000000');
+    
+    useEffect(() => {
+        fetch('/api/settings')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.phoneNumber) {
+                    setPhoneNumber(data.phoneNumber);
+                }
+            })
+            .catch(err => console.error('Error fetching settings:', err));
+    }, []);
+
+    // Clean phone number for WhatsApp link (remove spaces, etc.)
+    const cleanPhoneNumber = phoneNumber.replace(/[^0-9+]/g, '');
     const message = encodeURIComponent("Bonjour, je suis intéressé par la location d'une voiture.");
 
     const pathname = usePathname();
@@ -26,7 +40,7 @@ export function SocialButton() {
                 <i className="fab fa-instagram"></i>
             </a>
             <a
-                href={`https://wa.me/${phoneNumber}?text=${message}`}
+                href={`https://wa.me/${cleanPhoneNumber}?text=${message}`}
                 className="whatsapp-float"
                 target="_blank"
                 rel="noopener noreferrer"
