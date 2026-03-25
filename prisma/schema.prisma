@@ -210,3 +210,9 @@ model Experience {
 
   @@map("experiences")
 }
+
+model Setting {
+  id          Int     @id @default(1)
+  phoneNumber String? @map("phone_number")
+  logoUrl     String? @map("logo_url")
+}
