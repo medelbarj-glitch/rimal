@@ -44,7 +44,6 @@ async function deletePhysicalFile(fileUrl: string) {
         console.error(`Impossible de supprimer le fichier ${filepath}:`, error);
     }
 }
-// ---------------------------------------------------------
 
 async function getExperience(): Promise<ExperienceItem[]> {
     try {

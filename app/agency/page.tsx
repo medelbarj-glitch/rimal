@@ -71,8 +71,8 @@ export default async function AgencePage() {
                                     <div className="agence-detail-icon"><i className="fas fa-envelope fa-lg"></i></div>
                                     <div>
                                         <p className="agence-label">Email</p>
-                                        <a href="mailto:contact@bouderbarentalcars.com" className="agence-value">
-                                            contact@bouderbarentalcars.com
+                                        <a href="mailto:contact@bouderba-rental.com" className="agence-value">
+                                            contact@bouderba-rental.com
                                         </a>
                                     </div>
                                 </div>

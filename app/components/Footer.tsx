@@ -12,7 +12,7 @@ export function Footer() {
     return (
         <div className="footer">
             <div className="first-cat">
-                <span>MJCars</span>
+                <span>Bouderba Rental Cars</span>
                 <a href="#">Réservations</a>
                 <a href="#">Nos Véhicules</a>
                 <a href="#">Nos Localisations</a>
@@ -29,7 +29,7 @@ export function Footer() {
                 <a href="#"><i className="fab fa-whatsapp"></i>What's app</a>
                 <a href="#"><i className="fab fa-instagram"></i>Instagram</a>
             </div>
-            <span>© 2025 Rimal. Tous droits réservés.</span>
+            <span>© 2025 Bouderba Rental Cars. Tous droits réservés.</span>
         </div>
     );
 }
