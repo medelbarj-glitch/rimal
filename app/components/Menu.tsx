@@ -19,6 +19,7 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
   // 2. Remplacer les querySelector par des états React
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('vehicules'); // 'vehicules' est l'onglet par défaut
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   // 3. Remplacer les addEventListener par des fonctions
   const openMenu = () => {
@@ -45,6 +46,18 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
       document.body.classList.remove('no-scroll');
     };
   }, [isMenuOpen]); // On surveille la variable 'isMenuOpen'
+
+  useEffect(() => {
+    // Fetch global settings for logo
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.logoUrl) {
+          setLogoUrl(data.logoUrl);
+        }
+      })
+      .catch((err) => console.error('Error fetching settings:', err));
+  }, []);
 
   function toSentenceCase(str: string): string {
     if (!str) return ''; // Gère les cas où la chaîne est vide
@@ -82,7 +95,13 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
           <span>Menu</span>
         </div>
         <div className="logo">
-          <a href="/">Bouderba Rental Cars</a>
+          <a href="/">
+            {logoUrl ? (
+              <img src={logoUrl} alt="Bouderba Rental Cars Logo" style={{ maxHeight: '50px', objectFit: 'contain' }} />
+            ) : (
+              "Bouderba Rental Cars"
+            )}
+          </a>
         </div>
       </nav>
 

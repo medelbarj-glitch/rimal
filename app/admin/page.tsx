@@ -51,6 +51,14 @@ export default async function AdminDashboard() {
                     </div>
                     <span className="card-link">Personnaliser &rarr;</span>
                 </Link>
+
+                <Link href="/admin/settings" className="dashboard-card">
+                    <div>
+                        <h3>Paramètres Généraux</h3>
+                        <p>Gérez le logo du site et le numéro de téléphone.</p>
+                    </div>
+                    <span className="card-link">Configurer &rarr;</span>
+                </Link>
             </div>
         </AdminLayout>
     );
