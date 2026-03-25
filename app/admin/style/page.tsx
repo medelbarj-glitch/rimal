@@ -62,10 +62,15 @@ export default async function StylePage() {
                                 <input type="text" name="subtitle" placeholder="Ex: Location de voitures de luxe" />
                             </div>
                             <div className="form-group">
-                                <label>URL de l'image</label>
-                                <input type="text" name="url" placeholder="https://..." required />
+                                <label>Image d'arrière-plan</label>
+                                <input
+                                    type="file"
+                                    name="imageFile"
+                                    accept="image/png, image/jpeg, image/webp"
+                                    required
+                                />
                                 <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
-                                    Lien direct vers l'image
+                                    Formats recommandés : JPG, PNG ou WEBP
                                 </small>
                             </div>
                             <button type="submit" className="btn-submit">Ajouter</button>
@@ -192,8 +197,8 @@ export default async function StylePage() {
                                 <textarea name="description" rows={4} placeholder="Description..." required></textarea>
                             </div>
                             <div className="form-group">
-                                <label>URL Image</label>
-                                <input type="text" name="imageUrl" placeholder="https://..." required />
+                                <label>Image (Upload)</label>
+                                <input type="file" name="imageFile" accept="image/png, image/jpeg, image/webp" required />
                             </div>
                             <div className="form-group">
                                 <label>Texte Bouton</label>
