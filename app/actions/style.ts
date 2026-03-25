@@ -2,39 +2,44 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { writeFile, unlink, mkdir } from 'fs/promises';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
-// Fonction utilitaire pour sauvegarder un fichier
-async function saveFile(file: File): Promise<string> {
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+async function uploadToCloudinary(file: File, folderName: string): Promise<string> {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const filename = `${uniqueSuffix}-${file.name.replace(/\s+/g, '_')}`;
-    
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const filepath = path.join(uploadDir, filename);
-
-    // S'assure que le dossier public/uploads existe
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(filepath, buffer);
-
-    return `/uploads/${filename}`;
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: `bouderba-rental/${folderName}` },
+            (error, result) => {
+                if (error || !result) {
+                    console.error("Erreur Cloudinary:", error);
+                    reject("Échec de l'upload de l'image");
+                } else {
+                    resolve(result.secure_url);
+                }
+            }
+        );
+        uploadStream.end(buffer);
+    });
 }
 
-// Fonction utilitaire pour supprimer un fichier physique
-async function deletePhysicalFile(fileUrl: string) {
-    if (!fileUrl.startsWith('/uploads/')) return; // Ne supprime pas si c'est un lien externe accidentel
-
-    const filename = fileUrl.replace('/uploads/', '');
-    const filepath = path.join(process.cwd(), 'public', 'uploads', filename);
-
+async function deleteFromCloudinary(imageUrl: string | null) {
+    if (!imageUrl || !imageUrl.includes('cloudinary.com')) return;
     try {
-        await unlink(filepath);
+        const matches = imageUrl.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
+        if (matches && matches[1]) {
+            const publicId = matches[1];
+            await cloudinary.uploader.destroy(publicId);
+        }
     } catch (error) {
-        console.error(`Impossible de supprimer le fichier ${filepath}:`, error);
-        // On ne bloque pas l'exécution si le fichier est déjà introuvable
+        console.error("Erreur lors de la suppression Cloudinary:", error);
     }
 }
 
@@ -48,13 +53,12 @@ export async function createBackgroundImage(formData: FormData) {
         throw new Error("Une image est requise.");
     }
 
-    // Sauvegarde physique et récupération du chemin
-    const url = await saveFile(imageFile);
+    const url = await uploadToCloudinary(imageFile, 'styles');
 
     await prisma.backgroundImage.create({
         data: {
             name,
-            url, // On stocke le chemin local (/uploads/...)
+            url, // Stocke l'URL Cloudinary sécurisée
             title,
             subtitle,
         },
@@ -70,21 +74,16 @@ export async function updateBackgroundImage(id: number, formData: FormData) {
     const subtitle = formData.get('subtitle') as string;
     const imageFile = formData.get('imageFile') as File | null;
 
-    // On prépare les données à mettre à jour
     const updateData: any = { name, title, subtitle };
 
-    // Si un nouveau fichier a été uploadé, on doit le traiter
     if (imageFile && imageFile.size > 0) {
-        // 1. On récupère l'ancienne image pour pouvoir la supprimer
         const oldImage = await prisma.backgroundImage.findUnique({ where: { id } });
         
-        // 2. On sauvegarde la nouvelle image
-        const newUrl = await saveFile(imageFile);
+        const newUrl = await uploadToCloudinary(imageFile, 'styles');
         updateData.url = newUrl;
 
-        // 3. On supprime l'ancien fichier physique
         if (oldImage?.url) {
-            await deletePhysicalFile(oldImage.url);
+            await deleteFromCloudinary(oldImage.url);
         }
     }
 
@@ -98,21 +97,15 @@ export async function updateBackgroundImage(id: number, formData: FormData) {
 }
 
 export async function deleteBackgroundImage(id: number) {
-    // 1. On récupère les infos de l'image avant de la supprimer de la base
     const imageToDelete = await prisma.backgroundImage.findUnique({
         where: { id },
     });
 
     if (imageToDelete) {
-        // 2. On supprime l'entrée dans la base de données
+        await deleteFromCloudinary(imageToDelete.url);
         await prisma.backgroundImage.delete({
             where: { id },
         });
-
-        // 3. On supprime le fichier physique du serveur
-        if (imageToDelete.url) {
-            await deletePhysicalFile(imageToDelete.url);
-        }
     }
 
     revalidatePath('/admin/style');

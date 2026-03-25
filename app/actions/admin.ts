@@ -2,39 +2,57 @@
 
 import { PrismaClient, Transmission, FuelType, StatutVehicule } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
-import { writeFile, unlink, mkdir } from 'fs/promises';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
 const prisma = new PrismaClient();
 
-// --- Fonctions utilitaires pour les images des véhicules ---
-async function saveVehicleImage(file: File): Promise<string> {
+// Configuration de Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+async function uploadToCloudinary(file: File, folderName: string): Promise<string> {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const filename = `${uniqueSuffix}-${file.name.replace(/\s+/g, '_')}`;
-    
-    // NOUVEAU DOSSIER : public/vehicles
-    const uploadDir = path.join(process.cwd(), 'public', 'vehicles');
-    const filepath = path.join(uploadDir, filename);
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { 
+                folder: `bouderba-rental/${folderName}`, // Crée un dossier propre sur ton Cloudinary
+            },
+            (error, result) => {
+                if (error || !result) {
+                    console.error("Erreur Cloudinary:", error);
+                    reject("Échec de l'upload de l'image");
+                } else {
+                    // On retourne l'URL sécurisée fournie par Cloudinary
+                    resolve(result.secure_url);
+                }
+            }
+        );
 
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(filepath, buffer);
-
-    return `/vehicles/${filename}`;
+        uploadStream.end(buffer);
+    });
 }
 
-async function deleteVehicleImage(fileUrl: string | null) {
-    if (!fileUrl || !fileUrl.startsWith('/vehicles/')) return;
-
-    const filename = fileUrl.replace('/vehicles/', '');
-    const filepath = path.join(process.cwd(), 'public', 'vehicles', filename);
+async function deleteFromCloudinary(imageUrl: string | null) {
+    // Si pas d'image ou si ce n'est pas une image Cloudinary, on arrête
+    if (!imageUrl || !imageUrl.includes('cloudinary.com')) return;
 
     try {
-        await unlink(filepath);
+        // L'URL Cloudinary ressemble à :
+        // https://res.cloudinary.com/xyz/image/upload/v12345/bouderba-rental/vehicles/mon_image.jpg
+        // Cette regex extrait exactement : "bouderba-rental/vehicles/mon_image"
+        const matches = imageUrl.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
+        
+        if (matches && matches[1]) {
+            const publicId = matches[1];
+            await cloudinary.uploader.destroy(publicId);
+        }
     } catch (error) {
-        console.error(`Impossible de supprimer l'image du véhicule ${filepath}:`, error);
+        console.error("Erreur lors de la suppression Cloudinary:", error);
     }
 }
 
@@ -53,7 +71,7 @@ export async function createModel(formData: FormData) {
 
     let imageUrl = '';
     if (imageFile && imageFile.size > 0) {
-        imageUrl = await saveVehicleImage(imageFile);
+        imageUrl = await uploadToCloudinary(imageFile, 'vehicles');
     }
 
     await prisma.modeleVoiture.create({
@@ -64,7 +82,7 @@ export async function createModel(formData: FormData) {
             transmission,
             fuelType,
             description,
-            imageUrl, // Stocke le chemin local (/vehicles/...)
+            imageUrl, // Stocke l'URL Cloudinary sécurisée
         },
     });
 
@@ -96,11 +114,11 @@ export async function updateModel(id: number, formData: FormData) {
     if (imageFile && imageFile.size > 0) {
         const oldModel = await prisma.modeleVoiture.findUnique({ where: { id } });
         
-        const newImageUrl = await saveVehicleImage(imageFile);
+        const newImageUrl = await uploadToCloudinary(imageFile, 'vehicles');
         updateData.imageUrl = newImageUrl;
 
         if (oldModel?.imageUrl) {
-            await deleteVehicleImage(oldModel.imageUrl);
+            await deleteFromCloudinary(oldModel.imageUrl);
         }
     }
 
@@ -120,7 +138,7 @@ export async function deleteModel(id: number) {
 
     if (modelToDelete) {
         // Supprime l'image physique avant de supprimer l'entrée DB
-        await deleteVehicleImage(modelToDelete.imageUrl);
+        await deleteFromCloudinary(modelToDelete.imageUrl);
 
         await prisma.modeleVoiture.delete({
             where: { id },
@@ -168,38 +186,6 @@ export async function deleteVehicle(id: number) {
 }
 
 // --- LOCATION ACTIONS ---
-
-// --- Fonctions utilitaires pour les images des locations ---
-async function saveLocationImage(file: File): Promise<string> {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const filename = `${uniqueSuffix}-${file.name.replace(/\s+/g, '_')}`;
-    
-    // NOUVEAU DOSSIER : public/locations
-    const uploadDir = path.join(process.cwd(), 'public', 'locations');
-    const filepath = path.join(uploadDir, filename);
-
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(filepath, buffer);
-
-    return `/locations/${filename}`;
-}
-
-async function deleteLocationImage(fileUrl: string | null) {
-    if (!fileUrl || !fileUrl.startsWith('/locations/')) return;
-
-    const filename = fileUrl.replace('/locations/', '');
-    const filepath = path.join(process.cwd(), 'public', 'locations', filename);
-
-    try {
-        await unlink(filepath);
-    } catch (error) {
-        console.error(`Impossible de supprimer l'image de la location ${filepath}:`, error);
-    }
-}
-
 export async function createLocation(formData: FormData) {
     const nom = formData.get('nom') as string;
     const adresse = formData.get('adresse') as string;
@@ -210,7 +196,7 @@ export async function createLocation(formData: FormData) {
 
     let imageUrl = '';
     if (imageFile && imageFile.size > 0) {
-        imageUrl = await saveLocationImage(imageFile);
+        imageUrl = await uploadToCloudinary(imageFile, 'locations');
     }
 
     await prisma.location.create({
@@ -244,11 +230,11 @@ export async function updateLocation(id: number, formData: FormData) {
     if (imageFile && imageFile.size > 0) {
         const oldLocation = await prisma.location.findUnique({ where: { id } });
         
-        const newImageUrl = await saveLocationImage(imageFile);
+        const newImageUrl = await uploadToCloudinary(imageFile, 'locations');
         updateData.imageUrl = newImageUrl;
 
         if (oldLocation?.imageUrl) {
-            await deleteLocationImage(oldLocation.imageUrl);
+            await deleteFromCloudinary(oldLocation.imageUrl);
         }
     }
 
@@ -268,7 +254,7 @@ export async function deleteLocation(id: number) {
 
     if (locationToDelete) {
         // 1. Supprime d'abord l'image du serveur
-        await deleteLocationImage(locationToDelete.imageUrl);
+        await deleteFromCloudinary(locationToDelete.imageUrl);
 
         // 2. Supprime l'entrée dans la base de données
         await prisma.location.delete({

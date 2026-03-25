@@ -74,17 +74,19 @@ export function StyleModal({ image, trigger }: StyleModalProps) {
                     </div>
 
                     <div className="form-group">
-                        <label>URL de l'image</label>
+                        <label>{isEdit ? "Remplacer l'image (Optionnel)" : "Image d'arrière-plan"}</label>
                         <input
-                            type="text"
-                            name="url"
-                            defaultValue={image?.url}
-                            required
-                            placeholder="https://..."
+                            type="file"
+                            name="imageFile"
+                            accept="image/png, image/jpeg, image/webp"
+                            required={!isEdit} // Obligatoire seulement si on crée une nouvelle image
+                            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
                         />
-                        <small className="modal-help-text">
-                            Lien direct vers l'image (hébergée ailleurs ou dans public/)
-                        </small>
+                        {isEdit && image?.url && (
+                            <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+                                Laissez vide pour conserver l'image actuelle.
+                            </small>
+                        )}
                     </div>
 
                     <div className="modal-actions">

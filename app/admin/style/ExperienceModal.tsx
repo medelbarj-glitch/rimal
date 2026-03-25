@@ -80,14 +80,19 @@ export function ExperienceModal({ item, trigger }: ExperienceModalProps) {
                     </div>
 
                     <div className="form-group">
-                        <label>URL Image</label>
+                        <label>{isEdit ? "Remplacer l'image (Optionnel)" : "Image d'illustration"}</label>
                         <input
-                            type="text"
-                            name="imageUrl"
-                            defaultValue={item?.imageUrl}
-                            required
-                            placeholder="https://..."
+                            type="file"
+                            name="imageFile"
+                            accept="image/png, image/jpeg, image/webp"
+                            required={!isEdit}
+                            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
                         />
+                        {isEdit && item?.imageUrl && (
+                            <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+                                Laissez vide pour conserver l'image actuelle.
+                            </small>
+                        )}
                     </div>
 
                     <div className="form-group">

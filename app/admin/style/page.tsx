@@ -29,15 +29,10 @@ export default async function StylePage() {
         services = [];
     }
 
-    // Load Experience from JSON
-    const experiencePath = path.join(process.cwd(), 'data', 'experience.json');
-    let experiences = [];
-    try {
-        const data = await fs.readFile(experiencePath, 'utf-8');
-        experiences = JSON.parse(data);
-    } catch (e) {
-        experiences = [];
-    }
+    // Load Experience from DB
+    const experiences = await prisma.experience.findMany({
+        orderBy: { createdAt: 'asc' }
+    });
 
     return (
         <AdminLayout title="Gestion du Style et Contenu">

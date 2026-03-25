@@ -1,61 +1,45 @@
 'use server';
 
-import fs from 'fs/promises';
-import path from 'path';
+import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { v2 as cloudinary } from 'cloudinary';
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'experience.json');
+// Configuration Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-interface ExperienceItem {
-    id: number;
-    title: string;
-    description: string;
-    imageUrl: string;
-    buttonText: string;
-}
-
-// --- Fonctions utilitaires pour les fichiers physiques ---
-async function saveFile(file: File): Promise<string> {
+async function uploadToCloudinary(file: File, folderName: string): Promise<string> {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const filename = `${uniqueSuffix}-${file.name.replace(/\s+/g, '_')}`;
-    
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const filepath = path.join(uploadDir, filename);
-
-    // S'assure que le dossier public/uploads existe
-    await fs.mkdir(uploadDir, { recursive: true });
-    await fs.writeFile(filepath, buffer);
-
-    return `/uploads/${filename}`;
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: `bouderba-rental/${folderName}` },
+            (error, result) => {
+                if (error || !result) {
+                    reject("Échec de l'upload");
+                } else {
+                    resolve(result.secure_url);
+                }
+            }
+        );
+        uploadStream.end(buffer);
+    });
 }
 
-async function deletePhysicalFile(fileUrl: string) {
-    if (!fileUrl.startsWith('/uploads/')) return; // Sécurité
-
-    const filename = fileUrl.replace('/uploads/', '');
-    const filepath = path.join(process.cwd(), 'public', 'uploads', filename);
-
+async function deleteFromCloudinary(imageUrl: string | null) {
+    if (!imageUrl || !imageUrl.includes('cloudinary.com')) return;
     try {
-        await fs.unlink(filepath);
+        const matches = imageUrl.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
+        if (matches && matches[1]) {
+            await cloudinary.uploader.destroy(matches[1]);
+        }
     } catch (error) {
-        console.error(`Impossible de supprimer le fichier ${filepath}:`, error);
+        console.error("Erreur Cloudinary:", error);
     }
-}
-
-async function getExperience(): Promise<ExperienceItem[]> {
-    try {
-        const data = await fs.readFile(DATA_FILE, 'utf-8');
-        return JSON.parse(data);
-    } catch (error) {
-        return [];
-    }
-}
-
-async function saveExperience(items: ExperienceItem[]) {
-    await fs.writeFile(DATA_FILE, JSON.stringify(items, null, 2), 'utf-8');
 }
 
 export async function createExperience(formData: FormData) {
@@ -64,26 +48,19 @@ export async function createExperience(formData: FormData) {
     const buttonText = formData.get('buttonText') as string;
     const imageFile = formData.get('imageFile') as File | null;
 
-    if (!imageFile || imageFile.size === 0) {
-        throw new Error("Une image est requise.");
+    let imageUrl: string | undefined = undefined;
+    if (imageFile && imageFile.size > 0) {
+        imageUrl = await uploadToCloudinary(imageFile, 'experiences');
     }
 
-    // Sauvegarde physique de la nouvelle image
-    const imageUrl = await saveFile(imageFile);
-
-    const items = await getExperience();
-    const newId = items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
-
-    const newItem: ExperienceItem = {
-        id: newId,
-        title,
-        description,
-        imageUrl, // On sauvegarde le chemin local /uploads/...
-        buttonText,
-    };
-
-    items.push(newItem);
-    await saveExperience(items);
+    await prisma.experience.create({
+        data: {
+            title,
+            description,
+            buttonText,
+            imageUrl,
+        },
+    });
 
     revalidatePath('/admin/style');
     revalidatePath('/');
@@ -95,46 +72,36 @@ export async function updateExperience(id: number, formData: FormData) {
     const buttonText = formData.get('buttonText') as string;
     const imageFile = formData.get('imageFile') as File | null;
 
-    let items = await getExperience();
-    const index = items.findIndex(i => i.id === id);
+    const updateData: any = { title, description, buttonText };
 
-    if (index !== -1) {
-        const item = items[index];
-        let newImageUrl = item.imageUrl;
+    if (imageFile && imageFile.size > 0) {
+        const oldExp = await prisma.experience.findUnique({ where: { id } });
+        
+        const newUrl = await uploadToCloudinary(imageFile, 'experiences');
+        updateData.imageUrl = newUrl;
 
-        // Si une nouvelle image a été uploadée pour remplacer l'ancienne
-        if (imageFile && imageFile.size > 0) {
-            newImageUrl = await saveFile(imageFile);
-            
-            // On supprime l'ancien fichier physique pour ne pas saturer le serveur
-            if (item.imageUrl) {
-                await deletePhysicalFile(item.imageUrl);
-            }
+        if (oldExp?.imageUrl) {
+            await deleteFromCloudinary(oldExp.imageUrl);
         }
-
-        items[index] = { ...item, title, description, imageUrl: newImageUrl, buttonText };
-        await saveExperience(items);
-
-        revalidatePath('/admin/style');
-        revalidatePath('/');
     }
+
+    await prisma.experience.update({
+        where: { id },
+        data: updateData,
+    });
+
+    revalidatePath('/admin/style');
+    revalidatePath('/');
 }
 
 export async function deleteExperience(id: number) {
-    let items = await getExperience();
-    const itemToDelete = items.find(i => i.id === id);
+    const expToDelete = await prisma.experience.findUnique({ where: { id } });
 
-    if (itemToDelete) {
-        // 1. On supprime d'abord le fichier physique de Hostinger
-        if (itemToDelete.imageUrl) {
-            await deletePhysicalFile(itemToDelete.imageUrl);
-        }
-
-        // 2. On met à jour le fichier JSON
-        items = items.filter(i => i.id !== id);
-        await saveExperience(items);
-
-        revalidatePath('/admin/style');
-        revalidatePath('/');
+    if (expToDelete) {
+        await deleteFromCloudinary(expToDelete.imageUrl);
+        await prisma.experience.delete({ where: { id } });
     }
+
+    revalidatePath('/admin/style');
+    revalidatePath('/');
 }
