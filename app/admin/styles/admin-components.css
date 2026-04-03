@@ -183,3 +183,39 @@
 .flex-1 {
     flex: 1;
 }
+
+/* Custom File Input Styles */
+.custom-file-input {
+    display: block;
+    width: 100%;
+    padding: 6px;
+    background-color: #fcfcfc;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.custom-file-input:hover {
+    border-color: #000;
+    background-color: #fff;
+}
+
+.custom-file-input::file-selector-button {
+    padding: 8px 16px;
+    margin-right: 15px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-input::file-selector-button:hover {
+    background-color: #333;
+}

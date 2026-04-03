@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createExperience, updateExperience } from '../experience/actions';
+import { ImageFileInput } from '../components/ImageFileInput';
 
 interface ExperienceItem {
     id: number;
@@ -56,7 +57,7 @@ export function ExperienceModal({ item, trigger }: ExperienceModalProps) {
                     </button>
                 </div>
 
-                <form action={handleSubmit} className="modal-form">
+                <form action={handleSubmit} className="modal-form" encType="multipart/form-data">
                     <div className="form-group">
                         <label>Titre</label>
                         <input
@@ -81,12 +82,10 @@ export function ExperienceModal({ item, trigger }: ExperienceModalProps) {
 
                     <div className="form-group">
                         <label>{isEdit ? "Remplacer l'image (Optionnel)" : "Image d'illustration"}</label>
-                        <input
-                            type="file"
+                        <ImageFileInput
                             name="imageFile"
                             accept="image/png, image/jpeg, image/webp"
                             required={!isEdit}
-                            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
                         />
                         {isEdit && item?.imageUrl && (
                             <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>

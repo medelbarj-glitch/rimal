@@ -4,6 +4,7 @@ import { createLocation, deleteLocation, updateLocation } from '@/app/actions/ad
 import { useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Location } from '@prisma/client';
+import { ImageFileInput } from '../components/ImageFileInput';
 
 function SubmitButton({ label, loadingLabel }: { label: string, loadingLabel: string }) {
     const { pending } = useFormStatus();
@@ -35,6 +36,7 @@ export function AddLocationForm() {
             }}
             ref={formRef}
             className="admin-form-container compact"
+            encType="multipart/form-data"
         >
             <div className="form-row">
                 <div className="form-group">
@@ -53,11 +55,9 @@ export function AddLocationForm() {
             
             <div className="form-group">
                 <label className="form-label">Image d'illustration (Optionnel)</label>
-                <input 
+                <ImageFileInput 
                     name="imageFile" 
-                    type="file" 
                     accept="image/png, image/jpeg, image/webp"
-                    style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
                 />
             </div>
             
@@ -83,6 +83,7 @@ export function LocationItem({ location }: { location: Location }) {
                         }
                     }}
                     className="edit-form"
+                    encType="multipart/form-data"
                 >
                     <div className="form-row">
                         <div className="form-group">
@@ -102,11 +103,9 @@ export function LocationItem({ location }: { location: Location }) {
 
                     <div className="form-group">
                         <label className="form-label">Remplacer l'image (Optionnel)</label>
-                        <input 
+                        <ImageFileInput 
                             name="imageFile" 
-                            type="file" 
                             accept="image/png, image/jpeg, image/webp"
-                            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
                         />
                         {location.imageUrl && (
                             <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>

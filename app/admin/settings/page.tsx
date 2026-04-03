@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { AdminLayout } from '../components/AdminLayout';
 import { useToast } from '../components/ToastContext';
 import { getSettings, updateSettings } from '@/app/actions/settingsActions';
+import { ImageFileInput } from '../components/ImageFileInput';
 import '../styles/admin-forms.css';
 
 function SettingsForm() {
@@ -44,7 +45,7 @@ function SettingsForm() {
         <div className="admin-form-container">
             <h2 className='component-title'>Configuration Générale</h2>
             {isLoading ? <p>Chargement...</p> : (
-                <form onSubmit={handleFormSubmit} className="admin-form">
+                <form onSubmit={handleFormSubmit} className="admin-form" encType="multipart/form-data">
                     <div className="form-group">
                         <label className='component-subtitle'>Numéro WhatsApp</label>
                         <input 
@@ -56,13 +57,13 @@ function SettingsForm() {
 
                     <div className="form-group">
                         <label className='component-subtitle'>Logo (Cloudinary)</label>
-                        <input 
-                            type="file" 
+                        <ImageFileInput 
                             name="logo" 
                             accept="image/*" 
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (file) setLogoPreview(URL.createObjectURL(file));
+                                else setLogoPreview(null);
                             }} 
                         />
                         {logoPreview && <img src={logoPreview} alt="Logo" style={{ width: '150px', marginTop: '10px' }} />}

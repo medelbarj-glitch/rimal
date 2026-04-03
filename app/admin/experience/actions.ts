@@ -57,8 +57,8 @@ export async function createExperience(formData: FormData) {
         data: {
             title,
             description,
-            buttonText,
             imageUrl,
+            buttonText,
         },
     });
 
@@ -76,7 +76,7 @@ export async function updateExperience(id: number, formData: FormData) {
 
     if (imageFile && imageFile.size > 0) {
         const oldExp = await prisma.experience.findUnique({ where: { id } });
-        
+
         const newUrl = await uploadToCloudinary(imageFile, 'experiences');
         updateData.imageUrl = newUrl;
 

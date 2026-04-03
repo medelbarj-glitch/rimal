@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { BackgroundImage } from '@prisma/client';
 import { createBackgroundImage, updateBackgroundImage } from '@/app/actions/style';
+import { ImageFileInput } from '../components/ImageFileInput';
 
 interface StyleModalProps {
     image?: BackgroundImage; // If provided, we are in Edit mode
@@ -51,7 +52,7 @@ export function StyleModal({ image, trigger }: StyleModalProps) {
                     </button>
                 </div>
 
-                <form ref={formRef} action={handleSubmit} className="modal-form">
+                <form ref={formRef} action={handleSubmit} className="modal-form" encType="multipart/form-data">
                     <div className="form-group">
                         <label>Titre (Affiché)</label>
                         <input
@@ -75,12 +76,10 @@ export function StyleModal({ image, trigger }: StyleModalProps) {
 
                     <div className="form-group">
                         <label>{isEdit ? "Remplacer l'image (Optionnel)" : "Image d'arrière-plan"}</label>
-                        <input
-                            type="file"
+                        <ImageFileInput
                             name="imageFile"
                             accept="image/png, image/jpeg, image/webp"
                             required={!isEdit} // Obligatoire seulement si on crée une nouvelle image
-                            style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%', backgroundColor: 'white' }}
                         />
                         {isEdit && image?.url && (
                             <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>

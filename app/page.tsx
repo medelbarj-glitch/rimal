@@ -51,17 +51,10 @@ export default async function Home() {
         console.error("Error loading services", e);
     }
 
-    // LOAD EXPERIENCE FROM JSON
-    let experienceData = [];
-    try {
-        const fs = require('fs/promises');
-        const path = require('path');
-        const experiencePath = path.join(process.cwd(), 'data', 'experience.json');
-        const fileContent = await fs.readFile(experiencePath, 'utf-8');
-        experienceData = JSON.parse(fileContent);
-    } catch (e) {
-        console.error("Error loading experience", e);
-    }
+    // LOAD EXPERIENCE FROM DB
+    const experienceData = await prisma.experience.findMany({
+        orderBy: { createdAt: 'asc' }
+    });
 
     const voitures = await prisma.modeleVoiture.findMany();
     const locations = await prisma.location.findMany();

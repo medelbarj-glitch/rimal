@@ -56,7 +56,7 @@ enum DayOfWeek {
 // 1. LE MODELE (Catalogue, ce que le client voit)
 model ModeleVoiture {
   id           Int          @id @default(autoincrement())
-  nom          String       @unique // Ex: "Renault Clio 5 - Bleu"
+  nom          String       
   description  String?      @db.Text
   imageUrl     String?
   prixParJour  Int          @map("prix_par_jour")

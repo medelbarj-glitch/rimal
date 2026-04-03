@@ -29,7 +29,7 @@ export function Footer() {
                 <a href="#"><i className="fab fa-whatsapp"></i>What's app</a>
                 <a href="#"><i className="fab fa-instagram"></i>Instagram</a>
             </div>
-            <span>© 2025 Bouderba Rental Cars. Tous droits réservés.</span>
+            <span>© 2026 Bouderba Rental Cars. Tous droits réservés.</span>
         </div>
     );
 }

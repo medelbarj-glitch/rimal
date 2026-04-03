@@ -4,6 +4,7 @@ import { createModel, createVehicle, deleteModel, deleteVehicle, updateVehicleSt
 import { StatutVehicule, Transmission, FuelType } from '@prisma/client';
 import { useRef } from 'react';
 import { useFormStatus } from 'react-dom';
+import { ImageFileInput } from '../components/ImageFileInput';
 
 function SubmitModelButton() {
     const { pending } = useFormStatus();
@@ -44,6 +45,7 @@ export function AddModelForm() {
             }}
             ref={formRef}
             className="admin-form-container compact"
+            encType="multipart/form-data"
         >
             <div className="form-row">
                 <div className="form-group">
@@ -59,11 +61,9 @@ export function AddModelForm() {
             <div className="form-row">
                 <div className="form-group">
                     <label className="form-label">Image (Upload)</label>
-                    <input
-                        type="file"
+                    <ImageFileInput
                         name="imageFile"
                         accept="image/png, image/jpeg, image/webp"
-                        style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px', width: '100%' }}
                     />
                 </div>
                 <div className="form-group">

@@ -8,6 +8,7 @@ import { createBackgroundImage, deleteBackgroundImage } from '@/app/actions/styl
 import { createService, deleteService } from '../services/actions';
 import { createExperience, deleteExperience } from '../experience/actions';
 import { ExperienceModal } from './ExperienceModal';
+import { ImageFileInput } from '../components/ImageFileInput';
 import './style.css';
 
 const prisma = new PrismaClient();
@@ -47,7 +48,7 @@ export default async function StylePage() {
                     {/* ADD FORM */}
                     <div className="service-form">
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter une image</h3>
-                        <form action={createBackgroundImage}>
+                        <form action={createBackgroundImage} encType="multipart/form-data">
                             <div className="form-group">
                                 <label>Titre (Affiché)</label>
                                 <input type="text" name="name" placeholder="Ex: Service premium" required />
@@ -58,8 +59,7 @@ export default async function StylePage() {
                             </div>
                             <div className="form-group">
                                 <label>Image d'arrière-plan</label>
-                                <input
-                                    type="file"
+                                <ImageFileInput
                                     name="imageFile"
                                     accept="image/png, image/jpeg, image/webp"
                                     required
@@ -121,7 +121,7 @@ export default async function StylePage() {
                     {/* ADD FORM */}
                     <div className="service-form">
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter un Service</h3>
-                        <form action={createService}>
+                        <form action={createService} encType="multipart/form-data">
                             <div className="form-group">
                                 <label>Titre</label>
                                 <input type="text" name="title" placeholder="Ex: Kilométrage Illimité" required />
@@ -182,7 +182,7 @@ export default async function StylePage() {
                     {/* ADD FORM */}
                     <div className="service-form">
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter une Expérience</h3>
-                        <form action={createExperience}>
+                        <form action={createExperience} encType="multipart/form-data">
                             <div className="form-group">
                                 <label>Titre</label>
                                 <input type="text" name="title" placeholder="Ex: L'Excellence..." required />
@@ -193,7 +193,7 @@ export default async function StylePage() {
                             </div>
                             <div className="form-group">
                                 <label>Image (Upload)</label>
-                                <input type="file" name="imageFile" accept="image/png, image/jpeg, image/webp" required />
+                                <ImageFileInput name="imageFile" accept="image/png, image/jpeg, image/webp" required />
                             </div>
                             <div className="form-group">
                                 <label>Texte Bouton</label>
