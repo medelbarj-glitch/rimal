@@ -28,7 +28,7 @@ body {
 /* --- DayPicker Customization --- */
 .rdp-day_button {
   background-color: transparent;
-  /* Default bg */
+  /* Default background */
   color: black;
   border-radius: 8px !important;
   /* Rounded corners for individual days */
