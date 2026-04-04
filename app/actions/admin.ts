@@ -3,6 +3,7 @@
 import { PrismaClient, Transmission, FuelType, StatutVehicule } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
+import { requireAuth } from '@/lib/auth';
 
 const prisma = new PrismaClient();
 
@@ -59,6 +60,7 @@ async function deleteFromCloudinary(imageUrl: string | null) {
 // --- MODEL ACTIONS ---
 
 export async function createModel(formData: FormData) {
+    await requireAuth();
     const nom = formData.get('nom') as string;
     const prixParJour = parseFloat(formData.get('prixParJour') as string);
     const nbPlaces = parseInt(formData.get('nbPlaces') as string);
@@ -91,6 +93,7 @@ export async function createModel(formData: FormData) {
 }
 
 export async function updateModel(id: number, formData: FormData) {
+    await requireAuth();
     const nom = formData.get('nom') as string;
     const prixParJour = parseFloat(formData.get('prixParJour') as string);
     const nbPlaces = parseInt(formData.get('nbPlaces') as string);
@@ -132,6 +135,7 @@ export async function updateModel(id: number, formData: FormData) {
 }
 
 export async function deleteModel(id: number) {
+    await requireAuth();
     const modelToDelete = await prisma.modeleVoiture.findUnique({
         where: { id },
     });
@@ -152,6 +156,7 @@ export async function deleteModel(id: number) {
 // --- VEHICLE ACTIONS ---
 
 export async function createVehicle(formData: FormData) {
+    await requireAuth();
     const plaque = formData.get('plaque') as string;
     const modeleId = parseInt(formData.get('modeleId') as string);
     const statut = formData.get('statut') as StatutVehicule;
@@ -169,6 +174,7 @@ export async function createVehicle(formData: FormData) {
 }
 
 export async function updateVehicleStatus(id: number, statut: StatutVehicule) {
+    await requireAuth();
     await prisma.vehicule.update({
         where: { id },
         data: { statut },
@@ -178,6 +184,7 @@ export async function updateVehicleStatus(id: number, statut: StatutVehicule) {
 }
 
 export async function deleteVehicle(id: number) {
+    await requireAuth();
     await prisma.vehicule.delete({
         where: { id },
     });
@@ -187,6 +194,7 @@ export async function deleteVehicle(id: number) {
 
 // --- LOCATION ACTIONS ---
 export async function createLocation(formData: FormData) {
+    await requireAuth();
     const nom = formData.get('nom') as string;
     const adresse = formData.get('adresse') as string;
     const fraisSupplementaires = parseInt(formData.get('fraisSupplementaires') as string || '0');
@@ -213,6 +221,7 @@ export async function createLocation(formData: FormData) {
 }
 
 export async function updateLocation(id: number, formData: FormData) {
+    await requireAuth();
     const nom = formData.get('nom') as string;
     const adresse = formData.get('adresse') as string;
     const fraisSupplementaires = parseInt(formData.get('fraisSupplementaires') as string || '0');
@@ -248,6 +257,7 @@ export async function updateLocation(id: number, formData: FormData) {
 }
 
 export async function deleteLocation(id: number) {
+    await requireAuth();
     const locationToDelete = await prisma.location.findUnique({
         where: { id },
     });

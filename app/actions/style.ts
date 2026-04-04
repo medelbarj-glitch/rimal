@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
+import { requireAuth } from '@/lib/auth';
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -44,6 +45,7 @@ async function deleteFromCloudinary(imageUrl: string | null) {
 }
 
 export async function createBackgroundImage(formData: FormData) {
+    await requireAuth();
     const name = formData.get('name') as string;
     const title = formData.get('title') as string;
     const subtitle = formData.get('subtitle') as string;
@@ -69,6 +71,7 @@ export async function createBackgroundImage(formData: FormData) {
 }
 
 export async function updateBackgroundImage(id: number, formData: FormData) {
+    await requireAuth();
     const name = formData.get('name') as string;
     const title = formData.get('title') as string;
     const subtitle = formData.get('subtitle') as string;
@@ -97,6 +100,7 @@ export async function updateBackgroundImage(id: number, formData: FormData) {
 }
 
 export async function deleteBackgroundImage(id: number) {
+    await requireAuth();
     const imageToDelete = await prisma.backgroundImage.findUnique({
         where: { id },
     });

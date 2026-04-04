@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
+import { requireAuth } from '@/lib/auth';
 
 // Configuration Cloudinary
 cloudinary.config({
@@ -43,6 +44,7 @@ async function deleteFromCloudinary(imageUrl: string | null) {
 }
 
 export async function createExperience(formData: FormData) {
+    await requireAuth();
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const buttonText = formData.get('buttonText') as string;
@@ -67,6 +69,7 @@ export async function createExperience(formData: FormData) {
 }
 
 export async function updateExperience(id: number, formData: FormData) {
+    await requireAuth();
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const buttonText = formData.get('buttonText') as string;
@@ -95,6 +98,7 @@ export async function updateExperience(id: number, formData: FormData) {
 }
 
 export async function deleteExperience(id: number) {
+    await requireAuth();
     const expToDelete = await prisma.experience.findUnique({ where: { id } });
 
     if (expToDelete) {

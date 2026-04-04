@@ -2,6 +2,7 @@
 
 import { prisma } from '../../lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAuth } from '@/lib/auth';
 
 interface ReservationUpdateData {
     dateDebut: Date;
@@ -16,6 +17,7 @@ interface ReservationUpdateData {
 }
 
 export async function updateReservationDetails(id: number, data: ReservationUpdateData) {
+    await requireAuth();
     try {
         const now = new Date();
         now.setSeconds(0, 0);

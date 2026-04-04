@@ -3,6 +3,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
+import { requireAuth } from '@/lib/auth';
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'services.json');
 
@@ -27,6 +28,7 @@ async function saveServices(services: ServiceItem[]) {
 }
 
 export async function createService(formData: FormData) {
+    await requireAuth();
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const icon = formData.get('icon') as string;
@@ -51,6 +53,7 @@ export async function createService(formData: FormData) {
 }
 
 export async function updateService(id: number, formData: FormData) {
+    await requireAuth();
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const icon = formData.get('icon') as string;
@@ -68,6 +71,7 @@ export async function updateService(id: number, formData: FormData) {
 }
 
 export async function deleteService(id: number) {
+    await requireAuth();
     let services = await getServices();
     services = services.filter(s => s.id !== id);
     await saveServices(services);

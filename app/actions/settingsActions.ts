@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
+import { requireAuth } from '@/lib/auth';
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -30,6 +31,7 @@ export async function getSettings() {
 }
 
 export async function updateSettings(formData: FormData) {
+    await requireAuth();
     const phoneNumber = formData.get('phoneNumber') as string;
     const logoFile = formData.get('logo') as File | null;
 

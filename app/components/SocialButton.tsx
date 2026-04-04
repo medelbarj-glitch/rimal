@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { getSettings } from '@/app/actions/settingsActions';
 
 export function SocialButton() {
-    const [phoneNumber, setPhoneNumber] = useState('+212600000000');
-    
+    const [phoneNumber, setPhoneNumber] = useState('+212667332834');
+
     useEffect(() => {
-        fetch('/api/settings')
-            .then(res => res.json())
+        getSettings()
             .then(data => {
                 if (data && data.phoneNumber) {
                     setPhoneNumber(data.phoneNumber);
@@ -31,7 +31,7 @@ export function SocialButton() {
     return (
         <div className="social-float">
             <a
-                href="https://www.instagram.com/rimal"
+                href="https://www.instagram.com/bouderba.rental.cars"
                 className="instagram-float"
                 target="_blank"
                 rel="noopener noreferrer"

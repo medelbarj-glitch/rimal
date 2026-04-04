@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ToastProvider } from './ToastContext';
+import { logoutAction } from '../login/actions';
 import '../admin.css'; // Ensure CSS is loaded
 
 interface AdminLayoutProps {
@@ -13,6 +14,7 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children, title }: AdminLayoutProps) {
     const pathname = usePathname();
+    const router = useRouter();
 
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
@@ -71,6 +73,9 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                         <Link href="/" className="nav-item return-site">
                             <i className="fas fa-arrow-left"></i> Retour au site
                         </Link>
+                        <button onClick={async () => { await logoutAction(); router.push('/admin/login'); }} className="nav-item return-site" style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', color: '#e74c3c', marginTop: '1rem' }}>
+                            <i className="fas fa-sign-out-alt"></i> Déconnexion
+                        </button>
                     </nav>
                 </div>
 
