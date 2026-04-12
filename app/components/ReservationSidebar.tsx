@@ -6,6 +6,8 @@ import { Location } from '@prisma/client';
 import { format } from 'date-fns';
 import { DateRangeSelector } from './DateRangeSelector';
 import '../../styles/reservation.css'; // Ensure we have access to styles, though ideally they are global or module
+import { useTranslations, useLocale } from 'next-intl';
+import { getTranslatedField } from '@/lib/translate';
 
 interface ReservationSidebarProps {
     locations: Location[];
@@ -21,6 +23,8 @@ const timeSlots = [
 export function ReservationSidebar({ locations, className }: ReservationSidebarProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const t = useTranslations('reservation');
+    const locale = useLocale();
 
     // --- State for Search Params ---
     const [pickupLocationId, setPickupLocationId] = useState(searchParams.get('customLocation') || searchParams.get('location') || '');
@@ -108,10 +112,10 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
 
             {/* --- Block 1: Modifier la recherche --- */}
             <div className="sidebar-block search-modifier">
-                <h3 className="sidebar-title">Modifier la recherche</h3>
+                <h3 className="sidebar-title">{t('sidebar_modify_search')}</h3>
 
                 <div className="form-group">
-                    <label>Retrait</label>
+                    <label>{t('pickup')}</label>
                     {/* Check if custom location is active or standard select */}
                     {searchParams.get('customLocation') !== null ? (
                         <div className="sidebar-custom-input-wrapper">
@@ -119,7 +123,7 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                                 type="text"
                                 value={pickupLocationId || ''}
                                 onChange={(e) => setPickupLocationId(e.target.value)}
-                                placeholder="Adresse de retrait..."
+                                placeholder={t('sidebar_pickup_placeholder')}
                             />
                             <i
                                 className="fas fa-times"
@@ -129,7 +133,7 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                                     setPickupLocationId('');
                                     router.push(`/reservation?${params.toString()}`);
                                 }}
-                                title="Annuler"
+                                title={t('sidebar_cancel')}
                             ></i>
                         </div>
                     ) : (
@@ -152,24 +156,24 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                                 }
                             }}
                         >
-                            <option value="">Choisir un lieu...</option>
+                            <option value="">{t('choose_location')}</option>
                             {locations.map(loc => (
-                                <option key={loc.id} value={loc.id}>{loc.nom}</option>
+                                <option key={loc.id} value={loc.id}>{getTranslatedField(loc, 'nom', locale)}</option>
                             ))}
-                            <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>Autre / Adresse Spécifique</option>
+                            <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>{t('custom_address')}</option>
                         </select>
                     )}
                 </div>
 
                 <div className="form-group">
-                    <label>Retour</label>
+                    <label>{t('return')}</label>
                     {searchParams.get('customReturnLocation') !== null ? (
                         <div className="sidebar-custom-input-wrapper">
                             <input
                                 type="text"
                                 value={returnLocationId}
                                 onChange={(e) => setReturnLocationId(e.target.value)}
-                                placeholder="Adresse de retour..."
+                                placeholder={t('return_address_placeholder')}
                             />
                             <i
                                 className="fas fa-times"
@@ -179,7 +183,7 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                                     setReturnLocationId('');
                                     router.push(`/reservation?${params.toString()}`);
                                 }}
-                                title="Annuler"
+                                title={t('sidebar_cancel')}
                             ></i>
                         </div>
                     ) : (
@@ -196,11 +200,11 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                                 }
                             }}
                         >
-                            <option value="">Même que le retrait</option>
+                            <option value="">{t('sidebar_same_as_pickup')}</option>
                             {locations.map(loc => (
-                                <option key={loc.id} value={loc.id}>{loc.nom}</option>
+                                <option key={loc.id} value={loc.id}>{getTranslatedField(loc, 'nom', locale)}</option>
                             ))}
-                            <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>Autre / Adresse Spécifique</option>
+                            <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>{t('custom_address')}</option>
                         </select>
                     )}
                 </div>
@@ -225,23 +229,23 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                 </div>
 
                 <button className="update-search-btn" onClick={handleSearchUpdate}>
-                    Rechercher
+                    {t('search')}
                 </button>
             </div>
 
             {/* --- Block 2: Filtres --- */}
             <div className="sidebar-block filters-block">
-                <h3 className="sidebar-title">Filtres</h3>
+                <h3 className="sidebar-title">{t('sidebar_filters')}</h3>
 
                 <div className="filter-group">
-                    <h4>Transmission</h4>
+                    <h4>{t('sidebar_transmission')}</h4>
                     <label className="checkbox-label">
                         <input
                             type="checkbox"
                             checked={transmission.includes('MANUELLE')}
                             onChange={() => handleFilterChange('transmission', 'MANUELLE')}
                         />
-                        <span>Manuelle</span>
+                        <span>{t('sidebar_manual')}</span>
                     </label>
                     <label className="checkbox-label">
                         <input
@@ -249,7 +253,7 @@ export function ReservationSidebar({ locations, className }: ReservationSidebarP
                             checked={transmission.includes('AUTOMATIQUE')}
                             onChange={() => handleFilterChange('transmission', 'AUTOMATIQUE')}
                         />
-                        <span>Automatique</span>
+                        <span>{t('sidebar_automatic')}</span>
                     </label>
                 </div>
             </div>

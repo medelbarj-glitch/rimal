@@ -1,0 +1,81 @@
+{
+  "navbar": {
+    "vehicles": "سياراتنا",
+    "locations": "مواقعنا",
+    "reservations": "الحجوزات",
+    "contact": "اتصل بنا"
+  },
+  "menu": {
+    "vehicles_title": "سياراتنا",
+    "locations_title": "مواقعنا",
+    "no_fees": "بدون رسوم",
+    "fees": "رسوم"
+  },
+  "reservation": {
+    "pickup": "استلام",
+    "pickup_return": "استلام وإرجاع",
+    "choose_location": "اختر موقعا",
+    "custom_address": "عنوان آخر / محدد",
+    "return": "إرجاع",
+    "different_return": "مكان إرجاع مختلف",
+    "search": "بحث",
+    "delivery_address_placeholder": "أدخل عنوان التسليم...",
+    "return_address_placeholder": "عنوان الإرجاع...",
+    "departure_date_time": "تاريخ ووقت المغادرة",
+    "departure": "مغادرة",
+    "return_date_time": "تاريخ ووقت الإرجاع",
+    "results_title": "نتائج البحث",
+    "back": "رجوع",
+    "no_vehicles": "لا توجد مركبات متاحة.",
+    "no_vehicles_desc": "حاول تغيير التواريخ أو عوامل التصفية.",
+    "sidebar_modify_search": "تعديل البحث",
+    "sidebar_pickup_placeholder": "عنوان الاستلام...",
+    "sidebar_same_as_pickup": "نفس مكان الاستلام",
+    "sidebar_filters": "عوامل التصفية",
+    "sidebar_transmission": "ناقل الحركة",
+    "sidebar_manual": "يدوي",
+    "sidebar_automatic": "أوتوماتيكي",
+    "sidebar_cancel": "إلغاء"
+  },
+  "vehicles": {
+    "title": "سياراتنا",
+    "from": "ابتداءً من",
+    "per_day": "درهم/يوم",
+    "reserve": "احجز",
+    "details": "التفاصيل"
+  },
+  "services": {
+    "title": "خدماتنا الحصرية"
+  },
+  "reviews": {
+    "title": "ما يقوله عملاؤنا"
+  },
+  "booking": {
+    "title": "إتمام الحجز",
+    "summary": "ملخص",
+    "from": "من :",
+    "to": "إلى :",
+    "duration": "المدة :",
+    "days": "أيام",
+    "location_fees": "رسوم الموقع :",
+    "total_estimated": "المجموع التقديري :",
+    "dates": "تواريخ الحجز",
+    "locations": "المواقع",
+    "pickup_location": "مكان الاستلام *",
+    "select_location": "اختر موقعا...",
+    "return_location": "مكان الإرجاع *",
+    "same_as_pickup": "(نفس مكان الاستلام)",
+    "address_placeholder": "أدخل عنوانك...",
+    "details": "بياناتك",
+    "last_name": "اللقب *",
+    "last_name_placeholder": "اللقب",
+    "first_name": "الاسم *",
+    "first_name_placeholder": "الاسم",
+    "email": "البريد الإلكتروني *",
+    "email_placeholder": "name@example.com",
+    "phone": "الهاتف *",
+    "phone_placeholder": "06 00 00 00 00",
+    "processing": "جارٍ المعالجة...",
+    "confirm": "تأكيد الحجز"
+  }
+}

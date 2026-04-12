@@ -22,5 +22,19 @@
     "icon": "fa-headset",
     "title": "Support 24/7",
     "description": "Une équipe dédiée à votre écoute à tout moment pour garantir une expérience sans faille."
+  },
+  {
+    "id": 5,
+    "title": "TEST",
+    "title_en": "",
+    "title_es": "",
+    "title_ar": "",
+    "title_ma": "TESTMA",
+    "description": "FRRR",
+    "description_en": "",
+    "description_es": "",
+    "description_ar": "",
+    "description_ma": "MAAA",
+    "icon": "fa-road"
   }
 ]

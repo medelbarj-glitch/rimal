@@ -1,99 +1,254 @@
 /* =======================
-   Experience Section
+   Experience Section - LUXE MAGAZINE
 ======================= */
 .experience-section {
     width: 100%;
-    padding: 6rem 10%;
-    background-color: #f9f9f9;
+    padding: 8rem 10%;
+    background: #f9f9f9;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 50px;
+    gap: 80px;
     overflow: hidden;
+    position: relative;
+}
+
+/* Texte vertical décoratif en fond */
+.experience-section::before {
+    content: 'EXPERIENCE';
+    position: absolute;
+    top: 50%;
+    left: -5%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-family: 'Anton', sans-serif;
+    font-size: 15vw;
+    color: rgba(0, 0, 0, 0.02);
+    z-index: 0;
+    pointer-events: none;
+    letter-spacing: 10px;
 }
 
 .experience-content {
     flex: 1;
-    min-width: 300px;
+    min-width: 320px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 30px;
+    z-index: 1;
 }
 
 .experience-content h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 3rem;
-    font-weight: 300;
+    font-family: 'Anton', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: #1a1a1a;
-    line-height: 1.2;
+    color: #111;
+    line-height: 1.1;
+    position: relative;
+    padding-bottom: 25px;
+}
+
+.experience-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 4px;
+    background: #B49339;
 }
 
 .experience-content p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: #555;
     line-height: 1.8;
-    font-weight: 300;
-    max-width: 500px;
+    font-weight: 400;
+    max-width: 550px;
 }
 
-.experience-content button {
-    padding: 15px 30px;
-    background-color: #000;
-    color: white;
-    font-family: 'Oswald', sans-serif;
+/* Bouton Luxe Inverse */
+.experience-content a {
+    padding: 16px 35px;
+    background-color: transparent;
+    color: #111;
+    font-family: 'Anton', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    letter-spacing: 2px;
+    border: 2px solid #111;
+    border-radius: 0;
+    /* Style Editorial Brut */
+    font-size: 1.1rem;
     cursor: pointer;
     width: fit-content;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-.experience-content button:hover {
-    background-color: #333;
-    transform: translateX(5px);
+.experience-content a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: #111;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: -1;
+}
+
+.experience-content a:hover {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.experience-content a:hover::before {
+    width: 100%;
 }
 
 .experience-image {
-    flex: 1;
-    min-width: 300px;
+    flex: 1.2;
+    /* L'image prend un peu plus de place */
+    min-width: 350px;
     position: relative;
-    height: 500px;
+    height: 600px;
+    z-index: 1;
+}
+
+/* Cadre décoratif derrière l'image */
+.experience-image::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: -30px;
+    width: 100%;
+    height: 100%;
+    border: 3px solid #B49339;
+    z-index: -1;
+    transition: all 0.5s ease;
 }
 
 .experience-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.05);
-    transition: all 0.5s ease;
+    box-shadow: -20px 20px 60px rgba(0, 0, 0, 0.15);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    filter: brightness(0.95) contrast(1.1);
 }
 
 .experience-image:hover img {
-    transform: scale(1.02);
-    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+    transform: translate(-10px, -10px);
+    box-shadow: -10px 10px 40px rgba(0, 0, 0, 0.2);
+    filter: brightness(1) contrast(1.1);
 }
 
-@media screen and (max-width: 900px) {
+.experience-image:hover::after {
+    transform: translate(15px, 15px);
+}
+
+@media screen and (max-width: 1024px) {
     .experience-section {
         flex-direction: column;
-        padding: 4rem 5%;
+        padding: 5rem 5%;
         text-align: center;
+        gap: 60px;
     }
 
     .experience-content {
         align-items: center;
+        min-width: 0;
+    }
+
+    .experience-content h2 {
+        font-size: 3rem;
+    }
+
+    .experience-content h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .experience-content p {
+        max-width: 100%;
     }
 
     .experience-image {
         width: 100%;
-        height: 300px;
+        height: 400px;
+        min-width: 0;
+    }
+
+    .experience-image::after {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .experience-section {
+        padding: 3.5rem 5%;
+        gap: 35px;
+    }
+
+    .experience-section::before {
+        display: none;
+    }
+
+    .experience-content h2 {
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+        padding-bottom: 18px;
+    }
+
+    .experience-content h2::after {
+        width: 60px;
+        height: 3px;
+    }
+
+    .experience-content p {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .experience-content a {
+        padding: 14px 28px;
+        font-size: 0.95rem;
+        letter-spacing: 1.5px;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+    }
+
+    .experience-image {
+        height: 280px;
+    }
+
+    .experience-image img {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .experience-section {
+        padding: 2.5rem 4%;
+        gap: 25px;
+    }
+
+    .experience-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .experience-content p {
+        font-size: 0.92rem;
+    }
+
+    .experience-image {
+        height: 220px;
     }
 }

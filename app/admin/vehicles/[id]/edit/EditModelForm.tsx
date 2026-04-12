@@ -83,13 +83,24 @@ export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
             </div>
 
             <div className="form-group">
-                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Description</label>
-                <textarea
-                    name="description"
-                    rows={3}
-                    defaultValue={modele.description || ''}
-                    style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', fontFamily: 'inherit' }}
-                ></textarea>
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Description (Français)</label>
+                <textarea name="description" rows={2} defaultValue={modele.description || ''} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', fontFamily: 'inherit' }}></textarea>
+            </div>
+            <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Description (English)</label>
+                <textarea name="description_en" rows={2} defaultValue={(modele as any).description_en || ''} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', fontFamily: 'inherit' }}></textarea>
+            </div>
+            <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Description (Español)</label>
+                <textarea name="description_es" rows={2} defaultValue={(modele as any).description_es || ''} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', fontFamily: 'inherit' }}></textarea>
+            </div>
+            <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Description (العربية)</label>
+                <textarea name="description_ar" rows={2} defaultValue={(modele as any).description_ar || ''} dir="rtl" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', fontFamily: 'inherit' }}></textarea>
+            </div>
+            <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Description (الدارجة/Marocain)</label>
+                <textarea name="description_ma" rows={2} defaultValue={(modele as any).description_ma || ''} dir="rtl" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', fontFamily: 'inherit' }}></textarea>
             </div>
 
             <SubmitButton />

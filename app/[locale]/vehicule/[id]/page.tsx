@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import PlaceHolderImage from '@/public/images/placeholder.jpg'; // Assuming we handle images
+import { getTranslatedField } from '@/lib/translate';
+import { useLocale } from 'next-intl';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,8 @@ export default async function VehiclePage({ params }: { params: { id: string } }
     });
 
     if (!vehicle) return notFound();
+
+    const locale = useLocale();
 
     return (
         <div className="vehicle-page-container" style={{ padding: '100px 20px', maxWidth: '1200px', margin: '0 auto' }}>
@@ -86,14 +89,18 @@ export default async function VehiclePage({ params }: { params: { id: string } }
                 </div>
             </div>
 
-            {/* Description Text (could be dynamic later) */}
+            {/* Description Text */}
             <div className="vehicle-description" style={{ marginTop: '60px' }}>
                 <h3 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Description</h3>
                 <p style={{ lineHeight: '1.8', color: '#444' }}>
-                    Profitez d'une expérience de conduite exceptionnelle avec la {vehicle.nom}.
-                    Idéale pour vos séjours à Marrakech, ce véhicule allie confort, sécurité et performance.
-                    Disponible avec options kilométrage illimité et livraison à l'aéroport.
-                    Réservez dès maintenant pour garantir la disponibilité.
+                    {getTranslatedField(vehicle, 'description', locale) || (
+                        <>
+                            Profitez d'une expérience de conduite exceptionnelle avec la {vehicle.nom}.
+                            Idéale pour vos séjours à Marrakech, ce véhicule allie confort, sécurité et performance.
+                            Disponible avec options kilométrage illimité et livraison à l'aéroport.
+                            Réservez dès maintenant pour garantir la disponibilité.
+                        </>
+                    )}
                 </p>
             </div>
         </div>

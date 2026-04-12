@@ -1,3 +1,5 @@
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { jwtVerify } from 'jose'
@@ -16,6 +18,8 @@ async function verifyToken(token: string) {
     return null
   }
 }
+
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
@@ -48,11 +52,15 @@ export async function middleware(request: NextRequest) {
       response.cookies.set('admin_session', '', { expires: new Date(0), path: '/' })
       return response
     }
+    return NextResponse.next() // Laisse passer vers /admin
   }
 
-  return NextResponse.next()
+  // Pour tout le reste (sauf api/_next etc. exclus par le matcher), on délègue au routing i18n
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  // Le matcher capture toutes les url SAUF api, _next, images, favicon.
+  // Par contre on CAPTURE la racine / pour la rediriger vers /fr
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
 }

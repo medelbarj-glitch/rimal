@@ -92,12 +92,24 @@ export function AddModelForm() {
             </div>
 
             <div className="form-group">
-                <label className="form-label">Description</label>
-                <textarea
-                    name="description"
-                    rows={3}
-                    className="form-textarea"
-                ></textarea>
+                <label className="form-label">Description (Français)</label>
+                <textarea name="description" rows={2} className="form-textarea"></textarea>
+            </div>
+            <div className="form-group">
+                <label className="form-label">Description (English)</label>
+                <textarea name="description_en" rows={2} className="form-textarea"></textarea>
+            </div>
+            <div className="form-group">
+                <label className="form-label">Description (Español)</label>
+                <textarea name="description_es" rows={2} className="form-textarea"></textarea>
+            </div>
+            <div className="form-group">
+                <label className="form-label">Description (العربية)</label>
+                <textarea name="description_ar" rows={2} className="form-textarea" dir="rtl"></textarea>
+            </div>
+            <div className="form-group">
+                <label className="form-label">Description (الدارجة/Marocain)</label>
+                <textarea name="description_ma" rows={2} className="form-textarea" dir="rtl"></textarea>
             </div>
 
             <SubmitModelButton />

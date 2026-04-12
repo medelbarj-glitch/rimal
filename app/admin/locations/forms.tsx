@@ -40,8 +40,24 @@ export function AddLocationForm() {
         >
             <div className="form-row">
                 <div className="form-group">
-                    <label className="form-label">Nom du Lieu</label>
+                    <label className="form-label">Nom du Lieu (Français)</label>
                     <input name="nom" required type="text" placeholder="Ex: Aéroport Marrakech" />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Nom (English)</label>
+                    <input name="nom_en" type="text" />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Nom (Español)</label>
+                    <input name="nom_es" type="text" />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Nom (العربية)</label>
+                    <input name="nom_ar" type="text" dir="rtl" />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Nom (Marocain)</label>
+                    <input name="nom_ma" type="text" dir="rtl" />
                 </div>
                 <div className="form-group">
                     <label className="form-label">Frais Supplémentaires (DH)</label>
@@ -49,7 +65,7 @@ export function AddLocationForm() {
                 </div>
             </div>
             <div className="form-group">
-                <label className="form-label">Adresse (Optionnel)</label>
+                <label className="form-label">Adresse complete</label>
                 <input name="adresse" type="text" placeholder="Adresse complète..." />
             </div>
             
@@ -87,8 +103,24 @@ export function LocationItem({ location }: { location: Location }) {
                 >
                     <div className="form-row">
                         <div className="form-group">
-                            <label className="form-label">Nom</label>
+                            <label className="form-label">Nom (FR)</label>
                             <input name="nom" defaultValue={location.nom} required type="text" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Nom (EN)</label>
+                            <input name="nom_en" defaultValue={(location as any).nom_en || ''} type="text" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Nom (ES)</label>
+                            <input name="nom_es" defaultValue={(location as any).nom_es || ''} type="text" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Nom (AR)</label>
+                            <input name="nom_ar" defaultValue={(location as any).nom_ar || ''} type="text" dir="rtl" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Nom (MA)</label>
+                            <input name="nom_ma" defaultValue={(location as any).nom_ma || ''} type="text" dir="rtl" />
                         </div>
                         <div className="form-group">
                             <label className="form-label">Frais (DH)</label>
@@ -97,7 +129,7 @@ export function LocationItem({ location }: { location: Location }) {
                     </div>
                     
                     <div className="form-group">
-                        <label className="form-label">Adresse</label>
+                        <label className="form-label">Adresse complète</label>
                         <input name="adresse" defaultValue={location.adresse || ''} type="text" />
                     </div>
 

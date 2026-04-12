@@ -5,6 +5,7 @@ import { DayPicker, DateRange } from 'react-day-picker';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import 'react-day-picker/dist/style.css';
+import { useTranslations } from 'next-intl';
 
 // --- Helper Hook ---
 function useClickOutside(ref: React.RefObject<any>, handler: () => void) {
@@ -52,6 +53,7 @@ export function DateRangeSelector({
     className,
     numberOfMonths = 2
 }: DateRangeSelectorProps) {
+    const t = useTranslations('reservation');
 
     // --- State ---
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -142,7 +144,7 @@ export function DateRangeSelector({
 
             {/* --- Start Date & Time --- */}
             <div className="start-date-container">
-                <span className="label-text">Date et heure de départ</span>
+                <span className="label-text">{t('departure_date_time')}</span>
                 <div className="button-start">
                     <button
                         type="button"
@@ -151,7 +153,7 @@ export function DateRangeSelector({
                     >
                         <i className="fas fa-calendar-alt"></i>
                         <span>
-                            {startDate ? format(startDate, 'dd/MM/yyyy') : 'Départ'}
+                            {startDate ? format(startDate, 'dd/MM/yyyy') : t('departure')}
                         </span>
                     </button>
 
@@ -160,7 +162,7 @@ export function DateRangeSelector({
                         <div
                             className={`choose-hour ${isStartTimeOpen ? 'open' : ''}`}
                             ref={startTimeRef}
-                            onClick={() => setIsStartTimeOpen(!isStartTimeOpen)}
+                            onClick={(e) => { e.stopPropagation(); setIsReturnTimeOpen(false); setIsStartTimeOpen(!isStartTimeOpen); }}
                         >
                             <div className="choose-hour-select">
                                 <div className="selected">
@@ -191,7 +193,7 @@ export function DateRangeSelector({
 
             {/* --- End Date & Time --- */}
             <div className="end-date-container">
-                <span className="label-text">Date et heure de retour</span>
+                <span className="label-text">{t('return_date_time')}</span>
                 <div className="button-end">
                     <button
                         type="button"
@@ -200,7 +202,7 @@ export function DateRangeSelector({
                     >
                         <i className="fas fa-calendar-alt"></i>
                         <span>
-                            {endDate ? format(endDate, 'dd/MM/yyyy') : 'Retour'}
+                            {endDate ? format(endDate, 'dd/MM/yyyy') : t('return')}
                         </span>
                     </button>
 
@@ -209,7 +211,7 @@ export function DateRangeSelector({
                         <div
                             className={`choose-hour return-hour ${isReturnTimeOpen ? 'open' : ''}`}
                             ref={returnTimeRef}
-                            onClick={() => setIsReturnTimeOpen(!isReturnTimeOpen)}
+                            onClick={(e) => { e.stopPropagation(); setIsStartTimeOpen(false); setIsReturnTimeOpen(!isReturnTimeOpen); }}
                         >
                             <div className="choose-hour-select">
                                 <div className="selected">

@@ -58,6 +58,10 @@ model ModeleVoiture {
   id           Int          @id @default(autoincrement())
   nom          String       
   description  String?      @db.Text
+  description_en String?    @db.Text
+  description_es String?    @db.Text
+  description_ar String?    @db.Text
+  description_ma String?    @db.Text
   imageUrl     String?
   prixParJour  Int          @map("prix_par_jour")
   nbPlaces     Int          @default(5)
@@ -96,6 +100,10 @@ model Vehicule {
 model Location {
   id                   Int     @id @default(autoincrement())
   nom                  String  @unique // Ex: "Aéroport Marrakech-Menara"
+  nom_en               String?
+  nom_es               String?
+  nom_ar               String?
+  nom_ma               String?
   adresse              String?
   fraisSupplementaires Int     @default(0) @map("frais_supplementaires")
   imageUrl             String? @map("image_url")
@@ -166,7 +174,15 @@ model BackgroundImage {
   name     String
   url      String  @db.Text
   title    String?
+  title_en String?
+  title_es String?
+  title_ar String?
+  title_ma String?
   subtitle String?
+  subtitle_en String?
+  subtitle_es String?
+  subtitle_ar String?
+  subtitle_ma String?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -201,9 +217,21 @@ model Horaires {
 model Experience {
   id          Int      @id @default(autoincrement())
   title       String
+  title_en    String?
+  title_es    String?
+  title_ar    String?
+  title_ma    String?
   description String   @db.Text
+  description_en String? @db.Text
+  description_es String? @db.Text
+  description_ar String? @db.Text
+  description_ma String? @db.Text
   imageUrl    String?  @map("image_url")
   buttonText  String?  @map("button_text")
+  buttonText_en String? @map("button_text_en")
+  buttonText_es String? @map("button_text_es")
+  buttonText_ar String? @map("button_text_ar")
+  buttonText_ma String? @map("button_text_ma")
 
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")

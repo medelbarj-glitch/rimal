@@ -1,10 +1,11 @@
 import React from 'react';
-import { prisma } from '../../../lib/prisma';
-import { BookingForm } from '../../components/BookingForm';
+import { prisma } from '../../../../lib/prisma';
+import { BookingForm } from '../../../components/BookingForm';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import '../../../styles/booking.css'; // Import custom styles
-import { NavbarAndMenu } from '../../components/Menu';
+import '../../../../styles/booking.css'; // Import custom styles
+import { NavbarAndMenu } from '../../../components/Menu';
+import { getTranslations } from 'next-intl/server';
 
 export default async function BookingPage({
     params,
@@ -48,15 +49,6 @@ export default async function BookingPage({
             <NavbarAndMenu voitures={voitures} locations={locations} isOtherPage={true} />
             <div className="booking-page">
                 <div className="booking-container">
-                    <Link href="/reservation" className="back-button">
-                        <i className="fas fa-arrow-left"></i>
-                        <span>Retour</span>
-                    </Link>
-
-                    <h1 className="booking-title">
-                        Finaliser votre réservation
-                    </h1>
-
                     <BookingForm
                         modelId={modelId}
                         modelName={model.nom}

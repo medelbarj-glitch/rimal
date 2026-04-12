@@ -1,35 +1,43 @@
 /* =======================
-   Bloc Réservations
+   Bloc Réservations - Ultra Premium
 ======================= */
 .reservations {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  align-items: flex-end;
+  align-items: center;
   width: 90%;
-  max-width: 1400px;
-  padding: 2rem 3rem;
-  margin: -40px auto 40px;
-  /* Remonte un peu sur le slider */
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
+  height: 100%;
+  padding: 2.5rem 3.5rem;
+
+  /* Glassmorphism Effect */
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-radius: 28px;
   position: relative;
   z-index: 50;
-  /* Increased to stack above services section */
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  margin-top: 20px;
+
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  border: none;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.reservations span {
-  font-size: 0.85rem;
-  font-weight: 600;
+.reservations:hover {
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.reservations span.label-text {
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #555;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   display: block;
   white-space: nowrap;
+  margin-bottom: 0.8rem;
 }
 
 /* -----------------------
@@ -43,21 +51,18 @@
   flex: 3;
   min-width: 530px;
   position: relative;
-  /* Create stacking context */
   z-index: 20;
-  /* Ensure this container serves on top of dates */
 }
 
 .location-column {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
 }
 
 .location-column.return-column {
-  flex: 0;
-  transition: flex 0.3s ease;
-  /* Smooth transition */
+  flex: 1;
+  transition: flex 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .location-column.return-column.active {
@@ -71,7 +76,6 @@
   align-items: flex-end;
   position: relative;
   z-index: 10;
-  /* Lower than locations */
 }
 
 .reservations .dates-container {
@@ -94,15 +98,15 @@
 .reservations button.choose-date,
 .reservations .button-start button,
 .reservations .button-end button {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
+  background-color: rgba(240, 240, 240, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
   padding: 0 20px;
-  font-size: 0.95rem;
-  color: #333;
-  transition: all 0.2s ease;
-  height: 56px;
-  /* Hauteur uniforme */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  height: 60px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -123,6 +127,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 12px;
 }
 
 .reservations .choose-hour {
@@ -130,37 +135,30 @@
   border-bottom-left-radius: 0 !important;
 }
 
+/* Hover effects */
 .reservations .choose-location:hover,
 .reservations .choose-hour:hover,
 .reservations button.choose-date:hover,
 .reservations .button-start button:hover,
 .reservations .button-end button:hover {
-  background-color: #fff;
-  border-color: #ced4da;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background-color: rgba(220, 220, 220, 0.8);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
 }
 
+/* Active effects */
 .reservations .choose-location.open,
 .reservations .choose-hour.open,
 .reservations button.choose-date.open {
   background-color: #fff;
-  border: 2px solid #000 !important;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent !important;
+  box-shadow: 0 0 0 3px rgba(180, 147, 57, 0.3), 0 10px 25px rgba(0, 0, 0, 0.1);
   z-index: 500;
-  /* Ensure active dropdown stacks above siblings */
 }
 
 .reservations .return-location.different {
   z-index: 500;
-
-  /* Ensure active dropdown stacks above siblings */
-  i {
-    color: #000 !important;
-  }
-
-  span {
-    color: #555 !important;
-  }
 }
 
 /* Specific adjustments for grouped inputs */
@@ -172,231 +170,72 @@
 
 .reservations .button-start button,
 .reservations .button-end button {
-  border-radius: 12px 0 0 12px !important;
+  border-radius: 14px 0 0 14px !important;
   border-right: none;
 }
 
 .reservations .button-start .button-hour,
 .reservations .button-end .button-hour {
-  border-radius: 0 12px 12px 0 !important;
-  border-left: 1px solid #e9ecef !important;
-  width: 100px;
+  border-radius: 0 14px 14px 0 !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.05) !important;
+  width: 110px;
   justify-content: center;
   padding: 0;
 }
 
 /* Icons */
 .reservations i {
-  color: #000;
+  color: #B49339;
+  /* Touche Gold */
   margin-right: 12px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 /* -----------------------
-   FUTURISTIC BUTTON
+   FUTURISTIC / LUXURY BUTTON
 ----------------------- */
 .reservations .validate-button {
   flex: 1;
-  min-width: 160px;
-  height: 56px;
+  min-width: 180px;
+  height: 60px;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
 
-  /* Style */
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  /* Style Noir Mat */
+  background: linear-gradient(135deg, #111 0%, #000 100%);
   color: white;
-  font-family: 'Oswald', sans-serif;
-  /* Assurez-vous d'avoir cette police ou une autre moderne */
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: 1px;
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
 
-  /* Effects */
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Shine Effect */
-.reservations .validate-button::before {
+.reservations .validate-button::after {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
-  width: 100%;
+  width: 50%;
   height: 100%;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent);
-  transition: 0.5s;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: skewX(-25deg);
+  transition: all 0.7s;
 }
 
 .reservations .validate-button:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  background: black;
+  transform: translateY(-3px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #B49339 0%, #8A6D25 100%);
 }
 
-.reservations .validate-button:hover::before {
-  left: 100%;
-  transition: 0.5s;
-}
-
-.reservations .validate-button:active {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.reservations .open .options {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.reservations .options li {
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-  font-size: 0.95rem;
-}
-
-.reservations .button-end button {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  padding: 0 20px;
-  font-size: 0.95rem;
-  color: #333;
-  transition: all 0.2s ease;
-  height: 56px;
-  /* Hauteur uniforme */
-  display: flex;
-  align-items: center;
-}
-
-.choose-location-select,
-.choose-hour-select {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.choose-location-select .selected,
-.choose-hour-select .selected {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.reservations .choose-hour {
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
-}
-
-.reservations .choose-location:hover,
-.reservations .choose-hour:hover,
-.reservations button.choose-date:hover,
-.reservations .button-start button:hover,
-.reservations .button-end button:hover {
-  background-color: #fff;
-  border-color: #ced4da;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.reservations .choose-location.open,
-.reservations .choose-hour.open {
-  background-color: #fff;
-  border-color: #000;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-}
-
-/* Specific adjustments for grouped inputs */
-.reservations .button-start,
-.reservations .button-end {
-  display: flex;
-  width: 100%;
-}
-
-.reservations .button-start button,
-.reservations .button-end button {
-  border-radius: 12px 0 0 12px !important;
-  border-right: none;
-}
-
-.reservations .button-start .button-hour,
-.reservations .button-end .button-hour {
-  border-radius: 0 12px 12px 0 !important;
-  border-left: 1px solid #e9ecef !important;
-  width: 100px;
-  justify-content: center;
-  padding: 0;
-}
-
-/* Icons */
-.reservations i {
-  color: #000;
-  margin-right: 12px;
-  font-size: 1.1rem;
-}
-
-/* -----------------------
-   FUTURISTIC BUTTON
------------------------ */
-.reservations .validate-button {
-  flex: 1;
-  min-width: 160px;
-  height: 56px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-
-  /* Style */
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-  color: white;
-  font-family: 'Oswald', sans-serif;
-  /* Assurez-vous d'avoir cette police ou une autre moderne */
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-
-  /* Effects */
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Shine Effect */
-.reservations .validate-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent);
-  transition: 0.5s;
-}
-
-.reservations .validate-button:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  background: black;
-}
-
-.reservations .validate-button:hover::before {
-  left: 100%;
-  transition: 0.5s;
+.reservations .validate-button:hover::after {
+  left: 150%;
 }
 
 .reservations .validate-button:active {
@@ -409,64 +248,76 @@
 ----------------------- */
 .reservations .options {
   position: absolute;
-  top: calc(100% + 8px);
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  top: calc(100% + 12px);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 8px;
-  z-index: 200;
-  transform-origin: top center;
+  padding: 10px;
   z-index: 1000 !important;
+  transform-origin: top center;
 }
 
-/* Mois et Année */
+.reservations .options li {
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.reservations .options li:hover {
+  background-color: rgba(180, 147, 57, 0.1);
+  /* Hover Gold */
+  color: #111;
+  transform: translateX(5px);
+}
+
+/* Mois et Année (Calendar) */
 .rdp-caption_label {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #1a1a1a;
+  color: #111;
 }
 
-/* Navigation (Flèches) */
 .rdp-nav_button {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: transparent;
-  color: #1a1a1a;
-  transition: all 0.2s ease;
+  color: #111;
+  transition: all 0.3s ease;
 }
 
 .rdp-nav_button:hover {
   background: #f0f0f0;
-  color: #000;
+  color: #B49339;
 }
 
-/* Jours de la semaine (Lun, Mar...) */
 .rdp-head_cell {
   font-size: 0.85rem;
-  font-weight: 400;
-  color: #888;
+  font-weight: 700;
+  color: #B49339;
   text-transform: uppercase;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
 }
 
-/* Cellules des jours */
 .rdp-day {
   font-size: 1rem;
-  font-weight: 500;
-  border-radius: 10px;
-  /* Carrés arrondis moderne */
+  font-weight: 600;
+  border-radius: 12px;
   transition: all 0.2s ease;
   width: auto !important;
 }
 
 .rdp-day_today {
-  color: #000;
-  font-weight: 700;
-  position: relative;
+  color: #B49339;
+  font-weight: 800;
 }
 
 .rdp-day_today::after {
@@ -475,31 +326,24 @@
   bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background-color: #000;
+  width: 6px;
+  height: 6px;
+  background-color: #B49339;
   border-radius: 50%;
 }
 
-/* Sélection (Range) */
-.rdp-day_selected {
-  background-color: #000 !important;
+.rdp-day_selected,
+.rdp-day_selected:hover {
+  background-color: #111 !important;
   color: #fff !important;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .rdp-day_range_middle {
-  background-color: #f0f0f0 !important;
-  color: #000 !important;
+  background-color: rgba(180, 147, 57, 0.1) !important;
+  color: #111 !important;
   border-radius: 0 !important;
-  /* Connecte les jours entre eux */
-  box-shadow: none;
-}
-
-.rdp-range_start button,
-.rdp-range_end button {
-  border: none !important;
 }
 
 .rdp-day_range_start {
@@ -512,49 +356,28 @@
   border-bottom-left-radius: 0 !important;
 }
 
-/* Hover sur les jours */
 .rdp-day:hover:not(.rdp-day_selected) {
-  background-color: #f7f7f7;
+  background-color: #f0f0f0;
   transform: scale(1.1);
-}
-
-.return-location {
-  span {
-    color: #ccc !important;
-  }
-
-  i {
-    color: #ccc !important;
-  }
-
-  border: 1px solid #ccc !important;
-}
-
-
-.reservations .choose-location,
-.reservations .choose-hour,
-.reservations button.choose-date,
-.reservations .button-start button,
-.reservations .button-end button {
-  background-color: transparent !important;
-  position: relative;
+  color: #111;
 }
 
 .calendar-container {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 12px);
   transform-origin: top;
-  background: #fff;
-  border: 1px solid #0000000d;
-  border-radius: 12px;
-  padding: 8px;
-  box-shadow: 0 10px 40px #0000001a;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   z-index: 1000 !important;
 }
 
 .custom-location-input-wrapper {
   flex: 1 1 0%;
-  padding: 0px 10px;
+  padding: 0px 15px;
   display: flex;
   height: 100%;
   justify-content: center;
@@ -562,7 +385,7 @@
 }
 
 .custom-location-input-wrapper i {
-  color: #000 !important;
+  color: #B49339 !important;
 }
 
 .custom-input-field {
@@ -571,47 +394,73 @@
   outline: none;
   background: transparent;
   font-size: 1rem;
+  font-weight: 600;
+  color: #111;
 }
 
 .custom-input-close {
   cursor: pointer;
   margin-left: 10px;
+  color: #999;
+  transition: color 0.3s;
+}
+
+.custom-input-close:hover {
+  color: #e74c3c;
 }
 
 .option-custom {
-  font-weight: bold;
+  font-weight: 800;
+  color: #B49339;
 }
 
 .location-svg-path {
-  fill: #353434;
+  fill: #B49339;
 }
 
-
+/* Responsivité */
 @media screen and (max-width: 1100px) {
   .reservations {
     flex-direction: column;
     align-items: stretch;
-    margin-top: 20px;
-  }
-
-  .locations-container,
-  .reservations .dates-validation-container {
-    width: 100%;
-    flex: none;
+    margin-top: -30px;
+    padding: 2rem;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .reservations {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
   .locations-container {
+    flex-direction: column;
     flex-wrap: wrap;
     width: 100%;
     min-width: auto !important;
-    gap: 5px !important;
+    gap: 10px !important;
   }
 
-  .locations-container>div {
-    width: 100% !important;
-    flex: auto !important;
+  .return-column-title {
+    display: none;
+  }
+
+  .reservations .options {
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 3 !important;
+  }
+
+  .reservations .calendar-container {
+    z-index: 2 !important;
+  }
+
+  .location-column,
+  .location-column.return-column,
+  .location-column.return-column.active {
+    flex: 1;
+    width: 100%;
   }
 
   .reservations .dates-validation-container {
@@ -622,12 +471,28 @@
     width: 100%;
     flex-direction: column;
     flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .reservations .start-date-container,
+  .reservations .end-date-container {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .reservations .start-date-container {
+    z-index: 3;
+  }
+
+  .reservations .button-start,
+  .reservations .button-end {
+    position: relative;
+    z-index: 1;
   }
 
   .reservations .validate-button {
     width: 100%;
-    margin-top: 10px;
-    padding-block: 10px;
+    margin-top: 15px;
   }
-
 }

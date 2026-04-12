@@ -1,362 +1,663 @@
-/* =======================
-   Agence Page
-======================= */
+/* styles/agency.css */
 
-.agence-container {
+/* =============================================
+   PAGE WRAPPER
+   ============================================= */
+.agency-page {
     width: 100%;
     min-height: 100vh;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-}
-
-.agence-main {
-    flex-grow: 1;
-    padding: 6rem 5% 4rem;
-    /* Top padding to account for fixed navbar if needed */
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-}
-
-/* --- Header Section --- */
-.agence-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.agence-title {
-    font-family: 'Oswald', sans-serif;
-    font-size: 3rem;
-    /* Approximating text-4xl to 6xl */
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #171717;
-    /* neutral-900 */
-    margin-bottom: 1rem;
-}
-
-.agence-title-separator {
-    height: 4px;
-    width: 100px;
-    background-color: #1a1a1a;
-    /* Black */
-    margin: 0 auto;
-}
-
-.agence-subtitle {
-    margin-top: 1rem;
-    color: #737373;
-    /* neutral-500 */
-    font-size: 1.125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* --- Content Grid --- */
-.agence-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: stretch;
-}
-
-@media (min-width: 1024px) {
-    .agence-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 5rem;
-    }
-}
-
-/* --- Left Column: Image/Visualization --- */
-.agence-visual {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.agence-image-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border-radius: 1rem;
-    /* rounded-2xl */
+    background: linear-gradient(135deg, #fdfdfd 0%, #f4f5f8 100%);
+    font-family: var(--font-inter, 'Inter', sans-serif);
+    color: #1a1a1a;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    /* shadow-2xl */
 }
 
-.agence-placeholder {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom right, #262626, #000000);
-    /* neutral-800 to black */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+/* =============================================
+   HERO
+   ============================================= */
+.agency-hero {
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    padding: 10rem 4% 6rem;
     text-align: center;
-    padding: 2rem;
-    color: white;
+    position: relative;
+    overflow: hidden;
 }
 
-.agence-placeholder i {
-    font-size: 3.75rem;
-    /* text-6xl */
-    color: #525252;
-    /* neutral-600 */
-    margin-bottom: 1rem;
-    transition: color 0.5s;
-}
-
-.agence-image-container:hover .agence-placeholder i {
-    color: #171717;
-    /* neutral-900 */
-}
-
-.agence-placeholder-title {
-    font-size: 1.5rem;
-    /* text-2xl */
-    font-weight: 300;
-    /* font-light */
-    letter-spacing: 0.1em;
-    /* tracking-widest */
-    text-transform: uppercase;
-    color: white;
-}
-
-.agence-placeholder-subtitle {
-    color: #a3a3a3;
-    /* neutral-400 */
-    font-size: 0.875rem;
-    /* text-sm */
-    margin-top: 0.5rem;
-}
-
-.agence-image-border {
+.agency-hero::before {
+    content: '';
     position: absolute;
     inset: 0;
-    border: 4px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(ellipse at 50% 130%, rgba(180, 147, 57, 0.2) 0%, transparent 60%);
     pointer-events: none;
 }
 
-.agence-quote-card {
-    background-color: #fafafa;
-    /* neutral-50 */
-    padding: 2rem;
-    border-radius: 0.75rem;
-    /* rounded-xl */
-    border: 1px solid #f5f5f5;
-    /* neutral-100 */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    /* shadow-sm */
+.agency-hero-content {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
 }
 
-.agence-quote {
-    color: #525252;
-    /* neutral-600 */
-    line-height: 1.625;
-    text-align: center;
-    font-style: italic;
+.agency-hero-label {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #B49339;
+    margin-bottom: 1.5rem;
+    padding: 6px 20px;
+    border: 1px solid rgba(180, 147, 57, 0.3);
+    border-radius: 50px;
 }
 
-/* --- Right Column: Info Cards --- */
-.agence-info-col {
+.agency-hero-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #fff;
+    margin: 0 0 1.5rem;
+    line-height: 1;
+}
+
+.agency-hero-subtitle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+}
+
+.agency-hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.agency-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.agency-btn-gold {
+    background: linear-gradient(135deg, #B49339 0%, #8A6D26 100%);
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(180, 147, 57, 0.35);
+}
+
+.agency-btn-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(180, 147, 57, 0.5);
+}
+
+.agency-btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.agency-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+.agency-btn-white {
+    background: #fff;
+    color: #121212;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.agency-btn-white:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* =============================================
+   STATS BAR
+   ============================================= */
+.agency-stats-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 3.5rem 4%;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+}
+
+.agency-stat {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
 }
 
-/* Contact Card */
-.agence-card {
-    border-radius: 1rem;
-    /* rounded-2xl */
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    /* shadow-xl */
+.agency-stat-number {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5rem;
+    color: #B49339;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.agency-stat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #888;
+}
+
+.agency-stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* =============================================
+   SECTIONS
+   ============================================= */
+.agency-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 4%;
+}
+
+.agency-section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.agency-section-tag {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #B49339;
+    margin-bottom: 0.8rem;
+}
+
+.agency-section-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #121212;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.agency-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #B49339, transparent);
+}
+
+/* =============================================
+   ABOUT SECTION
+   ============================================= */
+.agency-about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.agency-about-text p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #555;
+    margin: 0 0 1.5rem;
+}
+
+.agency-about-text p:last-child {
+    margin-bottom: 0;
+}
+
+.agency-about-text strong {
+    color: #121212;
+}
+
+/* Values grid */
+.agency-values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.agency-value-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 18px;
+    padding: 1.8rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.agency-value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
+    border-color: rgba(180, 147, 57, 0.2);
+}
+
+.agency-value-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #B49339, #8A6D26);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 6px 15px rgba(180, 147, 57, 0.25);
+}
+
+.agency-value-card h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.5rem;
+    color: #121212;
+}
+
+.agency-value-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #777;
+    margin: 0;
+}
+
+/* =============================================
+   CONTACT GRID
+   ============================================= */
+.agency-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+/* Cards */
+.agency-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
     position: relative;
     overflow: hidden;
-    transition: all 0.3s;
 }
 
-.agence-card-contact {
-    background-color: white;
-    padding: 2rem;
-    border: 1px solid #f5f5f5;
-    /* neutral-100 */
+.agency-card-dark {
+    background: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    color: #fff;
 }
 
-.agence-card-contact:hover {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    /* shadow-2xl */
-}
-
-.agence-deco-circle {
+.agency-card-dark::before {
+    content: '';
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 8rem;
-    height: 8rem;
-    background-color: #f5f5f5;
-    /* neutral-100 */
-    border-bottom-left-radius: 9999px;
-    /* full rounded corner */
-    margin-right: -4rem;
-    margin-top: -4rem;
-    transition: transform 0.3s;
+    bottom: -20%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(180, 147, 57, 0.1) 0%, transparent 60%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
-.agence-card:hover .agence-deco-circle {
-    transform: scale(1.1);
-}
-
-.agence-card-title {
-    font-size: 1.5rem;
-    /* text-2xl */
-    font-weight: 700;
-    color: #ccc;
-    /* neutral-800 */
-    margin-bottom: 1.5rem;
+.agency-card-icon-row {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    position: relative;
-    z-index: 10;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.agence-card-title.first-card {
-    color: #262626 !important;
+.agency-card-dark .agency-card-icon-row {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
-.agence-icon-wrapper {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-color: #171717;
-    /* Black */
-    color: white;
+.agency-card-icon {
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
+    background: linear-gradient(135deg, #121212, #333);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-.agence-details-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    position: relative;
-    z-index: 10;
+.agency-card-icon.gold {
+    background: linear-gradient(135deg, #B49339, #8A6D26);
+    box-shadow: 0 6px 15px rgba(180, 147, 57, 0.3);
 }
 
-.agence-detail-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    transition: background-color 0.2s;
-}
-
-.agence-detail-item:hover {
-    background-color: #fafafa;
-    /* neutral-50 */
-}
-
-.agence-detail-icon {
-    color: #171717;
-    /* Black */
-    margin-top: 0.25rem;
-}
-
-.agence-label {
-    font-size: 0.75rem;
-    /* text-xs */
-    color: #a3a3a3;
-    /* neutral-400 */
+.agency-card-icon-row h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.3rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    /* tracking-wide */
-    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #121212;
 }
 
-.agence-value {
-    font-size: 1.125rem;
-    /* text-lg */
-    color: #262626;
-    /* neutral-800 */
-    font-weight: 500;
-    display: block;
-    transition: color 0.2s;
+.agency-card-dark .agency-card-icon-row h3 {
+    color: #fff;
 }
 
-a.agence-value:hover {
-    color: #000;
-    /* Black */
-    text-decoration: underline;
-}
-
-/* Hours Card */
-.agence-card-hours {
-    background-color: #171717;
-    /* neutral-900 */
-    color: white;
-    padding: 2rem;
-}
-
-.agence-deco-blur {
-    position: absolute;
-    bottom: -2.5rem;
-    right: -2.5rem;
-    width: 10rem;
-    height: 10rem;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
-    filter: blur(40px);
-}
-
-.agence-hours-list {
+/* Contact list */
+.agency-contact-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    font-weight: 300;
-    /* font-light */
-    position: relative;
-    z-index: 10;
+    gap: 4px;
 }
 
-.agence-hours-row {
+.agency-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+a.agency-contact-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.agency-ci-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.04);
+    color: #121212;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+a.agency-contact-item:hover .agency-ci-icon {
+    background: #121212;
+    color: #fff;
+}
+
+.agency-ci-icon.whatsapp {
+    background: rgba(37, 211, 102, 0.1);
+    color: #25D366;
+}
+
+a.agency-contact-item:hover .agency-ci-icon.whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+
+.agency-ci-icon.instagram {
+    background: rgba(193, 53, 132, 0.08);
+    color: #C13584;
+}
+
+a.agency-contact-item:hover .agency-ci-icon.instagram {
+    background: #C13584;
+    color: #fff;
+}
+
+.agency-ci-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+}
+
+.agency-ci-value {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #121212;
+    margin-top: 2px;
+}
+
+/* Hours */
+.agency-hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+    z-index: 1;
+}
+
+.agency-hours-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.75rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.agence-hours-day {
-    color: #d4d4d4;
-    /* neutral-300 */
-}
-
-.agence-hours-time {
-    font-weight: 500;
-    color: white;
-}
-
-.agence-hours-row.special {
+.agency-hours-row:last-child {
     border-bottom: none;
-    padding-top: 0.25rem;
 }
 
-.agence-badge {
-    background-color: rgba(255, 255, 255, 0.1);
-    /* White/10 */
+.agency-hours-day {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+}
+
+.agency-hours-time {
+    font-weight: 600;
     color: #fff;
-    /* White */
-    font-weight: 500;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.agency-hours-row.special {
+    padding-top: 0.8rem;
+}
+
+.agency-badge {
+    background: rgba(180, 147, 57, 0.15);
+    color: #B49339;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(180, 147, 57, 0.25);
+    letter-spacing: 0.5px;
+}
+
+/* =============================================
+   STEPS (How it works)
+   ============================================= */
+.agency-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.agency-step {
+    flex: 1;
+    min-width: 220px;
+    max-width: 300px;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+.agency-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.07);
+    border-color: rgba(180, 147, 57, 0.2);
+}
+
+.agency-step-number {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5rem;
+    color: #B49339;
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+}
+
+.agency-step h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.8rem;
+    color: #121212;
+}
+
+.agency-step p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #777;
+    margin: 0;
+}
+
+.agency-step-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 1.2rem;
+    margin-top: 3rem;
+    flex-shrink: 0;
+}
+
+/* =============================================
+   CTA
+   ============================================= */
+.agency-cta {
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    padding: 5rem 4%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.agency-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(180, 147, 57, 0.12) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+.agency-cta h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #fff;
+    margin: 0 0 1rem;
+    position: relative;
+}
+
+.agency-cta p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.agency-cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+    .agency-about-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .agency-contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .agency-hero {
+        padding: 8rem 5% 4rem;
+    }
+
+    .agency-stats-bar {
+        gap: 1.5rem;
+    }
+
+    .agency-stat-divider {
+        display: none;
+    }
+
+    .agency-values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .agency-step-arrow {
+        display: none;
+    }
+
+    .agency-section {
+        padding: 3.5rem 5%;
+    }
 }

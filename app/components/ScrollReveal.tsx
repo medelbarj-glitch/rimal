@@ -8,13 +8,15 @@ interface ScrollRevealProps {
     threshold?: number; // 0.0 to 1.0 (how much of the element must vary)
     className?: string; // Additional classes
     delay?: string; // 'delay-100', etc.
+    id?: string; // Optional element ID
 }
 
 export function ScrollReveal({
     children,
     threshold = 0.15,
     className = '',
-    delay = ''
+    delay = '',
+    id
 }: ScrollRevealProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -49,6 +51,7 @@ export function ScrollReveal({
 
     return (
         <div
+            id={id}
             ref={ref}
             className={`reveal-wrapper ${isVisible ? 'is-visible' : ''} ${className} ${delay}`}
         >

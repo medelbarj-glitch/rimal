@@ -8,9 +8,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 // Importe le type de données de Prisma (la page serveur nous les enverra)
 import { ModeleVoiture } from '@prisma/client';
-
-// 1. Définir les "props" que ce composant reçoit
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 // 1. Définir les "props" que ce composant reçoit
 interface VehiclesSectionProps {
@@ -19,6 +18,7 @@ interface VehiclesSectionProps {
 }
 
 export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps) {
+  const t = useTranslations('vehicles');
 
   // 2. Remplacer document.querySelector par des "états" et "refs"
   const [isVisible, setIsVisible] = useState(false);
@@ -104,13 +104,15 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
             </Link>
 
             <div className="vehicule-bottom-info">
-              <span className="price">À partir de {car.prixParJour} DH/jour</span>
+              <span className="price">
+                {t('from')} <strong>{car.prixParJour}</strong> {t('per_day')}
+              </span>
               <div className="buttons-container">
                 <Link href={getReservationUrl(car.id)} className="reserve-button">
-                  Réserver
+                  {t('reserve')}
                 </Link>
                 <Link href={`/vehicule/${car.id}`} className="details-button">
-                  Détails
+                  {t('details')}
                 </Link>
               </div>
             </div>

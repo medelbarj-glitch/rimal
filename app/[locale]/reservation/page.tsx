@@ -1,11 +1,12 @@
 import React from 'react';
-import { prisma } from '../../lib/prisma';
-import { VehiclesSection } from '../components/VehiclesSection';
-import { NavbarAndMenu } from '../components/Menu';
-import { ReservationSidebar } from '../components/ReservationSidebar';
+import { prisma } from '../../../lib/prisma';
+import { VehiclesSection } from '../../components/VehiclesSection';
+import { NavbarAndMenu } from '../../components/Menu';
+import { ReservationSidebar } from '../../components/ReservationSidebar';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
-import '../../styles/reservation.css';
+import '../../../styles/reservation.css';
 
 // Force dynamic rendering because we use searchParams
 export const dynamic = 'force-dynamic';
@@ -15,6 +16,7 @@ export default async function ReservationPage({
 }: {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+    const t = await getTranslations('reservation');
     const resolvedSearchParams = await searchParams;
 
     // 1. Extraire les paramètres de recherche et filtres
@@ -81,20 +83,20 @@ export default async function ReservationPage({
 
                         <div className="reservation-header">
                             <h1 className="reservation-title">
-                                Résultats de votre recherche
+                                {t('results_title')}
                             </h1>
                             <Link href="/" className="back-button">
-                                <i className="fas fa-arrow-left"></i> Retour
+                                <i className="fas fa-arrow-left"></i> {t('back')}
                             </Link>
                         </div>
 
                         {voitures.length === 0 ? (
                             <div className="no-results-container">
                                 <div className="no-results-title">
-                                    Aucun véhicule disponible.
+                                    {t('no_vehicles')}
                                 </div>
                                 <p className="no-results-text">
-                                    Essayez de modifier vos dates ou vos filtres.
+                                    {t('no_vehicles_desc')}
                                 </p>
                             </div>
                         ) : (

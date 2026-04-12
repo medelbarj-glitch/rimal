@@ -1,0 +1,81 @@
+{
+  "navbar": {
+    "vehicles": "الطوموبيلات ديالنا",
+    "locations": "البلايص ديالنا",
+    "reservations": "الريزيرفاسيون",
+    "contact": "تواصل معانا"
+  },
+  "menu": {
+    "vehicles_title": "الطوموبيلات ديالنا",
+    "locations_title": "البلايص ديالنا",
+    "no_fees": "فابور",
+    "fees": "مصاريف"
+  },
+  "reservation": {
+    "pickup": "تاخد الطوموبيل",
+    "pickup_return": "تاخد وترجع",
+    "choose_location": "عزل بلاصة",
+    "custom_address": "بلاصة أخرى / عنوان محدد",
+    "return": "ترجع الطوموبيل",
+    "different_return": "بلاصة آخرى للرجوع",
+    "search": "قلب",
+    "delivery_address_placeholder": "دخل عنوان التوصيل...",
+    "return_address_placeholder": "عنوان الرجوع...",
+    "departure_date_time": "تاريخ ووقت الانطلاق",
+    "departure": "انطلاق",
+    "return_date_time": "تاريخ ووقت الرجوع",
+    "results_title": "النتائج ديال البحث",
+    "back": "رجوع",
+    "no_vehicles": "مكاين حتى طوموبيل موجودة.",
+    "no_vehicles_desc": "جرب تبدل التواريخ ولا الفلتر.",
+    "sidebar_modify_search": "بدل البحث",
+    "sidebar_pickup_placeholder": "عنوان الاستلام...",
+    "sidebar_same_as_pickup": "نفس بلاصة الاستلام",
+    "sidebar_filters": "فيلتر",
+    "sidebar_transmission": "البواط فيتاس",
+    "sidebar_manual": "مانويل",
+    "sidebar_automatic": "أوتوماتيك",
+    "sidebar_cancel": "إلغاء"
+  },
+  "vehicles": {
+    "title": "الطوموبيلات ديالنا",
+    "from": "ابتداءً من",
+    "per_day": "درهم/نهار",
+    "reserve": "ريزيرفي",
+    "details": "التفاصيل"
+  },
+  "services": {
+    "title": "الخدمات الحصرية ديالنا"
+  },
+  "reviews": {
+    "title": "شنو كيقولو الكليان ديالنا"
+  },
+  "booking": {
+    "title": "كمل الريزيرفاسيون ديالك",
+    "summary": "خلاصة",
+    "from": "من :",
+    "to": "حتى :",
+    "duration": "المدة :",
+    "days": "أيام",
+    "location_fees": "مصاريف البلاصة :",
+    "total_estimated": "المجموع التقريبي :",
+    "dates": "تواريخ الريزيرفاسيون",
+    "locations": "البلايص",
+    "pickup_location": "بلاصة الاستلام *",
+    "select_location": "عزل بلاصة...",
+    "return_location": "بلاصة الرجوع *",
+    "same_as_pickup": "(نفس بلاصة الاستلام)",
+    "address_placeholder": "دخل العنوان ديالك...",
+    "details": "المعلومات ديالك",
+    "last_name": "الكنية *",
+    "last_name_placeholder": "الكنية",
+    "first_name": "السمية *",
+    "first_name_placeholder": "السمية",
+    "email": "الإيميل *",
+    "email_placeholder": "name@example.com",
+    "phone": "التليفون *",
+    "phone_placeholder": "06 00 00 00 00",
+    "processing": "كانسجلو...",
+    "confirm": "كونفيرمي الريزيرفاسيون"
+  }
+}

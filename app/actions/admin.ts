@@ -67,6 +67,10 @@ export async function createModel(formData: FormData) {
     const transmission = formData.get('transmission') as any;
     const fuelType = formData.get('fuelType') as any;
     const description = formData.get('description') as string;
+    const description_en = formData.get('description_en') as string;
+    const description_es = formData.get('description_es') as string;
+    const description_ar = formData.get('description_ar') as string;
+    const description_ma = formData.get('description_ma') as string;
     
     // Récupération du fichier
     const imageFile = formData.get('imageFile') as File | null;
@@ -84,6 +88,10 @@ export async function createModel(formData: FormData) {
             transmission,
             fuelType,
             description,
+            description_en,
+            description_es,
+            description_ar,
+            description_ma,
             imageUrl, // Stocke l'URL Cloudinary sécurisée
         },
     });
@@ -100,6 +108,10 @@ export async function updateModel(id: number, formData: FormData) {
     const transmission = formData.get('transmission') as any;
     const fuelType = formData.get('fuelType') as any;
     const description = formData.get('description') as string;
+    const description_en = formData.get('description_en') as string;
+    const description_es = formData.get('description_es') as string;
+    const description_ar = formData.get('description_ar') as string;
+    const description_ma = formData.get('description_ma') as string;
     
     // Récupération du fichier
     const imageFile = formData.get('imageFile') as File | null;
@@ -111,6 +123,10 @@ export async function updateModel(id: number, formData: FormData) {
         transmission,
         fuelType,
         description,
+        description_en,
+        description_es,
+        description_ar,
+        description_ma,
     };
 
     // Gestion du remplacement de l'image
@@ -196,6 +212,10 @@ export async function deleteVehicle(id: number) {
 export async function createLocation(formData: FormData) {
     await requireAuth();
     const nom = formData.get('nom') as string;
+    const nom_en = formData.get('nom_en') as string;
+    const nom_es = formData.get('nom_es') as string;
+    const nom_ar = formData.get('nom_ar') as string;
+    const nom_ma = formData.get('nom_ma') as string;
     const adresse = formData.get('adresse') as string;
     const fraisSupplementaires = parseInt(formData.get('fraisSupplementaires') as string || '0');
     
@@ -210,6 +230,10 @@ export async function createLocation(formData: FormData) {
     await prisma.location.create({
         data: {
             nom,
+            nom_en,
+            nom_es,
+            nom_ar,
+            nom_ma,
             adresse,
             fraisSupplementaires,
             imageUrl,
@@ -223,6 +247,10 @@ export async function createLocation(formData: FormData) {
 export async function updateLocation(id: number, formData: FormData) {
     await requireAuth();
     const nom = formData.get('nom') as string;
+    const nom_en = formData.get('nom_en') as string;
+    const nom_es = formData.get('nom_es') as string;
+    const nom_ar = formData.get('nom_ar') as string;
+    const nom_ma = formData.get('nom_ma') as string;
     const adresse = formData.get('adresse') as string;
     const fraisSupplementaires = parseInt(formData.get('fraisSupplementaires') as string || '0');
     
@@ -231,6 +259,10 @@ export async function updateLocation(id: number, formData: FormData) {
 
     const updateData: any = {
         nom,
+        nom_en,
+        nom_es,
+        nom_ar,
+        nom_ma,
         adresse,
         fraisSupplementaires,
     };

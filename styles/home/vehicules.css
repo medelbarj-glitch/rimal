@@ -12,22 +12,22 @@
 }
 
 .vehicules-title {
-    font-size: 3rem;
-    font-weight: 300;
-    padding-bottom: 20px;
-    width: 100%;
-    text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
+    color: #111;
+    text-align: center;
+    padding-top: 4rem;
+    padding-bottom: 20px;
+    font-family: Anton, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
     position: relative;
-    margin-top: 40px;
-    padding-top: 2rem;
 }
 
 .vehicules-title::after {
     content: "";
-    background: linear-gradient(90deg, #0000, #1a1a1a, #0000);
-    width: 250px;
+    background: linear-gradient(90deg, #0000, #B49339, #0000);
+    width: 20%;
     height: 3px;
     position: absolute;
     bottom: 0;
@@ -50,150 +50,216 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 2.5rem;
     flex-wrap: wrap;
 
     .vehicule {
         flex: 1 1 350px;
-        max-width: 400px;
+        max-width: 420px;
         box-sizing: border-box;
-        padding: 20px;
-        background-color: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        background: #ffffff;
+        border-radius: 28px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(0, 0, 0, 0.03);
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 15px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        align-items: flex-start;
+        text-align: left;
+        gap: 20px;
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         cursor: pointer;
         position: relative;
 
-        h2 {
-            font-family: 'Anton', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin: 10px 0;
-            color: #1a1a1a;
-            letter-spacing: 0.5px;
+        /* Effet de lueur subtile */
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            box-shadow: inset 0 0 0 1px rgba(180, 147, 57, 0);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .vehicule-top-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 2;
+
+            h2 {
+                font-family: 'Anton', sans-serif;
+                font-size: 2.2rem;
+                font-weight: 800;
+                margin: 0;
+                color: #111;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                transition: color 0.3s;
+            }
+        }
+
+        .carInfo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+
+            span {
+                font-size: 0.75rem;
+                font-weight: 700;
+                padding: 6px 10px;
+                background-color: transparent;
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
+                color: #555;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s;
+            }
         }
 
         img {
             width: 100%;
             height: 220px;
             object-fit: contain;
-            transition: transform 0.5s ease;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
-        }
-
-        .carInfo {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            width: 100%;
-
-            span {
-                font-size: 0.85rem;
-                font-weight: 500;
-                padding: 8px 12px;
-                background-color: #f8f9fa;
-                border-radius: 8px;
-                color: #555;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+            z-index: 1;
         }
 
         .vehicule-bottom-info {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
             width: 100%;
             margin-top: auto;
+            z-index: 2;
 
             .price {
                 font-size: 1.1rem;
                 font-weight: 600;
-                color: #333;
+                color: #555;
+                display: flex;
+                align-items: baseline;
+                gap: 5px;
+            }
+
+            .price strong {
+                font-size: 1.8rem;
+                font-weight: 900;
+                color: #111;
+                font-family: 'Anton', sans-serif;
+                letter-spacing: 0.5px;
             }
 
             .buttons-container {
                 display: flex;
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                gap: 12px;
+                width: 100%;
             }
 
             .details-button {
-                padding: 10px 20px;
-                border-radius: 5px;
-                background: #f0f0f0;
-                color: black;
+                flex: 1;
+                padding: 14px;
+                border-radius: 14px;
+                background: #f8f8f8;
+                border: 1px solid #eee;
+                color: #333;
                 text-decoration: none;
-                font-weight: bold;
-                font-size: 0.9rem;
+                font-weight: 700;
+                font-size: 0.95rem;
+                text-align: center;
+                transition: all 0.3s;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .details-button:hover {
+                background: #e8e8e8;
+                color: #000;
             }
 
             .reserve-button {
-                width: 100%;
+                flex: 2;
                 padding: 14px;
                 border: none;
-                border-radius: 12px;
+                border-radius: 14px;
                 cursor: pointer;
-
-                /* Style Futuriste (Même que Reservation) */
-                background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+                background: linear-gradient(135deg, #111 0%, #000 100%);
                 color: white;
-                font-family: 'Oswald', sans-serif;
+                font-family: var(--font-inter, 'Inter', sans-serif);
                 font-size: 1rem;
-                font-weight: 500;
-                letter-spacing: 1px;
+                font-weight: 700;
+                letter-spacing: 1.5px;
                 text-transform: uppercase;
-
+                text-align: center;
+                text-decoration: none;
                 position: relative;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
             }
 
-            /* Shine Effect sur le bouton */
-            .reserve-button::before {
+            .reserve-button::after {
                 content: '';
                 position: absolute;
                 top: 0;
                 left: -100%;
-                width: 100%;
+                width: 50%;
                 height: 100%;
-                background: linear-gradient(90deg,
-                        transparent,
-                        rgba(255, 255, 255, 0.2),
-                        transparent);
-                transition: 0.5s;
+                background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+                transform: skewX(-25deg);
+                transition: all 0.7s;
             }
 
             .reserve-button:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(135deg, #B49339 0%, #8A6D25 100%);
             }
 
-            .reserve-button:hover::before {
-                left: 100%;
+            .reserve-button:hover::after {
+                left: 150%;
             }
         }
     }
 
-    /* Hover Effect sur la CARTE */
+    /* Hover Effect sur la CARTE entière */
     .vehicule:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        transform: translateY(-8px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+
+        &::after {
+            box-shadow: inset 0 0 0 2px #B49339;
+        }
+
+        h2 {
+            color: #B49339;
+        }
 
         img {
-            transform: scale(1.08) translateY(-5px);
+            transform: scale(1.1) translateX(10px);
         }
+
+        .carInfo span {
+            border-color: #B49339;
+            color: #B49339;
+            background: rgba(180, 147, 57, 0.05);
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .vehicules-title {
+        font-size: 3rem;
     }
 }

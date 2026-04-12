@@ -1,0 +1,81 @@
+{
+  "navbar": {
+    "vehicles": "Nos véhicules",
+    "locations": "Nos localisations",
+    "reservations": "Réservations",
+    "contact": "Nous contacter"
+  },
+  "menu": {
+    "vehicles_title": "Nos Véhicules",
+    "locations_title": "Nos Localisations",
+    "no_fees": "Sans frais",
+    "fees": "Frais"
+  },
+  "reservation": {
+    "pickup": "Retrait",
+    "pickup_return": "Retrait et retour",
+    "choose_location": "Choisir un lieu",
+    "custom_address": "Autre / Adresse Spécifique",
+    "return": "Retour",
+    "different_return": "Lieu de retour différent",
+    "search": "Rechercher",
+    "delivery_address_placeholder": "Entrez l'adresse de livraison...",
+    "return_address_placeholder": "Adresse de retour...",
+    "departure_date_time": "Date et heure de départ",
+    "departure": "Départ",
+    "return_date_time": "Date et heure de retour",
+    "results_title": "Résultats de votre recherche",
+    "back": "Retour",
+    "no_vehicles": "Aucun véhicule disponible.",
+    "no_vehicles_desc": "Essayez de modifier vos dates ou vos filtres.",
+    "sidebar_modify_search": "Modifier la recherche",
+    "sidebar_pickup_placeholder": "Adresse de retrait...",
+    "sidebar_same_as_pickup": "Même que le retrait",
+    "sidebar_filters": "Filtres",
+    "sidebar_transmission": "Transmission",
+    "sidebar_manual": "Manuelle",
+    "sidebar_automatic": "Automatique",
+    "sidebar_cancel": "Annuler"
+  },
+  "vehicles": {
+    "title": "Nos Véhicules",
+    "from": "À partir de",
+    "per_day": "DH/jour",
+    "reserve": "Réserver",
+    "details": "Détails"
+  },
+  "services": {
+    "title": "Nos Services Exclusifs"
+  },
+  "reviews": {
+    "title": "Ce que disent nos clients"
+  },
+  "booking": {
+    "title": "Finaliser votre réservation",
+    "summary": "Récapitulatif",
+    "from": "Du :",
+    "to": "Au :",
+    "duration": "Durée :",
+    "days": "jours",
+    "location_fees": "Frais de lieu :",
+    "total_estimated": "Total estimé :",
+    "dates": "Dates de réservation",
+    "locations": "Lieux",
+    "pickup_location": "Lieu de départ *",
+    "select_location": "Sélectionnez un lieu...",
+    "return_location": "Lieu de retour *",
+    "same_as_pickup": "(Même endroit que le départ)",
+    "address_placeholder": "Saisissez votre adresse...",
+    "details": "Vos coordonnées",
+    "last_name": "Nom *",
+    "last_name_placeholder": "Nom",
+    "first_name": "Prénom *",
+    "first_name_placeholder": "Prénom",
+    "email": "Email *",
+    "email_placeholder": "nom@exemple.com",
+    "phone": "Téléphone *",
+    "phone_placeholder": "06 00 00 00 00",
+    "processing": "Traitement...",
+    "confirm": "Confirmer la réservation"
+  }
+}

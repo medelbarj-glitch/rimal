@@ -3,9 +3,12 @@
 "use client"; // Obligatoire pour les 'useState' et 'onClick'
 
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 // Importe le type de données que Prisma nous donne
 import { ModeleVoiture, Location } from '@prisma/client';
 import { getSettings } from '@/app/actions/settingsActions';
+import { getTranslatedField } from '@/lib/translate';
+import { useLocale } from 'next-intl';
 
 // 1. Définir les "props" que ce composant reçoit
 // Il a besoin de la liste des voitures (récupérée par le serveur)
@@ -16,6 +19,9 @@ interface NavbarProps {
 }
 
 export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: NavbarProps) {
+  const tNav = useTranslations('navbar');
+  const tMenu = useTranslations('menu');
+  const locale = useLocale();
 
   // 2. Remplacer les querySelector par des états React
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -83,39 +89,40 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
   return (
     <>
       {/* ================================================= */}
-      {/* 1. La Navbar (le hamburger et le logo) */}
+      {/* NAVBAR                                            */}
       {/* ================================================= */}
       <nav className={`navbar${isOtherPage ? ' navbar-reservation' : ''}`}>
-        <div className="hamburger" onClick={openMenu}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-              <path d="M4 18L20 18" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round"></path>
-              <path d="M4 12L20 12" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round"></path>
-              <path d="M4 6L20 6" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round"></path>
-            </g>
-          </svg>
-          <span>Menu</span>
+
+        {/* Hamburger */}
+        <div className="hamburger" onClick={openMenu} role="button" aria-label="Ouvrir le menu">
+          <div className="hamburger-lines">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span className="hamburger-label">Menu</span>
         </div>
+
+        {/* Logo centré */}
         <div className="logo">
           <a href="/">
             {logoUrl ? (
-              <img src={logoUrl} alt="Bouderba Rental Cars Logo" style={{ maxHeight: '50px', objectFit: 'contain' }} />
+              <img src={logoUrl} alt="Bouderba Rental Cars Logo" />
             ) : (
-              "Bouderba Rental Cars"
+              'Bouderba Rental Cars'
             )}
           </a>
         </div>
+
       </nav>
 
       {/* ================================================= */}
-      {/* 2. Le Menu (l'overlay complet) */}
+      {/* MENU OVERLAY                                      */}
       {/* ================================================= */}
-      <div className={`menu ${isMenuOpen ? 'active' : ''}`}>
+      <div className={`menu${isMenuOpen ? ' active' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) closeMenu(); }}>
         <div className="menu-overlay">
 
-          {/* PANNEAU DE GAUCHE (LES ONGLETS) */}
+          {/* LEFT PANEL — Navigation tabs */}
           <div className="menu-overlay-left" id="menu">
             <div className="items">
 
@@ -124,7 +131,7 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
                 className={activeTab === 'vehicules' ? 'selected' : ''}
                 onClick={(e) => { e.preventDefault(); selectTab('vehicules'); }}
               >
-                <span>Nos véhicules</span>
+                <span>{tNav('vehicles')}</span>
                 {arrow_svg()}
               </a>
 
@@ -133,28 +140,30 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
                 className={activeTab === 'localisations' ? 'selected' : ''}
                 onClick={(e) => { e.preventDefault(); selectTab('localisations'); }}
               >
-                <span>Nos localisations</span>
+                <span>{tNav('locations')}</span>
                 {arrow_svg()}
               </a>
 
               <a href="/reservation">
-                <span>Réservations</span>
+                <span>{tNav('reservations')}</span>
                 {arrow_svg()}
               </a>
 
               <a href="/agency">
-                <span>Nous contacter</span>
+                <span>{tNav('contact')}</span>
                 {arrow_svg()}
               </a>
 
             </div>
           </div>
 
-          {/* PANNEAU DE DROITE (LE CONTENU DES ONGLETS) */}
+          {/* RIGHT PANEL — Content */}
           <div className="menu-overlay-right">
 
-            {/* 4. Remplacer le fetch() et innerHTML par un .map() */}
-            <div className={`vehicules-items right-menu-items ${activeTab === 'vehicules' && isMenuOpen ? 'active' : ''}`}>
+            <div
+              data-title={activeTab === 'vehicules' ? tMenu('vehicles_title') : tMenu('locations_title')}
+              className={`vehicules-items right-menu-items ${activeTab === 'vehicules' && isMenuOpen ? 'active' : ''}`}
+            >
               {voitures.map((car) => (
                 <div key={car.id} className="vehicule-item item">
                   <span className="carName">{car.nom}</span>
@@ -167,25 +176,30 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
               ))}
             </div>
 
-            {/* Ce panneau est maintenant dynamique */}
-            <div className={`localisations-items right-menu-items ${activeTab === 'localisations' && isMenuOpen ? 'active' : ''}`}>
+            <div
+              data-title={tMenu('locations_title')}
+              className={`localisations-items right-menu-items ${activeTab === 'localisations' && isMenuOpen ? 'active' : ''}`}
+            >
               {locations.map((loc) => (
                 <div key={loc.id} className="localisation-item item">
-                  <span className="locName">{loc.nom}</span>
+                  <span className="locName">{getTranslatedField(loc, 'nom', locale)}</span>
                   {loc.imageUrl && (
                     <img className="locImg" src={loc.imageUrl} alt={loc.nom} />
                   )}
                   <div className="locInfo">
-                    <span>{loc.fraisSupplementaires > 0 ? `Frais : ${loc.fraisSupplementaires} DH` : 'Sans frais'}</span>
+                    <span>{loc.fraisSupplementaires > 0 ? `${tMenu('fees')} : ${loc.fraisSupplementaires} DH` : tMenu('no_fees')}</span>
                   </div>
                 </div>
               ))}
             </div>
+
           </div>
 
-          <button className="close-button" onClick={closeMenu}>
-            <span>X</span>
+          {/* Close button */}
+          <button className="close-button" onClick={closeMenu} aria-label="Fermer le menu">
+            <span>✕</span>
           </button>
+
         </div>
       </div>
     </>

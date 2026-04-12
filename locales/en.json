@@ -1,0 +1,81 @@
+{
+  "navbar": {
+    "vehicles": "Our vehicles",
+    "locations": "Our locations",
+    "reservations": "Reservations",
+    "contact": "Contact us"
+  },
+  "menu": {
+    "vehicles_title": "Our Vehicles",
+    "locations_title": "Our Locations",
+    "no_fees": "Free of charge",
+    "fees": "Fees"
+  },
+  "reservation": {
+    "pickup": "Pick-up",
+    "pickup_return": "Pick-up and return",
+    "choose_location": "Choose a location",
+    "custom_address": "Other / Specific Address",
+    "return": "Return",
+    "different_return": "Different return location",
+    "search": "Search",
+    "delivery_address_placeholder": "Enter delivery address...",
+    "return_address_placeholder": "Return address...",
+    "departure_date_time": "Departure date and time",
+    "departure": "Departure",
+    "return_date_time": "Return date and time",
+    "results_title": "Search Results",
+    "back": "Back",
+    "no_vehicles": "No vehicles available.",
+    "no_vehicles_desc": "Try changing your dates or filters.",
+    "sidebar_modify_search": "Modify Search",
+    "sidebar_pickup_placeholder": "Pick-up address...",
+    "sidebar_same_as_pickup": "Same as pick-up",
+    "sidebar_filters": "Filters",
+    "sidebar_transmission": "Transmission",
+    "sidebar_manual": "Manual",
+    "sidebar_automatic": "Automatic",
+    "sidebar_cancel": "Cancel"
+  },
+  "vehicles": {
+    "title": "Our Vehicles",
+    "from": "From",
+    "per_day": "MAD/day",
+    "reserve": "Book now",
+    "details": "Details"
+  },
+  "services": {
+    "title": "Our Exclusive Services"
+  },
+  "reviews": {
+    "title": "What our customers say"
+  },
+  "booking": {
+    "title": "Complete your booking",
+    "summary": "Summary",
+    "from": "From :",
+    "to": "To :",
+    "duration": "Duration :",
+    "days": "days",
+    "location_fees": "Location fees :",
+    "total_estimated": "Estimated total :",
+    "dates": "Booking dates",
+    "locations": "Locations",
+    "pickup_location": "Pick-up location *",
+    "select_location": "Select a location...",
+    "return_location": "Return location *",
+    "same_as_pickup": "(Same as pick-up)",
+    "address_placeholder": "Enter your address...",
+    "details": "Your details",
+    "last_name": "Last Name *",
+    "last_name_placeholder": "Last Name",
+    "first_name": "First Name *",
+    "first_name_placeholder": "First Name",
+    "email": "Email *",
+    "email_placeholder": "name@example.com",
+    "phone": "Phone *",
+    "phone_placeholder": "+44 00 00 00 00",
+    "processing": "Processing...",
+    "confirm": "Confirm booking"
+  }
+}

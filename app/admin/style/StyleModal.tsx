@@ -54,7 +54,7 @@ export function StyleModal({ image, trigger }: StyleModalProps) {
 
                 <form ref={formRef} action={handleSubmit} className="modal-form" encType="multipart/form-data">
                     <div className="form-group">
-                        <label>Titre (Affiché)</label>
+                        <label>Titre (Français)</label>
                         <input
                             type="text"
                             name="name"
@@ -63,15 +63,47 @@ export function StyleModal({ image, trigger }: StyleModalProps) {
                             placeholder="Ex: Service premium"
                         />
                     </div>
+                    <div className="form-group">
+                        <label>Titre (English)</label>
+                        <input type="text" name="title_en" defaultValue={(image as any)?.title_en || ''} />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (Español)</label>
+                        <input type="text" name="title_es" defaultValue={(image as any)?.title_es || ''} />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (العربية)</label>
+                        <input type="text" name="title_ar" defaultValue={(image as any)?.title_ar || ''} dir="rtl" />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (Marocain)</label>
+                        <input type="text" name="title_ma" defaultValue={(image as any)?.title_ma || ''} dir="rtl" />
+                    </div>
 
                     <div className="form-group">
-                        <label>Sous-titre (Affiché)</label>
+                        <label>Sous-titre (Français)</label>
                         <input
                             type="text"
                             name="subtitle"
                             defaultValue={image?.subtitle || ''}
                             placeholder="Ex: Location de voitures de luxe"
                         />
+                    </div>
+                    <div className="form-group">
+                        <label>Sous-titre (English)</label>
+                        <input type="text" name="subtitle_en" defaultValue={(image as any)?.subtitle_en || ''} />
+                    </div>
+                    <div className="form-group">
+                        <label>Sous-titre (Español)</label>
+                        <input type="text" name="subtitle_es" defaultValue={(image as any)?.subtitle_es || ''} />
+                    </div>
+                    <div className="form-group">
+                        <label>Sous-titre (العربية)</label>
+                        <input type="text" name="subtitle_ar" defaultValue={(image as any)?.subtitle_ar || ''} dir="rtl" />
+                    </div>
+                    <div className="form-group">
+                        <label>Sous-titre (Marocain)</label>
+                        <input type="text" name="subtitle_ma" defaultValue={(image as any)?.subtitle_ma || ''} dir="rtl" />
                     </div>
 
                     <div className="form-group">

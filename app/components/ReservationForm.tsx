@@ -6,6 +6,8 @@ import { Location } from '@prisma/client';
 import { format } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 import { DateRangeSelector } from './DateRangeSelector';
+import { useTranslations, useLocale } from 'next-intl';
+import { getTranslatedField } from '@/lib/translate';
 
 // --- (Début) Hook pour gérer les clics en dehors ---
 // (Mis ici pour garder le fichier autonome)
@@ -34,6 +36,8 @@ interface ReservationFormProps {
 }
 
 export function ReservationForm({ locations, hours }: ReservationFormProps) {
+  const t = useTranslations('reservation');
+  const locale = useLocale();
 
   // --- États (States) ---
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>();
@@ -121,7 +125,7 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
         {/* === COLONNE 1: RETRAIT === */}
         <div className="location-column">
           <span>
-            {selectedReturnLocation ? 'Retrait' : 'Retrait et retour'}
+            {selectedReturnLocation ? t('pickup') : t('pickup_return')}
           </span>
           <div
             className={`choose-location ${isLocationOpen ? 'open' : ''}`}
@@ -133,7 +137,7 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
               <div className="custom-location-input-wrapper">
                 <input
                   type="text"
-                  placeholder="Entrez l'adresse de livraison..."
+                  placeholder={t('delivery_address_placeholder')}
                   value={customLocationText}
                   onChange={(e) => setCustomLocationText(e.target.value)}
                   autoFocus
@@ -147,11 +151,8 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
                 <div className="choose-location-select">
                   <div className="selected">
                     <span>
-                      {selectedLocation ? selectedLocation.nom : 'Choisir un lieu'}
+                      {selectedLocation ? getTranslatedField(selectedLocation, 'nom', locale) : t('choose_location')}
                     </span>
-                    <svg viewBox="-19.04 0 75.804 75.804" className={isLocationOpen ? 'rotated' : ''}>
-                      <path className="location-svg-path" d="M37.902,30.566L1.876,5.32c-1.425-0.992-2.316-2.583-2.385-4.32c-0.063-1.736,0.697-3.391,2.039-4.481L36.883-26.68  c2.197-1.777,5.361-1.464,7.132,0.735c0.686,0.854,1.066,1.914,1.066,3.007v54.265c0,2.833-2.296,5.129-5.129,5.129  C39.297,36.456,38.583,36.237,37.902,30.566z" />
-                    </svg>
                   </div>
                 </div>
               </>
@@ -164,11 +165,11 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
                     key={loc.id}
                     onClick={() => handleLocationSelect(loc)}
                   >
-                    {loc.nom}
+                    {getTranslatedField(loc, 'nom', locale)}
                   </li>
                 ))}
                 <li onClick={() => { setIsCustomLocationMode(true); setIsLocationOpen(false); setSelectedLocation(undefined); }} className="option-custom">
-                  Autre / Adresse Spécifique
+                  {t('custom_address')}
                 </li>
               </ul>
             )}
@@ -178,8 +179,8 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
 
         {/* === COLONNE 2: RETOUR === */}
         <div className={`location-column return-column ${(selectedReturnLocation || isCustomReturnLocationMode) ? 'active' : ''}`}>
-          <span>
-            {selectedReturnLocation || isCustomReturnLocationMode ? 'Retour' : <span>&nbsp;</span>}
+          <span className="return-column-title">
+            {selectedReturnLocation || isCustomReturnLocationMode ? t('return') : <span>&nbsp;</span>}
           </span>
           <div
             className={`choose-location return-location ${isReturnLocationOpen ? 'open' : ''} ${isReturnLocationDifferent ? 'different' : ''}`}
@@ -190,7 +191,7 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
               <div className="custom-location-input-wrapper">
                 <input
                   type="text"
-                  placeholder="Adresse de retour..."
+                  placeholder={t('return_address_placeholder')}
                   value={customReturnLocationText}
                   onChange={(e) => setCustomReturnLocationText(e.target.value)}
                   autoFocus
@@ -204,7 +205,7 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
                 <div className="choose-location-select">
                   <div className="selected">
                     <span>
-                      {selectedReturnLocation ? selectedReturnLocation.nom : 'Lieu de retour différent'}
+                      {selectedReturnLocation ? getTranslatedField(selectedReturnLocation, 'nom', locale) : t('different_return')}
                     </span>
                   </div>
                 </div>
@@ -218,11 +219,11 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
                     key={loc.id}
                     onClick={() => handleReturnLocationSelect(loc)}
                   >
-                    {loc.nom}
+                    {getTranslatedField(loc, 'nom', locale)}
                   </li>
                 ))}
                 <li onClick={() => { setIsCustomReturnLocationMode(true); setIsReturnLocationOpen(false); setSelectedReturnLocation(undefined); }} className="option-custom">
-                  Autre / Adresse Spécifique
+                  {t('custom_address')}
                 </li>
               </ul>
             )}
@@ -245,7 +246,7 @@ export function ReservationForm({ locations, hours }: ReservationFormProps) {
           hours={hours}
         />
 
-        <button className="validate-button" onClick={handleSearch}>Rechercher</button>
+        <button className="validate-button" onClick={handleSearch}>{t('search')}</button>
       </div>
     </div >
   );

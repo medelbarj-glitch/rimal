@@ -57,14 +57,24 @@ export function ServiceModal({ service, trigger }: ServiceModalProps) {
 
                 <form action={handleSubmit} className="modal-form">
                     <div className="form-group">
-                        <label>Titre</label>
-                        <input
-                            type="text"
-                            name="title"
-                            defaultValue={service?.title}
-                            required
-                            placeholder="Ex: Kilométrage Illimité"
-                        />
+                        <label>Titre (Français)</label>
+                        <input type="text" name="title" defaultValue={service?.title} required placeholder="Ex: Kilométrage Illimité" />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (English)</label>
+                        <input type="text" name="title_en" defaultValue={(service as any)?.title_en || ''} />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (Español)</label>
+                        <input type="text" name="title_es" defaultValue={(service as any)?.title_es || ''} />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (العربية)</label>
+                        <input type="text" name="title_ar" defaultValue={(service as any)?.title_ar || ''} dir="rtl" />
+                    </div>
+                    <div className="form-group">
+                        <label>Titre (Marocain)</label>
+                        <input type="text" name="title_ma" defaultValue={(service as any)?.title_ma || ''} dir="rtl" />
                     </div>
 
                     <div className="form-group">
@@ -82,14 +92,24 @@ export function ServiceModal({ service, trigger }: ServiceModalProps) {
                     </div>
 
                     <div className="form-group">
-                        <label>Description</label>
-                        <textarea
-                            name="description"
-                            rows={4}
-                            defaultValue={service?.description}
-                            required
-                            placeholder="Description courte..."
-                        ></textarea>
+                        <label>Description (Français)</label>
+                        <textarea name="description" rows={3} defaultValue={service?.description} required placeholder="Description courte..."></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label>Description (English)</label>
+                        <textarea name="description_en" rows={3} defaultValue={(service as any)?.description_en || ''}></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label>Description (Español)</label>
+                        <textarea name="description_es" rows={3} defaultValue={(service as any)?.description_es || ''}></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label>Description (العربية)</label>
+                        <textarea name="description_ar" rows={3} defaultValue={(service as any)?.description_ar || ''} dir="rtl"></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label>Description (Marocain)</label>
+                        <textarea name="description_ma" rows={3} defaultValue={(service as any)?.description_ma || ''} dir="rtl"></textarea>
                     </div>
 
                     <div className="modal-actions">

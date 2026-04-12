@@ -1,0 +1,138 @@
+/* styles/language-switcher.css */
+
+.language-switcher-container {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Le bouton principal en bas */
+.language-switcher-button {
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.language-switcher-button:hover,
+.language-switcher-button.open {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: var(--book-gold, #B49339);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(180, 147, 57, 0.2);
+}
+
+.language-switcher-button .lang-flag {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.language-switcher-button .lang-code-text {
+    font-weight: 600;
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.language-switcher-button .chevron-icon {
+    font-size: 0.7rem;
+    color: #aaa;
+    transition: transform 0.3s ease, color 0.3s ease;
+    margin-left: 2px;
+}
+
+.language-switcher-button:hover .chevron-icon,
+.language-switcher-button.open .chevron-icon {
+    color: var(--book-gold, #B49339);
+}
+
+/* Le menu déroulant (qui s'ouvre vers le HAUT) */
+.language-switcher-menu {
+    background: rgba(22, 22, 22, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px 0;
+    margin-bottom: 12px; /* Espace entre le menu et le bouton */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    animation: slideUpFade 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform-origin: bottom left;
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.language-switcher-item {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    color: #ccc;
+    transition: all 0.2s ease;
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 0.95rem;
+}
+
+.language-switcher-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.language-switcher-item.active {
+    background: rgba(180, 147, 57, 0.1);
+    color: var(--book-gold, #B49339);
+    font-weight: 600;
+    border-left: 3px solid var(--book-gold, #B49339);
+}
+
+.language-switcher-item .lang-flag {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+/* Responsive adjustment for Mobile */
+@media (max-width: 768px) {
+    .language-switcher-container {
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .language-switcher-button {
+        padding: 8px 14px;
+    }
+    
+    .language-switcher-button .lang-code-text {
+        font-size: 0.85rem;
+    }
+    
+    .language-switcher-menu {
+        min-width: 160px;
+    }
+}

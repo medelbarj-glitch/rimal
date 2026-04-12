@@ -7,7 +7,7 @@
 }
 
 html {
-    scroll-behavior: smooth !important;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -68,4 +68,14 @@ body.no-scroll {
 .reservation-wrapper-fix {
     position: relative;
     z-index: 1000 !important;
+    padding: 80px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .reservation-wrapper-fix {
+        padding: 80px 2px;
+    }
 }

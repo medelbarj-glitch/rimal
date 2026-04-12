@@ -48,7 +48,15 @@ export async function createBackgroundImage(formData: FormData) {
     await requireAuth();
     const name = formData.get('name') as string;
     const title = formData.get('title') as string;
+    const title_en = formData.get('title_en') as string;
+    const title_es = formData.get('title_es') as string;
+    const title_ar = formData.get('title_ar') as string;
+    const title_ma = formData.get('title_ma') as string;
     const subtitle = formData.get('subtitle') as string;
+    const subtitle_en = formData.get('subtitle_en') as string;
+    const subtitle_es = formData.get('subtitle_es') as string;
+    const subtitle_ar = formData.get('subtitle_ar') as string;
+    const subtitle_ma = formData.get('subtitle_ma') as string;
     const imageFile = formData.get('imageFile') as File | null;
 
     if (!imageFile || imageFile.size === 0) {
@@ -62,7 +70,15 @@ export async function createBackgroundImage(formData: FormData) {
             name,
             url, // Stocke l'URL Cloudinary sécurisée
             title,
+            title_en,
+            title_es,
+            title_ar,
+            title_ma,
             subtitle,
+            subtitle_en,
+            subtitle_es,
+            subtitle_ar,
+            subtitle_ma,
         },
     });
 
@@ -74,10 +90,30 @@ export async function updateBackgroundImage(id: number, formData: FormData) {
     await requireAuth();
     const name = formData.get('name') as string;
     const title = formData.get('title') as string;
+    const title_en = formData.get('title_en') as string;
+    const title_es = formData.get('title_es') as string;
+    const title_ar = formData.get('title_ar') as string;
+    const title_ma = formData.get('title_ma') as string;
     const subtitle = formData.get('subtitle') as string;
+    const subtitle_en = formData.get('subtitle_en') as string;
+    const subtitle_es = formData.get('subtitle_es') as string;
+    const subtitle_ar = formData.get('subtitle_ar') as string;
+    const subtitle_ma = formData.get('subtitle_ma') as string;
     const imageFile = formData.get('imageFile') as File | null;
 
-    const updateData: any = { name, title, subtitle };
+    const updateData: any = { 
+        name, 
+        title, 
+        title_en, 
+        title_es, 
+        title_ar, 
+        title_ma, 
+        subtitle, 
+        subtitle_en, 
+        subtitle_es, 
+        subtitle_ar, 
+        subtitle_ma 
+    };
 
     if (imageFile && imageFile.size > 0) {
         const oldImage = await prisma.backgroundImage.findUnique({ where: { id } });

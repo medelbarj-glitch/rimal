@@ -16,11 +16,9 @@ interface BookingFormProps {
 // ... imports
 import { DateRangeSelector } from './DateRangeSelector';
 import { DateRange } from 'react-day-picker';
-
-// ... (keep BookingFormProps)
-
-// Remove DayPicker imports
 import { format } from 'date-fns';
+import { useTranslations, useLocale } from 'next-intl';
+import { getTranslatedField } from '@/lib/translate';
 // ...
 
 // Remove useClickOutside hook if not used elsewhere (it was used for time pickers, but DateRangeSelector handles that now)
@@ -38,6 +36,10 @@ const timeSlots = [
 ];
 
 export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay }: BookingFormProps) {
+    const t = useTranslations('booking');
+    const tRes = useTranslations('reservation');
+    const locale = useLocale();
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -56,6 +58,12 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
     // State for locations to calculate fees
     const [locationId, setLocationId] = useState<string>(searchParams.location as string || '');
     const [returnLocationId, setReturnLocationId] = useState<string>(searchParams.returnLocation as string || '');
+
+    // State for custom (free-text) location mode — mirrors /reservation sidebar
+    const [isCustomPickup, setIsCustomPickup] = useState(!!searchParams.customLocation);
+    const [isCustomReturn, setIsCustomReturn] = useState(!!searchParams.customReturnLocation);
+    const [customPickupText, setCustomPickupText] = useState(searchParams.customLocation as string || '');
+    const [customReturnText, setCustomReturnText] = useState(searchParams.customReturnLocation as string || '');
 
     // Calculate total price
     const calculateTotal = () => {
@@ -112,154 +120,225 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
     }
 
     return (
-        <div className="booking-layout">
-            <div className="form-column">
-                <form action={handleSubmit} className="booking-form">
-                    <input type="hidden" name="modelId" value={modelId} />
-                    <input type="hidden" name="startDate" value={selectedRange?.from ? format(selectedRange.from, 'yyyy-MM-dd') : ''} />
-                    <input type="hidden" name="endDate" value={selectedRange?.to ? format(selectedRange.to, 'yyyy-MM-dd') : ''} />
-                    <input type="hidden" name="startTime" value={startTime} />
-                    <input type="hidden" name="returnTime" value={returnTime} />
-
-                    <div className="booking-form-section">
-                        <h3>Dates de réservation</h3>
-                        <div className="form-group full-width">
-                            <DateRangeSelector
-                                startDate={selectedRange?.from}
-                                endDate={selectedRange?.to}
-                                onDateChange={setSelectedRange}
-                                startTime={startTime}
-                                returnTime={returnTime}
-                                onStartTimeChange={setStartTime}
-                                onReturnTimeChange={setReturnTime}
-                                hours={timeSlots}
-                                numberOfMonths={2}
-                                className="booking-style"
-                            />
-                        </div>
-                    </div>
-
-
-                    <div className="booking-form-section">
-                        <h3>Lieux</h3>
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label htmlFor="locationId">Lieu de départ *</label>
-                                <select
-                                    id="locationId"
-                                    name="locationId"
-                                    value={locationId}
-                                    onChange={(e) => setLocationId(e.target.value)}
-                                    required={!searchParams.customLocation}
-                                    disabled={!!searchParams.customLocation}
-                                >
-                                    <option value="">
-                                        {searchParams.customLocation ? `(Personnalisé: ${searchParams.customLocation})` : 'Sélectionnez un lieu'}
-                                    </option>
-                                    {locations.map((loc) => (
-                                        <option key={loc.id} value={loc.id}>
-                                            {loc.nom} (+{loc.fraisSupplementaires} DH)
-                                        </option>
-                                    ))}
-                                </select>
-                                {searchParams.customLocation && (
-                                    <input type="hidden" name="customLocation" value={searchParams.customLocation as string} />
-                                )}
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="returnLocationId">Lieu de retour *</label>
-                                <select
-                                    id="returnLocationId"
-                                    name="returnLocationId"
-                                    value={returnLocationId}
-                                    onChange={(e) => setReturnLocationId(e.target.value)}
-                                    required={!searchParams.customReturnLocation && !searchParams.customLocation}
-                                    disabled={!!searchParams.customReturnLocation || !!searchParams.customLocation}
-                                >
-                                    <option value="">
-                                        {searchParams.customReturnLocation
-                                            ? `(Personnalisé: ${searchParams.customReturnLocation})`
-                                            : (searchParams.customLocation ? '(Même endroit que le départ)' : 'Sélectionnez un lieu')}
-                                    </option>
-                                    {locations.map((loc) => (
-                                        <option key={loc.id} value={loc.id}>
-                                            {loc.nom} (+{loc.fraisSupplementaires} DH)
-                                        </option>
-                                    ))}
-                                </select>
-                                {searchParams.customReturnLocation && (
-                                    <input type="hidden" name="customReturnLocation" value={searchParams.customReturnLocation as string} />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="booking-form-section">
-                        <h3>Vos coordonnées</h3>
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label htmlFor="lastName">Nom *</label>
-                                <input type="text" id="lastName" name="lastName" required />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="firstName">Prénom *</label>
-                                <input type="text" id="firstName" name="firstName" required />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="email">Email *</label>
-                                <input type="email" id="email" name="email" required />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="phone">Téléphone *</label>
-                                <input type="tel" id="phone" name="phone" required />
-                            </div>
-                        </div>
-                    </div>
-
-                    {error && <div className="error-message">{error}</div>}
-
-                    <button type="submit" className="submit-button" disabled={isSubmitting}>
-                        {isSubmitting ? 'Traitement...' : 'Confirmer la réservation'}
-                    </button>
-                </form>
+        <>
+            {/* Header row — title + back button, mirrors .reservation-header */}
+            <div className="booking-header">
+                <h1 className="booking-title">{t('title')}</h1>
+                <a href="/reservation" className="back-button">
+                    <i className="fas fa-arrow-left"></i> {tRes('back')}
+                </a>
             </div>
 
-            <div className="summary-column">
-                <div className="booking-summary-card">
-                    <h3>Récapitulatif</h3>
-                    {modelImageUrl && (
-                        <img src={modelImageUrl} alt={modelName} />
-                    )}
-                    <div className="summary-details">
-                        <h4>{modelName}</h4>
-                        <div className="summary-row">
-                            <span>Du :</span>
-                            <strong>{selectedRange?.from ? format(selectedRange.from, 'dd/MM/yyyy') : '-'}</strong>
-                        </div>
-                        <div className="summary-row">
-                            <span>Au :</span>
-                            <strong>{selectedRange?.to ? format(selectedRange.to, 'dd/MM/yyyy') : '-'}</strong>
-                        </div>
-                        <div className="summary-row">
-                            <span>Durée :</span>
-                            <strong>{days} jours</strong>
-                        </div>
-                        {locFees > 0 && (
-                            <div className="summary-row fees">
-                                <span>Frais de lieu :</span>
-                                <strong>+ {locFees} DH</strong>
-                            </div>
+            <div className="booking-layout">
+                {/* LEFT — Summary card (like reservation sidebar) */}
+                <div className="summary-column">
+                    <div className="booking-summary-card">
+                        <h3>{t('summary')}</h3>
+                        {modelImageUrl && (
+                            <img src={modelImageUrl} alt={modelName} />
                         )}
-                        <div className="summary-total">
-                            <span>Total estimé :</span>
-                            <strong>{totalPrice} DH</strong>
+                        <div className="summary-details">
+                            <h4>{modelName}</h4>
+                            <div className="summary-row">
+                                <span>{t('from')}</span>
+                                <strong>{selectedRange?.from ? format(selectedRange.from, 'dd/MM/yyyy') : '-'}</strong>
+                            </div>
+                            <div className="summary-row">
+                                <span>{t('to')}</span>
+                                <strong>{selectedRange?.to ? format(selectedRange.to, 'dd/MM/yyyy') : '-'}</strong>
+                            </div>
+                            <div className="summary-row">
+                                <span>{t('duration')}</span>
+                                <strong>{days} {t('days')}</strong>
+                            </div>
+                            {locFees > 0 && (
+                                <div className="summary-row fees">
+                                    <span>{t('location_fees')}</span>
+                                    <strong>+ {locFees} DH</strong>
+                                </div>
+                            )}
+                            <div className="summary-total">
+                                <span>{t('total_estimated')}</span>
+                                <strong>{totalPrice} DH</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                {/* RIGHT — Form (like reservation-content) */}
+                <div className="form-column">
+                    <form action={handleSubmit} className="booking-form">
+                        <input type="hidden" name="modelId" value={modelId} />
+                        <input type="hidden" name="startDate" value={selectedRange?.from ? format(selectedRange.from, 'yyyy-MM-dd') : ''} />
+                        <input type="hidden" name="endDate" value={selectedRange?.to ? format(selectedRange.to, 'yyyy-MM-dd') : ''} />
+                        <input type="hidden" name="startTime" value={startTime} />
+                        <input type="hidden" name="returnTime" value={returnTime} />
+
+                        <div className="booking-form-section">
+                            <h3>{t('dates')}</h3>
+                            <div className="form-group full-width">
+                                <DateRangeSelector
+                                    startDate={selectedRange?.from}
+                                    endDate={selectedRange?.to}
+                                    onDateChange={setSelectedRange}
+                                    startTime={startTime}
+                                    returnTime={returnTime}
+                                    onStartTimeChange={setStartTime}
+                                    onReturnTimeChange={setReturnTime}
+                                    hours={timeSlots}
+                                    numberOfMonths={2}
+                                    className="booking-style"
+                                />
+                            </div>
+
+                            <h3>{t('locations')}</h3>
+                            <div className="form-grid">
+
+                                {/* --- Lieu de départ --- */}
+                                <div className="form-group">
+                                    <label htmlFor="locationId">
+                                        <i className="fas fa-map-marker-alt" style={{ color: 'var(--book-gold)' }}></i>
+                                        {t('pickup_location')}
+                                    </label>
+
+                                    {isCustomPickup ? (
+                                        /* Free-text input mode */
+                                        <div className="custom-location-wrapper">
+                                            <input
+                                                type="text"
+                                                name="customLocation"
+                                                value={customPickupText}
+                                                onChange={(e) => setCustomPickupText(e.target.value)}
+                                                placeholder={t('address_placeholder')}
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                className="custom-location-cancel"
+                                                onClick={() => { setIsCustomPickup(false); setCustomPickupText(''); }}
+                                                title={tRes('sidebar_cancel')}
+                                            >
+                                                <i className="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        /* Standard select mode */
+                                        <select
+                                            id="locationId"
+                                            name="locationId"
+                                            value={locationId}
+                                            onChange={(e) => {
+                                                if (e.target.value === 'custom') {
+                                                    setIsCustomPickup(true);
+                                                    setLocationId('');
+                                                } else {
+                                                    setLocationId(e.target.value);
+                                                }
+                                            }}
+                                            required
+                                        >
+                                            <option value="">{t('select_location')}</option>
+                                            {locations.map((loc) => (
+                                                <option key={loc.id} value={loc.id}>
+                                                    {getTranslatedField(loc, 'nom', locale)} (+{loc.fraisSupplementaires} DH)
+                                                </option>
+                                            ))}
+                                            <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>
+                                                {tRes('custom_address')}
+                                            </option>
+                                        </select>
+                                    )}
+                                </div>
+
+                                {/* --- Lieu de retour --- */}
+                                <div className="form-group">
+                                    <label htmlFor="returnLocationId">
+                                        <i className="fas fa-map-marker-alt" style={{ color: 'var(--book-gold)' }}></i>
+                                        {t('return_location')}
+                                    </label>
+
+                                    {isCustomReturn ? (
+                                        /* Free-text input mode */
+                                        <div className="custom-location-wrapper">
+                                            <input
+                                                type="text"
+                                                name="customReturnLocation"
+                                                value={customReturnText}
+                                                onChange={(e) => setCustomReturnText(e.target.value)}
+                                                placeholder={t('address_placeholder')}
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                className="custom-location-cancel"
+                                                onClick={() => { setIsCustomReturn(false); setCustomReturnText(''); }}
+                                                title={tRes('sidebar_cancel')}
+                                            >
+                                                <i className="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        /* Standard select mode */
+                                        <select
+                                            id="returnLocationId"
+                                            name="returnLocationId"
+                                            value={returnLocationId}
+                                            onChange={(e) => {
+                                                if (e.target.value === 'custom') {
+                                                    setIsCustomReturn(true);
+                                                    setReturnLocationId('');
+                                                } else {
+                                                    setReturnLocationId(e.target.value);
+                                                }
+                                            }}
+                                            required={!isCustomPickup}
+                                        >
+                                            <option value="">{isCustomPickup ? t('same_as_pickup') : t('select_location')}</option>
+                                            {locations.map((loc) => (
+                                                <option key={loc.id} value={loc.id}>
+                                                    {getTranslatedField(loc, 'nom', locale)} (+{loc.fraisSupplementaires} DH)
+                                                </option>
+                                            ))}
+                                            <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>
+                                                {tRes('custom_address')}
+                                            </option>
+                                        </select>
+                                    )}
+                                </div>
+
+                            </div>
+                            <h3>{t('details')}</h3>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label htmlFor="lastName">{t('last_name')}</label>
+                                    <input type="text" id="lastName" name="lastName" placeholder={t('last_name_placeholder')} required />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="firstName">{t('first_name')}</label>
+                                    <input type="text" id="firstName" name="firstName" placeholder={t('first_name_placeholder')} required />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="email">{t('email')}</label>
+                                    <input type="email" id="email" name="email" placeholder={t('email_placeholder')} required />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="phone">{t('phone')}</label>
+                                    <input type="tel" id="phone" name="phone" placeholder={t('phone_placeholder')} required />
+                                </div>
+                            </div>
+                        </div>
+
+                        {error && <div className="error-message">{error}</div>}
+
+                        <button type="submit" className="submit-button" disabled={isSubmitting}>
+                            {isSubmitting ? t('processing') : t('confirm')}
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

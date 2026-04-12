@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 // Définition de la structure d'un avis
 interface Review {
@@ -12,6 +13,7 @@ interface Review {
 }
 
 export function ReviewsSection() {
+    const t = useTranslations('reviews');
     // Données factices - facile à remplacer par les données de la BDD plus tard
     const reviews: Review[] = [
         {
@@ -40,14 +42,14 @@ export function ReviewsSection() {
             author: "Amine D.",
             rating: 5,
             date: "Il y a 1 mois",
-            text: "Rien à dire, c'est le top du top sur Alger. Les véhicules sont neufs et propres. Le kilométrage illimité est un vrai plus !"
+            text: "Rien à dire, c'est le top du top sur Marrakech. Les véhicules sont neufs et propres. Le kilométrage illimité est un vrai plus !"
         },
         {
             id: 5,
             author: "Lina R.",
             rating: 5,
             date: "Il y a 1 mois",
-            text: "J'ai fait appel à MJ Cars pour mon mariage. La voiture a fait son effet ! Merci pour votre professionnalisme."
+            text: "J'ai fait appel à Bouderba Rental pour mon mariage. La voiture a fait son effet ! Merci pour votre professionnalisme."
         },
         {
             id: 6,
@@ -64,7 +66,7 @@ export function ReviewsSection() {
 
     return (
         <section className="reviews-section">
-            <h2>Ce que disent nos clients</h2>
+            <h2>{t('title')}</h2>
 
             <div className="reviews-track-container">
                 <div className="reviews-track">

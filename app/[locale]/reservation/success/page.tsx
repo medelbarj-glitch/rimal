@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import '../../../styles/success.css';
-import { NavbarAndMenu } from '../../components/Menu';
+import '../../../../styles/success.css';
+import { NavbarAndMenu } from '../../../components/Menu';
 import { prisma } from '@/lib/prisma';
 
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
-import { PrintButton } from '../../components/PrintButton';
+import { PrintButton } from '../../../components/PrintButton';
 
 export default async function SuccessPage({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
     const { id: idStr } = await searchParams;

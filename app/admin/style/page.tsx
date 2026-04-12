@@ -50,12 +50,48 @@ export default async function StylePage() {
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter une image</h3>
                         <form action={createBackgroundImage} encType="multipart/form-data">
                             <div className="form-group">
-                                <label>Titre (Affiché)</label>
-                                <input type="text" name="name" placeholder="Ex: Service premium" required />
+                                <label>Nom Interne (Admin)</label>
+                                <input type="text" name="name" placeholder="Ex: Slider Accueil 1" required />
                             </div>
                             <div className="form-group">
-                                <label>Sous-titre (Affiché)</label>
+                                <label>Titre (Affiché - FR)</label>
+                                <input type="text" name="title" placeholder="Ex: Service premium" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (Affiché - EN)</label>
+                                <input type="text" name="title_en" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (Affiché - ES)</label>
+                                <input type="text" name="title_es" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (Affiché - AR)</label>
+                                <input type="text" name="title_ar" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (Affiché - MA)</label>
+                                <input type="text" name="title_ma" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Sous-titre (Affiché - FR)</label>
                                 <input type="text" name="subtitle" placeholder="Ex: Location de voitures de luxe" />
+                            </div>
+                            <div className="form-group">
+                                <label>Sous-titre (Affiché - EN)</label>
+                                <input type="text" name="subtitle_en" />
+                            </div>
+                            <div className="form-group">
+                                <label>Sous-titre (Affiché - ES)</label>
+                                <input type="text" name="subtitle_es" />
+                            </div>
+                            <div className="form-group">
+                                <label>Sous-titre (Affiché - AR)</label>
+                                <input type="text" name="subtitle_ar" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Sous-titre (Affiché - MA)</label>
+                                <input type="text" name="subtitle_ma" dir="rtl" />
                             </div>
                             <div className="form-group">
                                 <label>Image d'arrière-plan</label>
@@ -123,8 +159,24 @@ export default async function StylePage() {
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter un Service</h3>
                         <form action={createService} encType="multipart/form-data">
                             <div className="form-group">
-                                <label>Titre</label>
+                                <label>Titre (FR)</label>
                                 <input type="text" name="title" placeholder="Ex: Kilométrage Illimité" required />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (EN)</label>
+                                <input type="text" name="title_en" placeholder="Ex: Unlimited Mileage" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (ES)</label>
+                                <input type="text" name="title_es" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (AR)</label>
+                                <input type="text" name="title_ar" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (MA)</label>
+                                <input type="text" name="title_ma" dir="rtl" />
                             </div>
                             <div className="form-group">
                                 <label>Icône (FontAwesome)</label>
@@ -134,8 +186,24 @@ export default async function StylePage() {
                                 </small>
                             </div>
                             <div className="form-group">
-                                <label>Description</label>
-                                <textarea name="description" rows={4} placeholder="Description courte..." required></textarea>
+                                <label>Description (FR)</label>
+                                <textarea name="description" rows={3} placeholder="Description courte..." required></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (EN)</label>
+                                <textarea name="description_en" rows={3} placeholder="Short description..."></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (ES)</label>
+                                <textarea name="description_es" rows={3}></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (AR)</label>
+                                <textarea name="description_ar" rows={3} dir="rtl"></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (MA)</label>
+                                <textarea name="description_ma" rows={3} dir="rtl"></textarea>
                             </div>
                             <button type="submit" className="btn-submit">Ajouter</button>
                         </form>
@@ -184,20 +252,68 @@ export default async function StylePage() {
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter une Expérience</h3>
                         <form action={createExperience} encType="multipart/form-data">
                             <div className="form-group">
-                                <label>Titre</label>
+                                <label>Titre (FR)</label>
                                 <input type="text" name="title" placeholder="Ex: L'Excellence..." required />
                             </div>
                             <div className="form-group">
-                                <label>Description</label>
-                                <textarea name="description" rows={4} placeholder="Description..." required></textarea>
+                                <label>Titre (EN)</label>
+                                <input type="text" name="title_en" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (ES)</label>
+                                <input type="text" name="title_es" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (AR)</label>
+                                <input type="text" name="title_ar" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Titre (MA)</label>
+                                <input type="text" name="title_ma" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Description (FR)</label>
+                                <textarea name="description" rows={3} placeholder="Description..." required></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (EN)</label>
+                                <textarea name="description_en" rows={3}></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (ES)</label>
+                                <textarea name="description_es" rows={3}></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (AR)</label>
+                                <textarea name="description_ar" rows={3} dir="rtl"></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Description (MA)</label>
+                                <textarea name="description_ma" rows={3} dir="rtl"></textarea>
                             </div>
                             <div className="form-group">
                                 <label>Image (Upload)</label>
                                 <ImageFileInput name="imageFile" accept="image/png, image/jpeg, image/webp" required />
                             </div>
                             <div className="form-group">
-                                <label>Texte Bouton</label>
+                                <label>Texte Bouton (FR)</label>
                                 <input type="text" name="buttonText" placeholder="Ex: Découvrir..." />
+                            </div>
+                            <div className="form-group">
+                                <label>Texte Bouton (EN)</label>
+                                <input type="text" name="buttonText_en" />
+                            </div>
+                            <div className="form-group">
+                                <label>Texte Bouton (ES)</label>
+                                <input type="text" name="buttonText_es" />
+                            </div>
+                            <div className="form-group">
+                                <label>Texte Bouton (AR)</label>
+                                <input type="text" name="buttonText_ar" dir="rtl" />
+                            </div>
+                            <div className="form-group">
+                                <label>Texte Bouton (MA)</label>
+                                <input type="text" name="buttonText_ma" dir="rtl" />
                             </div>
                             <button type="submit" className="btn-submit">Ajouter</button>
                         </form>

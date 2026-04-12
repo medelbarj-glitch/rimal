@@ -1,27 +1,38 @@
 /* =======================
-   Reviews Section
+   Reviews Section - GLASS CAROUSEL
 ======================= */
 .reviews-section {
     width: 100%;
-    padding: 4rem 0;
-    background-color: #fff;
+    padding: 6rem 0;
+    background: #ffffff;
     overflow: hidden;
-    /* Hide scrollbar */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 40px;
 }
 
 .reviews-section h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 400;
+    font-family: 'Anton', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: #1a1a1a;
+    color: #111;
     text-align: center;
-    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.reviews-section h2::after {
+    content: "";
+    background: linear-gradient(90deg, #0000, #B49339, #0000);
+    width: 60%;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Container for the scrolling track */
@@ -29,6 +40,7 @@
     width: 100%;
     overflow: hidden;
     position: relative;
+    padding-block: 20px;
 }
 
 /* Gradient masks for smooth fade edges */
@@ -37,7 +49,7 @@
     content: "";
     position: absolute;
     top: 0;
-    width: 150px;
+    width: 200px;
     height: 100%;
     z-index: 2;
     pointer-events: none;
@@ -45,95 +57,116 @@
 
 .reviews-track-container::before {
     left: 0;
-    background: linear-gradient(to right, #f9f9f9, transparent);
+    background: linear-gradient(to right, #fdfdfd, transparent);
 }
 
 .reviews-track-container::after {
     right: 0;
-    background: linear-gradient(to left, #f9f9f9, transparent);
+    background: linear-gradient(to left, #f4f5f8, transparent);
 }
 
 /* The moving track */
 .reviews-track {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     width: max-content;
-    animation: scroll 40s linear infinite;
-    padding-block: 20px;
+    animation: scroll 45s linear infinite;
+    padding: 20px 0;
 }
 
 .reviews-track:hover {
     animation-play-state: paused;
-    /* Pause on hover */
 }
 
-/* Individual Review Card */
+/* Individual Review Card - Glassmorphism */
 .review-card {
-    width: 350px;
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    width: 400px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    gap: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
     flex-shrink: 0;
-    /* Prevent shrinking */
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .review-card:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
-    transition: all 0.3s ease;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(180, 147, 57, 0.3);
 }
 
 .review-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .review-stars {
-    color: #FFD700;
-    /* Gold */
-    font-size: 0.9rem;
+    color: #B49339;
+    /* Gold Premium */
+    font-size: 1.1rem;
+    letter-spacing: 2px;
 }
 
 .review-date {
-    font-size: 0.8rem;
-    color: #999;
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .review-text {
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.5;
+    font-size: 1.05rem;
+    color: #333;
+    line-height: 1.6;
     font-style: italic;
+    position: relative;
+    padding-left: 20px;
+}
+
+.review-text::before {
+    content: '"';
+    position: absolute;
+    top: -15px;
+    left: -10px;
+    font-family: 'Anton', sans-serif;
+    font-size: 4rem;
+    color: rgba(180, 147, 57, 0.2);
+    /* Gold quote */
+    line-height: 1;
 }
 
 .review-author {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #333;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: #111;
+    text-transform: uppercase;
     margin-top: auto;
-    /* Push to bottom */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .review-author::before {
     content: '';
     display: block;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     background-color: #eee;
     border-radius: 50%;
-    background-image: url('https://ui-avatars.com/api/?background=random&color=fff&name=User');
-    /* Placeholder avatar */
+    background-image: url('https://ui-avatars.com/api/?background=B49339&color=fff&name=User&font-size=0.4');
     background-size: cover;
+    box-shadow: 0 5px 15px rgba(180, 147, 57, 0.3);
 }
 
 /* Infinite Scroll Animation */
@@ -143,7 +176,18 @@
     }
 
     100% {
-        transform: translateX(calc(-50% - 15px));
-        /* Move half way (original set) + half gap */
+        transform: translateX(calc(-50% - 20px));
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .reviews-section h2 {
+        font-size: 2rem;
+        padding: 0px 2px
+    }
+
+    .review-card {
+        width: 300px;
+        padding: 25px;
     }
 }
