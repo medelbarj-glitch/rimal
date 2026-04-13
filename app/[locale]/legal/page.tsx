@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavbarAndMenu } from '../components/Menu';
-import { prisma } from '../../lib/prisma';
-import '../../styles/legal.css';
+import { NavbarAndMenu } from '../../components/Menu';
+import { prisma } from '../../../lib/prisma';
+import '../../../styles/legal.css';
 
 export const metadata = {
     title: 'Informations Légales | Bouderba Rental Cars',

@@ -1,68 +1,75 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 
-// Définition de la structure d'un avis
-interface Review {
-    id: number;
-    author: string;
+// Définition de la structure d'un avis depuis Google Maps
+interface GoogleReview {
+    author_name: string;
     rating: number;
-    date: string;
+    relative_time_description: string;
     text: string;
+    author_url: string; // Nous n'utiliserons plus celui-ci directement
 }
 
 export function ReviewsSection() {
     const t = useTranslations('reviews');
-    // Données factices - facile à remplacer par les données de la BDD plus tard
-    const reviews: Review[] = [
-        {
-            id: 1,
-            author: "Karim B.",
-            rating: 5,
-            date: "Il y a 2 jours",
-            text: "Service impeccable ! La voiture était dans un état irréprochable et le chauffeur très professionnel. Je recommande vivement pour tout déplacement de prestige."
-        },
-        {
-            id: 2,
-            author: "Sophie M.",
-            rating: 5,
-            date: "Il y a 1 semaine",
-            text: "Une expérience inoubliable. J'ai loué la RS3 pour un week-end, sensations garanties. L'équipe est très réactive et arrangeante."
-        },
-        {
-            id: 3,
-            author: "Yassine K.",
-            rating: 4,
-            date: "Il y a 3 semaines",
-            text: "Très bonne agence. Le processus de réservation est simple et rapide. Seul bémol, j'aurais aimé avoir la voiture un peu plus tôt, mais le service client a compensé."
-        },
-        {
-            id: 4,
-            author: "Amine D.",
-            rating: 5,
-            date: "Il y a 1 mois",
-            text: "Rien à dire, c'est le top du top sur Marrakech. Les véhicules sont neufs et propres. Le kilométrage illimité est un vrai plus !"
-        },
-        {
-            id: 5,
-            author: "Lina R.",
-            rating: 5,
-            date: "Il y a 1 mois",
-            text: "J'ai fait appel à Bouderba Rental pour mon mariage. La voiture a fait son effet ! Merci pour votre professionnalisme."
-        },
-        {
-            id: 6,
-            author: "Mehdi T.",
-            rating: 5,
-            date: "Il y a 2 mois",
-            text: "Client fidèle depuis un an, je n'ai jamais été déçu. La qualité de service est constante. Bravo à toute l'équipe."
-        }
-    ];
+    const [reviews, setReviews] = useState<GoogleReview[]>([]);
+    const [placeUrl, setPlaceUrl] = useState<string>(''); // Nouvel état pour l'URL de l'entreprise
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch('/api/reviews');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.reviews && data.reviews.length > 0) {
+                        setReviews(data.reviews);
+                        if (data.url) {
+                            setPlaceUrl(data.url); // On sauvegarde l'URL de l'entreprise
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch Google reviews:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReviews();
+    }, []);
 
     // Dupliquer la liste pour créer l'effet de boucle infinie
     // Nous avons besoin d'assez d'éléments pour remplir la largeur de l'écran + marge
-    const infiniteReviews = [...reviews, ...reviews];
+    const getInfiniteReviews = () => {
+        if (reviews.length === 0) return [];
+        // On s'assure d'avoir assez d'avis pour la boucle infinie, même s'il n'y en a que 5
+        const multiplier = reviews.length <= 5 ? 4 : 2;
+        let result: GoogleReview[] = [];
+        for (let i = 0; i < multiplier; i++) {
+            result = [...result, ...reviews];
+        }
+        return result;
+    };
+
+    const infiniteReviews = getInfiniteReviews();
+
+    if (loading) {
+        return (
+            <section className="reviews-section">
+                <h2>{t('title')}</h2>
+                <div className="reviews-track-container" style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+                    <i className="fas fa-circle-notch fa-spin fa-2x" style={{ color: '#B49339' }}></i>
+                </div>
+            </section>
+        );
+    }
+
+    if (reviews.length === 0) {
+        return null; // Ne rien afficher si aucun avis n'a pu être chargé
+    }
 
     return (
         <section className="reviews-section">
@@ -71,20 +78,27 @@ export function ReviewsSection() {
             <div className="reviews-track-container">
                 <div className="reviews-track">
                     {infiniteReviews.map((review, index) => (
-                        <div key={`${review.id}-${index}`} className="review-card">
+                        <a 
+                            key={`review-${index}`} 
+                            href={placeUrl || review.author_url} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="review-card"
+                            style={{ textDecoration: 'none', color: 'inherit', display: 'block', cursor: 'pointer' }}
+                        >
                             <div className="review-header">
                                 <div className="review-stars">
-                                    {[...Array(review.rating)].map((_, i) => (
-                                        <i key={i} className="fas fa-star"></i>
+                                    {[...Array(Math.max(0, Math.min(5, Math.floor(review.rating))))].map((_, i) => (
+                                        <i key={i} className="fas fa-star" style={{ color: '#ECC242' }}></i>
                                     ))}
                                 </div>
-                                <span className="review-date">{review.date}</span>
+                                <span className="review-date">{review.relative_time_description}</span>
                             </div>
                             <p className="review-text">"{review.text}"</p>
                             <div className="review-author">
-                                {review.author}
+                                {review.author_name}
                             </div>
-                        </div>
+                        </a>
                     ))}
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { prisma } from '../../lib/prisma';
-import { NavbarAndMenu } from '../components/Menu';
-import '../../styles/agency.css';
+import { prisma } from '../../../lib/prisma';
+import { NavbarAndMenu } from '../../components/Menu';
+import '../../../styles/agency.css';
 import { getSettings } from '@/app/actions/settingsActions';
 
 export const metadata = {
