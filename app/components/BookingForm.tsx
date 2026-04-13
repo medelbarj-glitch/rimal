@@ -21,14 +21,6 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getTranslatedField } from '@/lib/translate';
 // ...
 
-// Remove useClickOutside hook if not used elsewhere (it was used for time pickers, but DateRangeSelector handles that now)
-// Actually, check if DateRangeSelector is handling time entirely. 
-// Yes, DateRangeSelector takes startTime, returnTime, and their handlers.
-// So we can remove useClickOutside and timeSlots from here as well, passing timeSlots if needed or letting DateRangeSelector use its default.
-// The Plan said "Pass timeSlots". DateRangeSelector has a default, but let's see.
-// DateRangeSelector accepts `hours` prop.
-// So we will remove useClickOutside from here.
-
 const timeSlots = [
     "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
     "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
