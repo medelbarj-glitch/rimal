@@ -15,7 +15,7 @@ interface GoogleReview {
 export function ReviewsSection() {
     const t = useTranslations('reviews');
     const [reviews, setReviews] = useState<GoogleReview[]>([]);
-    const [placeUrl, setPlaceUrl] = useState<string>(''); // Nouvel état pour l'URL de l'entreprise
+    const [placeUrl, setPlaceUrl] = useState<string>('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -78,9 +78,9 @@ export function ReviewsSection() {
             <div className="reviews-track-container">
                 <div className="reviews-track">
                     {infiniteReviews.map((review, index) => (
-                        <a 
-                            key={`review-${index}`} 
-                            href={placeUrl || review.author_url} 
+                        <a
+                            key={`review-${index}`}
+                            href={placeUrl || review.author_url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="review-card"
