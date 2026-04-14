@@ -240,7 +240,15 @@ model Experience {
 }
 
 model Setting {
-  id          Int     @id @default(1)
-  phoneNumber String? @map("phone_number")
-  logoUrl     String? @map("logo_url")
+  id             Int     @id @default(1)
+  phoneNumber    String? @map("phone_number")
+  phoneNumber2   String? @map("phone_number_2")
+  logoUrl        String? @map("logo_url")
+  hoursMonday    String? @default("09:00 — 20:00")
+  hoursTuesday   String? @default("09:00 — 20:00")
+  hoursWednesday String? @default("09:00 — 20:00")
+  hoursThursday  String? @default("09:00 — 20:00")
+  hoursFriday    String? @default("09:00 — 20:00")
+  hoursSaturday  String? @default("10:00 — 18:00")
+  hoursSunday    String? @default("Sur rendez-vous")
 }

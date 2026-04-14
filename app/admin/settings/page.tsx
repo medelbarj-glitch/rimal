@@ -11,6 +11,19 @@ function SettingsForm() {
     const { showToast } = useToast();
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumber2, setPhoneNumber2] = useState('');
+    
+    // Heures d'ouverture
+    const [hours, setHours] = useState({
+        monday: '09:00 — 20:00',
+        tuesday: '09:00 — 20:00',
+        wednesday: '09:00 — 20:00',
+        thursday: '09:00 — 20:00',
+        friday: '09:00 — 20:00',
+        saturday: '10:00 — 18:00',
+        sunday: 'Sur rendez-vous'
+    });
+    
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -22,7 +35,17 @@ function SettingsForm() {
         const data = await getSettings();
         if (data) {
             setPhoneNumber(data.phoneNumber || '');
+            setPhoneNumber2(data.phoneNumber2 || '');
             setLogoPreview(data.logoUrl || null);
+            setHours({
+                monday: data.hoursMonday || '09:00 — 20:00',
+                tuesday: data.hoursTuesday || '09:00 — 20:00',
+                wednesday: data.hoursWednesday || '09:00 — 20:00',
+                thursday: data.hoursThursday || '09:00 — 20:00',
+                friday: data.hoursFriday || '09:00 — 20:00',
+                saturday: data.hoursSaturday || '10:00 — 18:00',
+                sunday: data.hoursSunday || 'Sur rendez-vous'
+            });
         }
         setIsLoading(false);
     };
@@ -66,9 +89,20 @@ function SettingsForm() {
                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                 placeholder="Ex: +212 600 00 00 00"
                                 style={{ width: '100%', padding: '1rem', fontSize: '1rem', borderRadius: '8px', border: '1px solid #ddd', marginTop: '0.5rem', transition: 'border-color 0.3s' }}
-                                required
                             />
                             <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.8rem', color: '#999' }}>Ce numéro sera utilisé pour tous les boutons WhatsApp du site.</p>
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0, marginTop: '1.5rem' }}>
+                            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Deuxième Numéro de Téléphone (Optionnel)</label>
+                            <input 
+                                type="text"
+                                name="phoneNumber2" 
+                                value={phoneNumber2} 
+                                onChange={(e) => setPhoneNumber2(e.target.value)}
+                                placeholder="Ex: +212 600 00 00 00"
+                                style={{ width: '100%', padding: '1rem', fontSize: '1rem', borderRadius: '8px', border: '1px solid #ddd', marginTop: '0.5rem', transition: 'border-color 0.3s' }}
+                            />
+                            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.8rem', color: '#999' }}>S'affichera notamment sur la page de l'agence.</p>
                         </div>
                     </div>
 
@@ -94,6 +128,36 @@ function SettingsForm() {
                                     <img src={logoPreview} alt="Logo preview" style={{ height: '60px', objectFit: 'contain' }} />
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Section Heures d'Ouverture */}
+                    <div style={{ background: '#fcfcfc', padding: '1.5rem', borderRadius: '12px', border: '1px solid #eee' }}>
+                        <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#333', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <i className="fas fa-clock" style={{ color: '#007bff' }}></i> Heures d'Ouverture
+                        </h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                            {[
+                                { key: 'monday', label: 'Lundi', name: 'hoursMonday' },
+                                { key: 'tuesday', label: 'Mardi', name: 'hoursTuesday' },
+                                { key: 'wednesday', label: 'Mercredi', name: 'hoursWednesday' },
+                                { key: 'thursday', label: 'Jeudi', name: 'hoursThursday' },
+                                { key: 'friday', label: 'Vendredi', name: 'hoursFriday' },
+                                { key: 'saturday', label: 'Samedi', name: 'hoursSaturday' },
+                                { key: 'sunday', label: 'Dimanche', name: 'hoursSunday' },
+                            ].map((day) => (
+                                <div key={day.key} className="form-group" style={{ marginBottom: 0 }}>
+                                    <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#666', textTransform: 'uppercase' }}>{day.label}</label>
+                                    <input 
+                                        type="text"
+                                        name={day.name} 
+                                        value={(hours as any)[day.key]} 
+                                        onChange={(e) => setHours({ ...hours, [day.key]: e.target.value })}
+                                        placeholder="Ex: 09:00 — 20:00"
+                                        style={{ width: '100%', padding: '0.8rem', fontSize: '0.9rem', borderRadius: '8px', border: '1px solid #ddd', marginTop: '0.3rem' }}
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </div>
 

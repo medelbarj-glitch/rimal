@@ -33,7 +33,17 @@ export async function getSettings() {
 export async function updateSettings(formData: FormData) {
     await requireAuth();
     const phoneNumber = formData.get('phoneNumber') as string;
+    const phoneNumber2 = formData.get('phoneNumber2') as string | null;
     const logoFile = formData.get('logo') as File | null;
+    
+    // Heures d'ouverture
+    const hoursMonday = formData.get('hoursMonday') as string | null;
+    const hoursTuesday = formData.get('hoursTuesday') as string | null;
+    const hoursWednesday = formData.get('hoursWednesday') as string | null;
+    const hoursThursday = formData.get('hoursThursday') as string | null;
+    const hoursFriday = formData.get('hoursFriday') as string | null;
+    const hoursSaturday = formData.get('hoursSaturday') as string | null;
+    const hoursSunday = formData.get('hoursSunday') as string | null;
 
     const currentSettings = await prisma.setting.findUnique({ where: { id: 1 } });
     let logoUrl = currentSettings?.logoUrl;
@@ -45,8 +55,16 @@ export async function updateSettings(formData: FormData) {
 
     await prisma.setting.upsert({
         where: { id: 1 },
-        update: { phoneNumber, logoUrl },
-        create: { id: 1, phoneNumber, logoUrl },
+        update: { 
+            phoneNumber, phoneNumber2, logoUrl,
+            hoursMonday, hoursTuesday, hoursWednesday, hoursThursday, 
+            hoursFriday, hoursSaturday, hoursSunday 
+        },
+        create: { 
+            id: 1, phoneNumber, phoneNumber2, logoUrl,
+            hoursMonday, hoursTuesday, hoursWednesday, hoursThursday, 
+            hoursFriday, hoursSaturday, hoursSunday 
+        },
     });
 
     revalidatePath('/', 'layout');

@@ -19,13 +19,16 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
 
     const dbSettings = await getSettings();
     const phoneNumber = dbSettings?.phoneNumber || "+212 6 67 33 28 34";
+    const phoneNumber2 = dbSettings?.phoneNumber2;
     const cleanPhoneNumber = phoneNumber.replace(/[^0-9+]/g, '');
+    const cleanPhoneNumber2 = phoneNumber2 ? phoneNumber2.replace(/[^0-9+]/g, '') : null;
     const whatsappMessage = encodeURIComponent("Bonjour, je suis intéressé par la location d'une voiture.");
 
     const t = await getTranslations({ locale, namespace: 'agency' });
 
     return (
         <>
+            <NavbarAndMenu voitures={voitures} locations={locations} />
             <div className="agency-page">
 
                 {/* ============ HERO ============ */}
@@ -54,17 +57,12 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                 {/* ============ STATS BAR ============ */}
                 <section className="agency-stats-bar">
                     <div className="agency-stat">
-                        <span className="agency-stat-number">5+</span>
-                        <span className="agency-stat-label">{t('years_experience')}</span>
-                    </div>
-                    <div className="agency-stat-divider"></div>
-                    <div className="agency-stat">
-                        <span className="agency-stat-number">{voitures.length}+</span>
+                        <span className="agency-stat-number">+7</span>
                         <span className="agency-stat-label">{t('available_vehicles')}</span>
                     </div>
                     <div className="agency-stat-divider"></div>
                     <div className="agency-stat">
-                        <span className="agency-stat-number">{locations.length}</span>
+                        <span className="agency-stat-number">+5</span>
                         <span className="agency-stat-label">{t('pickup_points')}</span>
                     </div>
                     <div className="agency-stat-divider"></div>
@@ -144,6 +142,15 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                                         <span className="agency-ci-value">{phoneNumber}</span>
                                     </div>
                                 </a>
+                                {phoneNumber2 && (
+                                    <a href={`tel:${cleanPhoneNumber2}`} className="agency-contact-item">
+                                        <div className="agency-ci-icon"><i className="fas fa-phone-alt"></i></div>
+                                        <div>
+                                            <span className="agency-ci-label">{t('contact_phone')} 2</span>
+                                            <span className="agency-ci-value">{phoneNumber2}</span>
+                                        </div>
+                                    </a>
+                                )}
                                 <a href={`https://wa.me/${cleanPhoneNumber}?text=${whatsappMessage}`}
                                     target="_blank" rel="noopener noreferrer" className="agency-contact-item">
                                     <div className="agency-ci-icon whatsapp"><i className="fab fa-whatsapp"></i></div>
@@ -178,35 +185,53 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                             <div className="agency-hours-list">
                                 <div className="agency-hours-row">
                                     <span className="agency-hours-day">{t('monday')}</span>
-                                    <span className="agency-hours-time">09:00 — 20:00</span>
+                                    <span className="agency-hours-time">{dbSettings?.hoursMonday || '09:00 — 20:00'}</span>
                                 </div>
                                 <div className="agency-hours-row">
                                     <span className="agency-hours-day">{t('tuesday')}</span>
-                                    <span className="agency-hours-time">09:00 — 20:00</span>
+                                    <span className="agency-hours-time">{dbSettings?.hoursTuesday || '09:00 — 20:00'}</span>
                                 </div>
                                 <div className="agency-hours-row">
                                     <span className="agency-hours-day">{t('wednesday')}</span>
-                                    <span className="agency-hours-time">09:00 — 20:00</span>
+                                    <span className="agency-hours-time">{dbSettings?.hoursWednesday || '09:00 — 20:00'}</span>
                                 </div>
                                 <div className="agency-hours-row">
                                     <span className="agency-hours-day">{t('thursday')}</span>
-                                    <span className="agency-hours-time">09:00 — 20:00</span>
+                                    <span className="agency-hours-time">{dbSettings?.hoursThursday || '09:00 — 20:00'}</span>
                                 </div>
                                 <div className="agency-hours-row">
                                     <span className="agency-hours-day">{t('friday')}</span>
-                                    <span className="agency-hours-time">09:00 — 20:00</span>
+                                    <span className="agency-hours-time">{dbSettings?.hoursFriday || '09:00 — 20:00'}</span>
                                 </div>
                                 <div className="agency-hours-row">
                                     <span className="agency-hours-day">{t('saturday')}</span>
-                                    <span className="agency-hours-time">10:00 — 18:00</span>
+                                    <span className="agency-hours-time">{dbSettings?.hoursSaturday || '10:00 — 18:00'}</span>
                                 </div>
                                 <div className="agency-hours-row special">
                                     <span className="agency-hours-day">{t('sunday')}</span>
-                                    <span className="agency-badge">{t('by_appointment')}</span>
+                                    <span className="agency-badge">{dbSettings?.hoursSunday || 'Sur rendez-vous'}</span>
                                 </div>
                             </div>
                         </div>
 
+                    </div>
+                </section>
+
+                {/* ============ LOCATION MAP ============ */}
+                <section className="agency-section">
+                    <div className="agency-section-header">
+                        <h2 className="agency-section-title">Où nous trouver ?</h2>
+                    </div>
+                    <div className="agency-map-container" style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=place_id:ChIJJz-HVRfvrw0R0vAmKWsptso`}
+                        ></iframe>
                     </div>
                 </section>
 

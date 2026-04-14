@@ -214,5 +214,83 @@ export async function createReservation(formData: FormData) {
         return { error: 'Une erreur est survenue lors de la création de la réservation.' };
     }
 
+    // --- ENVOI D'EMAIL VIA BREVO ---
+    try {
+        let pickupName = customLocation || 'Adresse personnalisée';
+        let returnName = customReturnLocation || customLocation || 'Adresse personnalisée';
+
+        if (locationId) {
+            const l = await prisma.location.findUnique({ where: { id: locationId } });
+            if (l) pickupName = l.nom;
+        }
+        if (effectiveReturnId) {
+            const l = await prisma.location.findUnique({ where: { id: effectiveReturnId } });
+            if (l) returnName = l.nom;
+        }
+
+        const sDateParts = startDateStr.split('-');
+        const formattedStart = `${sDateParts[2]}/${sDateParts[1]}/${sDateParts[0]}`;
+        const eDateParts = endDateStr.split('-');
+        const formattedEnd = `${eDateParts[2]}/${eDateParts[1]}/${eDateParts[0]}`;
+
+        const emailHtml = `
+<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <div style="background-color: #1a1a1a; padding: 25px; text-align: center; border-bottom: 4px solid #cfaa5b;">
+        <h1 style="color: #ffffff; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px;">Demande de Réservation</h1>
+    </div>
+    <div style="padding: 30px; background-color: #ffffff;">
+        <p style="font-size: 16px; margin-top: 0;">Bonjour <strong>${firstName} ${lastName}</strong>,</p>
+        <p style="font-size: 16px; line-height: 1.5;">Nous avons bien reçu votre demande de réservation pour le véhicule <strong>${model.nom}</strong>.</p>
+        
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #cfaa5b;">
+            <h2 style="font-size: 18px; margin-top: 0; color: #1a1a1a; margin-bottom: 15px;">Récapitulatif de votre demande</h2>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 15px; line-height: 1.8;">
+                <li><strong>🗓️ Du :</strong> ${formattedStart} à ${startTime || '00:00'}</li>
+                <li><strong>🗓️ Au :</strong> ${formattedEnd} à ${returnTime || '00:00'}</li>
+                <li><strong>📍 Prise en charge :</strong> ${pickupName}</li>
+                <li><strong>📍 Retour :</strong> ${returnName}</li>
+                <li><strong>💶 Prix total estimé :</strong> <span style="color: #28a745; font-weight: bold;">${totalPrice} €</span></li>
+            </ul>
+        </div>
+        
+        <p style="font-size: 16px; font-weight: bold; color: #d9534f; border: 1px dashed #d9534f; padding: 15px; border-radius: 5px; text-align: center;">
+            ⏳ Votre réservation sera confirmée d'ici peu. Vous recevrez une confirmation définitive par email.
+        </p>
+        
+        <p style="font-size: 14px; color: #666; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            Merci de votre confiance !<br>
+            <strong>L'équipe de location</strong>
+        </p>
+    </div>
+</div>
+        `;
+
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'api-key': process.env.BREVO_API_KEY || '',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: { name: 'Bouderba Rental', email: 'contact@bouderba-rental.com' },
+                to: [
+                    { email: email, name: `${firstName} ${lastName}` },
+                    { email: 'contact@bouderba-rental.com', name: 'Admin Bouderba Rental' }
+                ],
+                subject: 'Votre demande de réservation est en cours - Validation imminente',
+                htmlContent: emailHtml
+            })
+        });
+
+        if (!response.ok) {
+            const errorInfo = await response.text();
+            console.error('Erreur API Brevo (Statut HTTP', response.status, '):', errorInfo);
+        }
+    } catch (err) {
+        console.error('Erreur lors de l\'envoi de l\'email Brevo:', err);
+    }
+    // --- FIN ENVOI EMAIL ---
+
     redirect(`/reservation/success?id=${reservation.id}`);
 }
