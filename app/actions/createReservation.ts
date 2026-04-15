@@ -249,12 +249,12 @@ export async function createReservation(formData: FormData) {
                 <li><strong>🗓️ Au :</strong> ${formattedEnd} à ${returnTime || '00:00'}</li>
                 <li><strong>📍 Prise en charge :</strong> ${pickupName}</li>
                 <li><strong>📍 Retour :</strong> ${returnName}</li>
-                <li><strong>💶 Prix total estimé :</strong> <span style="color: #28a745; font-weight: bold;">${totalPrice} €</span></li>
+                <li><strong>💶 Prix total estimé :</strong> <span style="color: #28a745; font-weight: bold;">${totalPrice} DH</span></li>
             </ul>
         </div>
         
         <p style="font-size: 16px; font-weight: bold; color: #d9534f; border: 1px dashed #d9534f; padding: 15px; border-radius: 5px; text-align: center;">
-            ⏳ Votre réservation sera confirmée d'ici peu. Vous recevrez une confirmation définitive par email.
+            ⏳ Pour assurer la disponibilité et valider définitivement votre dossier, notre équipe prendra contact avec vous par téléphone sous peu. Cette étape est nécessaire pour confirmer la réservation.
         </p>
         
         <p style="font-size: 14px; color: #666; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
@@ -275,7 +275,9 @@ export async function createReservation(formData: FormData) {
             body: JSON.stringify({
                 sender: { name: 'Bouderba Rental', email: 'contact@bouderba-rental.com' },
                 to: [
-                    { email: email, name: `${firstName} ${lastName}` },
+                    { email: email, name: `${firstName} ${lastName}` }
+                ],
+                bcc: [
                     { email: 'contact@bouderba-rental.com', name: 'Admin Bouderba Rental' }
                 ],
                 subject: 'Votre demande de réservation est en cours - Validation imminente',
