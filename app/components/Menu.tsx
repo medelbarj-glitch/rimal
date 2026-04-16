@@ -94,7 +94,7 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
         <div className="logo">
           <a href="/">
             {logoUrl !== '/default-logo.png' ? (
-              <img src={logoUrl} alt="Bouderba Rental Cars Logo" fetchpriority="high" loading="eager" width="180" height="60" style={{ objectFit: 'contain' }} />
+              <img src={logoUrl} alt="Bouderba Rental Cars Logo" fetchPriority="high" loading="eager" width="180" height="60" style={{ objectFit: 'contain' }} />
             ) : (
               'Bouderba Rental Cars'
             )}
