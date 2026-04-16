@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslatedField } from '@/lib/translate';
 import { useLocale } from 'next-intl';
+import { VehiclePrice } from '@/app/components/VehiclePrice';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,7 +65,7 @@ export default async function VehiclePage({ params }: { params: { id: string } }
                     </div>
 
                     <div className="vehicle-price" style={{ background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginBottom: '30px' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: 'bold', display: 'block' }}>{vehicle.prixParJour} DHS <small style={{ fontSize: '1rem', fontWeight: 'normal' }}>/ jour</small></span>
+                        <VehiclePrice prixParJour={vehicle.prixParJour} />
                     </div>
 
                     <div className="vehicle-actions">

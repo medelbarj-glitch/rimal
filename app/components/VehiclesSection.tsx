@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ModeleVoiture } from '@prisma/client';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { useCurrency } from '../context/CurrencyContext';
 
 // 1. Définir les "props" que ce composant reçoit
 interface VehiclesSectionProps {
@@ -19,6 +20,7 @@ interface VehiclesSectionProps {
 
 export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps) {
   const t = useTranslations('vehicles');
+  const { formatPrice } = useCurrency();
 
   // 2. Remplacer document.querySelector par des "états" et "refs"
   const [isVisible, setIsVisible] = useState(false);
@@ -105,7 +107,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
 
             <div className="vehicule-bottom-info">
               <span className="price">
-                {t('from')} <strong>{car.prixParJour}</strong> {t('per_day')}
+                {t('from')} <strong>{formatPrice(car.prixParJour)}</strong> {t('per_day')}
               </span>
               <div className="buttons-container">
                 <Link href={getReservationUrl(car.id)} className="reserve-button">

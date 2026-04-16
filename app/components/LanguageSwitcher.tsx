@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { useCurrency, currencies, CurrencyCode } from '../context/CurrencyContext';
 
 const languages = [
   { code: 'fr', name: 'Français', flag: '🇫🇷', displayCode: 'FR' },
@@ -20,6 +21,8 @@ export function LanguageSwitcher() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const menuRef = useRef<HTMLDivElement>(null);
+  
+  const { currency, setCurrency, currentCurrencyObj } = useCurrency();
 
   const currentLang = languages.find(l => l.code === locale) || languages[0];
 
@@ -57,6 +60,7 @@ export function LanguageSwitcher() {
     <div className="language-switcher-container" ref={menuRef}>
       {isOpen && (
         <div className="language-switcher-menu">
+          <div className="language-switcher-section">Langue</div>
           {languages.map((lang) => (
             <div 
               key={lang.code}
@@ -67,16 +71,33 @@ export function LanguageSwitcher() {
               <span className="lang-name">{lang.name}</span>
             </div>
           ))}
+          
+          <div className="language-switcher-divider"></div>
+          <div className="language-switcher-section">Devise</div>
+          
+          {currencies.map((c) => (
+            <div 
+              key={c.code}
+              className={`language-switcher-item ${c.code === currency ? 'active' : ''}`}
+              onClick={() => {
+                setCurrency(c.code);
+                setIsOpen(false);
+              }}
+            >
+              <span className="lang-flag" style={{ fontSize: '1rem', fontWeight: 'bold' }}>{c.symbol}</span>
+              <span className="lang-name">{c.label}</span>
+            </div>
+          ))}
         </div>
       )}
 
       <div 
         className={`language-switcher-button ${isOpen ? 'open' : ''}`} 
         onClick={toggleDropdown}
-        title="Changer de langue"
+        title="Changer de langue ou de devise"
       >
         <span className="lang-flag">{currentLang.flag}</span>
-        <span className="lang-code-text">{currentLang.displayCode}</span>
+        <span className="lang-code-text">{currentLang.displayCode} | {currentCurrencyObj.symbol}</span>
         <i className={`fas fa-chevron-${isOpen ? 'down' : 'up'} chevron-icon`}></i>
       </div>
     </div>

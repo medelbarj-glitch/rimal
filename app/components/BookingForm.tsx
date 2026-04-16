@@ -19,6 +19,7 @@ import { DateRange } from 'react-day-picker';
 import { format } from 'date-fns';
 import { useTranslations, useLocale } from 'next-intl';
 import { getTranslatedField } from '@/lib/translate';
+import { useCurrency } from '../context/CurrencyContext';
 // ...
 
 const timeSlots = [
@@ -31,6 +32,7 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
     const t = useTranslations('booking');
     const tRes = useTranslations('reservation');
     const locale = useLocale();
+    const { formatPrice } = useCurrency();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -146,12 +148,12 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
                             {locFees > 0 && (
                                 <div className="summary-row fees">
                                     <span>{t('location_fees')}</span>
-                                    <strong>+ {locFees} DH</strong>
+                                    <strong>+ {formatPrice(locFees)}</strong>
                                 </div>
                             )}
                             <div className="summary-total">
                                 <span>{t('total_estimated')}</span>
-                                <strong>{totalPrice} DH</strong>
+                                <strong>{formatPrice(totalPrice)}</strong>
                             </div>
                         </div>
                     </div>
@@ -232,7 +234,7 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
                                             <option value="">{t('select_location')}</option>
                                             {locations.map((loc) => (
                                                 <option key={loc.id} value={loc.id}>
-                                                    {getTranslatedField(loc, 'nom', locale)} (+{loc.fraisSupplementaires} DH)
+                                                    {getTranslatedField(loc, 'nom', locale)} (+{formatPrice(loc.fraisSupplementaires)})
                                                 </option>
                                             ))}
                                             <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>
@@ -288,7 +290,7 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
                                             <option value="">{isCustomPickup ? t('same_as_pickup') : t('select_location')}</option>
                                             {locations.map((loc) => (
                                                 <option key={loc.id} value={loc.id}>
-                                                    {getTranslatedField(loc, 'nom', locale)} (+{loc.fraisSupplementaires} DH)
+                                                    {getTranslatedField(loc, 'nom', locale)} (+{formatPrice(loc.fraisSupplementaires)})
                                                 </option>
                                             ))}
                                             <option value="custom" style={{ fontWeight: 'bold', color: '#B49339' }}>

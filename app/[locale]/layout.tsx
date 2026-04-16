@@ -20,6 +20,7 @@ import { Footer } from "../components/Footer";
 import { SocialButton } from "../components/SocialButton";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { checkExpiredReservations } from "../actions/checkExpiredReservations";
+import { CurrencyProvider } from "../context/CurrencyContext";
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -78,11 +79,13 @@ export default async function RootLayout({
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
-          <main>{children}</main>
-          
-          <LanguageSwitcher />
-          <SocialButton />
-          <Footer />
+          <CurrencyProvider>
+            <main>{children}</main>
+            
+            <LanguageSwitcher />
+            <SocialButton />
+            <Footer />
+          </CurrencyProvider>
         </NextIntlClientProvider>
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>

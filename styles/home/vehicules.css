@@ -99,6 +99,12 @@
                 letter-spacing: 0.5px;
                 text-transform: uppercase;
                 transition: color 0.3s;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                line-height: 1.5em;
+                height: 4.5em;
             }
         }
 
@@ -261,5 +267,11 @@
 @media screen and (max-width: 768px) {
     .vehicules-title {
         font-size: 3rem;
+    }
+
+    .vehicules {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
     }
 }

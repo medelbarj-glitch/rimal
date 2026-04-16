@@ -40,7 +40,7 @@
   "vehicles": {
     "title": "Nos Véhicules",
     "from": "À partir de",
-    "per_day": "DH/jour",
+    "per_day": "/jour",
     "reserve": "Réserver",
     "details": "Détails"
   },
