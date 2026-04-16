@@ -28,14 +28,14 @@ export default function HreflangTags() {
                     <link 
                         key={loc} 
                         rel="alternate" 
-                        hreflang={seoLang} 
+                        hrefLang={seoLang} 
                         href={`${origin}/${loc}${cleanPathname}`} 
                     />
                 );
             })}
             <link 
                 rel="alternate" 
-                hreflang="x-default" 
+                hrefLang="x-default" 
                 href={`${origin}/${routing.defaultLocale}${cleanPathname}`} 
             />
         </>
