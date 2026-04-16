@@ -57,7 +57,7 @@ export function ExperienceModal({ item, trigger }: ExperienceModalProps) {
                     </button>
                 </div>
 
-                <form action={handleSubmit} className="modal-form" encType="multipart/form-data">
+                <form action={handleSubmit} className="modal-form">
                     <div className="form-group">
                         <label>Titre (Français)</label>
                         <input type="text" name="title" defaultValue={item?.title} required placeholder="Ex: L'Excellence..." />

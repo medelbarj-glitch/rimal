@@ -23,6 +23,16 @@
     flex: 1;
 }
 
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #111;
+}
+
 .data-item img {
     width: 120px;
     height: 80px;
@@ -127,6 +137,8 @@
     width: 90%;
     max-width: 500px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-content.large {

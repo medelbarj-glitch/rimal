@@ -36,7 +36,6 @@ export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
             }}
             className="admin-form-container"
             style={{ padding: '0', boxShadow: 'none', margin: '0', background: 'transparent' }}
-            encType="multipart/form-data"
         >
             <div className="form-row">
                 <div className="form-group">

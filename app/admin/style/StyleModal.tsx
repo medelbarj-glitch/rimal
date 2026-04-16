@@ -52,7 +52,7 @@ export function StyleModal({ image, trigger }: StyleModalProps) {
                     </button>
                 </div>
 
-                <form ref={formRef} action={handleSubmit} className="modal-form" encType="multipart/form-data">
+                <form ref={formRef} action={handleSubmit} className="modal-form">
                     <div className="form-group">
                         <label>Titre (Français)</label>
                         <input

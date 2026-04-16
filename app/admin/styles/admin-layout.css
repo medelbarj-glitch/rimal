@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;500&display=swap');
 
+body {
+    color: black;
+}
+
 /* Reset & Base */
 .admin-layout {
     display: flex;
@@ -114,14 +118,16 @@
     color: #1a1a1a;
 }
 
-.admin-header h2, .component-title {
+.admin-header h2,
+.component-title {
     font-family: 'Anton', sans-serif;
     font-size: 1.5rem;
     margin: 0;
     color: #1a1a1a;
 }
 
-.admin-header h3, .component-subtitle {
+.admin-header h3,
+.component-subtitle {
     font-family: 'Anton', sans-serif;
     font-size: 1rem;
     margin: 0;

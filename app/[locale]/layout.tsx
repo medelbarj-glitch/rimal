@@ -16,6 +16,7 @@ import "../../styles/language-switcher.css";
 
 import { prisma } from '../../lib/prisma';
 import NavbarWrapper from "../components/NavbarWrapper";
+import HreflangTags from "../components/HreflangTags";
 import { Footer } from "../components/Footer";
 import { SocialButton } from "../components/SocialButton";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
@@ -79,6 +80,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <HreflangTags />
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

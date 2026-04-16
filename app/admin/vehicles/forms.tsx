@@ -45,7 +45,6 @@ export function AddModelForm() {
             }}
             ref={formRef}
             className="admin-form-container compact"
-            encType="multipart/form-data"
         >
             <div className="form-row">
                 <div className="form-group">

@@ -48,7 +48,7 @@ export default async function StylePage() {
                     {/* ADD FORM */}
                     <div className="service-form">
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter une image</h3>
-                        <form action={createBackgroundImage} encType="multipart/form-data">
+                        <form action={createBackgroundImage}>
                             <div className="form-group">
                                 <label>Nom Interne (Admin)</label>
                                 <input type="text" name="name" placeholder="Ex: Slider Accueil 1" required />
@@ -157,7 +157,7 @@ export default async function StylePage() {
                     {/* ADD FORM */}
                     <div className="service-form">
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter un Service</h3>
-                        <form action={createService} encType="multipart/form-data">
+                        <form action={createService}>
                             <div className="form-group">
                                 <label>Titre (FR)</label>
                                 <input type="text" name="title" placeholder="Ex: Kilométrage Illimité" required />
@@ -250,7 +250,7 @@ export default async function StylePage() {
                     {/* ADD FORM */}
                     <div className="service-form">
                         <h3 style={{ marginBottom: '1rem' }}>Ajouter une Expérience</h3>
-                        <form action={createExperience} encType="multipart/form-data">
+                        <form action={createExperience}>
                             <div className="form-group">
                                 <label>Titre (FR)</label>
                                 <input type="text" name="title" placeholder="Ex: L'Excellence..." required />
