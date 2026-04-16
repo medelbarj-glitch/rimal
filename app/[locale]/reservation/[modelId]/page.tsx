@@ -43,10 +43,12 @@ export default async function BookingPage({
     const locations = await prisma.location.findMany();
 
     const voitures = await prisma.modeleVoiture.findMany();
+    const settings = await prisma.setting.findUnique({ where: { id: 1 } });
+    const logoUrl = settings?.logoUrl || '/default-logo.png';
 
     return (
         <>
-            <NavbarAndMenu voitures={voitures} locations={locations} isOtherPage={true} />
+            <NavbarAndMenu voitures={voitures} locations={locations} isOtherPage={true} logoUrl={logoUrl} />
             <div className="booking-page">
                 <div className="booking-container">
                     <BookingForm

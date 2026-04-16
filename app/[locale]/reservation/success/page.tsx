@@ -12,12 +12,14 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
     const { id: idStr } = await searchParams;
     const voitures = await prisma.modeleVoiture.findMany();
     const locations = await prisma.location.findMany();
+    const settings = await prisma.setting.findUnique({ where: { id: 1 } });
+    const logoUrl = settings?.logoUrl || '/default-logo.png';
 
     if (!idStr) {
         // Fallback layout if no ID (legacy or direct access)
         return (
             <>
-                <NavbarAndMenu voitures={voitures} locations={locations} />
+                <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={logoUrl} />
                 <div className="success-layout">
                     <div className="success-modal">
                         <div className="checkmark-container">
@@ -71,7 +73,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
 
     return (
         <>
-            <NavbarAndMenu voitures={voitures} locations={locations} />
+            <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={logoUrl} />
             <div className="success-layout">
                 <div className="success-modal wide">
                     <div className="checkmark-container small">

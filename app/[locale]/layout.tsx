@@ -26,6 +26,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,9 +64,10 @@ export default async function RootLayout({
   await checkExpiredReservations();
 
   // RÉCUPÉRATION : On récupère les voitures ET les lieux en parallèle pour gagner du temps
-  const [voitures, locations] = await Promise.all([
+  const [voitures, locations, settings] = await Promise.all([
     prisma.modeleVoiture.findMany(),
-    prisma.location.findMany()
+    prisma.location.findMany(),
+    prisma.setting.findUnique({ where: { id: 1 } })
   ]);
 
   const messages = await getMessages();
@@ -73,6 +75,8 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
       </head>
@@ -88,7 +92,7 @@ export default async function RootLayout({
           </CurrencyProvider>
         </NextIntlClientProvider>
 
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+        <Script src="https://cdn.jsdelivr.net/npm/flatpickr" strategy="lazyOnload" />
       </body>
     </html>
   );

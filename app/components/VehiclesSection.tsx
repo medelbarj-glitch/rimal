@@ -102,7 +102,14 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
             </div>
 
             <Link href={`/vehicule/${car.id}`}>
-              <img src={car.imageUrl || undefined} alt={car.nom} style={{ cursor: 'pointer' }} />
+              <img 
+                src={car.imageUrl?.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_500,h_350,c_fill/') : car.imageUrl || undefined} 
+                alt={car.nom} 
+                style={{ cursor: 'pointer' }}
+                width="500"
+                height="350"
+                loading="lazy"
+              />
             </Link>
 
             <div className="vehicule-bottom-info">

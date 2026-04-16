@@ -28,7 +28,7 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
 
     return (
         <>
-            <NavbarAndMenu voitures={voitures} locations={locations} />
+            <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={dbSettings?.logoUrl || '/default-logo.png'} />
             <div className="agency-page">
 
                 {/* ============ HERO ============ */}

@@ -16,9 +16,10 @@ interface NavbarProps {
   voitures: ModeleVoiture[];
   locations: Location[];
   isOtherPage?: boolean;
+  logoUrl?: string;
 }
 
-export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: NavbarProps) {
+export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUrl = '/default-logo.png' }: NavbarProps) {
   const tNav = useTranslations('navbar');
   const tMenu = useTranslations('menu');
   const locale = useLocale();
@@ -26,22 +27,8 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
   // 2. Remplacer les querySelector par des états React
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('vehicules'); // 'vehicules' est l'onglet par défaut
-  const [logoUrl, setLogoUrl] = useState<string>('/default-logo.png');
 
-  // Récupération du logo depuis la DB au montage du composant
-  useEffect(() => {
-    async function loadLogo() {
-      try {
-        const settings = await getSettings();
-        if (settings?.logoUrl) {
-          setLogoUrl(settings.logoUrl);
-        }
-      } catch (error) {
-        console.error("Erreur chargement logo:", error);
-      }
-    }
-    loadLogo();
-  }, []);
+  // Plus besoin de useEffect pour charger le logo, on utilise la prop 'logoUrl' passée du serveur.
 
   // 3. Remplacer les addEventListener par des fonctions
   const openMenu = () => {
@@ -106,8 +93,8 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
         {/* Logo centré */}
         <div className="logo">
           <a href="/">
-            {logoUrl ? (
-              <img src={logoUrl} alt="Bouderba Rental Cars Logo" />
+            {logoUrl !== '/default-logo.png' ? (
+              <img src={logoUrl} alt="Bouderba Rental Cars Logo" fetchpriority="high" loading="eager" width="180" height="60" style={{ objectFit: 'contain' }} />
             ) : (
               'Bouderba Rental Cars'
             )}
@@ -167,7 +154,15 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false }: Navb
               {voitures.map((car) => (
                 <div key={car.id} className="vehicule-item item">
                   <span className="carName">{car.nom}</span>
-                  <img src={car.imageUrl || undefined} alt={car.nom} />
+                  {car.imageUrl && (
+                    <img 
+                      src={car.imageUrl.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400,h_300,c_fill/') : car.imageUrl} 
+                      alt={car.nom} 
+                      width="400" 
+                      height="300"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="carInfo">
                     <span>{toSentenceCase(car.transmission)}</span>
                     <span>{toSentenceCase(car.fuelType)}</span>

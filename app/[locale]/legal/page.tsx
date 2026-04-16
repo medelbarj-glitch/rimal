@@ -16,10 +16,12 @@ export default async function LegalPage({ params: { locale } }: { params: { loca
     const voitures = await prisma.modeleVoiture.findMany();
     const locations = await prisma.location.findMany();
     const t = await getTranslations({ locale, namespace: 'legal' });
+    const settings = await prisma.setting.findUnique({ where: { id: 1 } });
+    const logoUrl = settings?.logoUrl || '/default-logo.png';
 
     return (
         <>
-            <NavbarAndMenu voitures={voitures} locations={locations} />
+            <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={logoUrl} />
             <div className="legal-page">
                 {/* Hero */}
                 <div className="legal-hero">

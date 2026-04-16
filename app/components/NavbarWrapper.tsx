@@ -8,14 +8,15 @@ import type { ModeleVoiture, Location } from "@prisma/client";
 interface NavbarWrapperProps {
     voitures: ModeleVoiture[];
     locations: Location[];
+    logoUrl?: string;
 }
 
-export default function NavbarWrapper({ voitures, locations }: NavbarWrapperProps) {
+export default function NavbarWrapper({ voitures, locations, logoUrl }: NavbarWrapperProps) {
     const pathname = usePathname();
     const isAdmin = pathname.startsWith("/admin");
 
     if (isAdmin) return null;
 
     // Ajoute locations ici pour satisfaire TypeScript
-    return <NavbarAndMenu voitures={voitures} locations={locations} />;
+    return <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={logoUrl} />;
 }

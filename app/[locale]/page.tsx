@@ -60,9 +60,11 @@ export default async function Home() {
 
     const voitures = await prisma.modeleVoiture.findMany();
     const locations = await prisma.location.findMany();
+    const settings = await prisma.setting.findUnique({ where: { id: 1 } });
+    const logoUrl = settings?.logoUrl || '/default-logo.png';
     return (
         <>
-            <NavbarAndMenu voitures={voitures} locations={locations} />
+            <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={logoUrl} />
 
             {/* Slider doesn't need reveal usually, or can be separate */}
             <ImageSlider images={sliderData} interval={5000} />
