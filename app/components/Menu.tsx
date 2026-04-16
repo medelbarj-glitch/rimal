@@ -94,7 +94,15 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
         <div className="logo">
           <a href="/">
             {logoUrl !== '/default-logo.png' ? (
-              <img src={logoUrl} alt="Bouderba Rental Cars Logo" fetchPriority="high" loading="eager" width="180" height="60" style={{ objectFit: 'contain' }} />
+              <img 
+                src={logoUrl && logoUrl.includes('cloudinary') && !logoUrl.includes('upload/f_auto') ? logoUrl.replace('/upload/', '/upload/f_auto,q_auto,w_300/') : logoUrl} 
+                alt="Bouderba Rental Cars Logo" 
+                fetchPriority="high" 
+                loading="eager" 
+                width="180" 
+                height="60" 
+                style={{ objectFit: 'contain' }} 
+              />
             ) : (
               'Bouderba Rental Cars'
             )}

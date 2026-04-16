@@ -121,7 +121,7 @@
                 background-color: transparent;
                 border: 1px solid #e0e0e0;
                 border-radius: 6px;
-                color: #555;
+                color: #444;
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 transition: all 0.3s;
@@ -148,7 +148,7 @@
             .price {
                 font-size: 1.1rem;
                 font-weight: 600;
-                color: #555;
+                color: #444;
                 display: flex;
                 align-items: baseline;
                 gap: 5px;

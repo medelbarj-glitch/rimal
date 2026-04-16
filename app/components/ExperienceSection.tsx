@@ -21,8 +21,12 @@ export function ExperienceSection({ experiences }: { experiences: any[] }) {
                     </div>
                     <div className="experience-image">
                         <img
-                            src={exp.imageUrl}
+                            src={exp.imageUrl && exp.imageUrl.includes('cloudinary') && !exp.imageUrl.includes('upload/f_auto') ? exp.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_800/') : exp.imageUrl}
                             alt={exp.title}
+                            width={800}
+                            height={533}
+                            loading="lazy"
+                            style={{ objectFit: 'cover' }}
                         />
                     </div>
                 </section>
