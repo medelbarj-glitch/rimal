@@ -74,7 +74,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} hreflang={locale}>
+    <html lang={locale}>
       <link rel="preconnect" href="https://res.cloudinary.com" />
       <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
