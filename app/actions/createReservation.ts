@@ -72,7 +72,7 @@ export async function createReservation(formData: FormData) {
             reservations: {
                 none: {
                     status: {
-                        in: ['PENDING', 'CONFIRMED']
+                        in: ['CONFIRMED']
                     },
                     AND: [
                         { dateDebut: { lt: endDateTime } },

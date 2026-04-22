@@ -86,7 +86,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
                     <p className="success-subtitle">Référence: #{reservation.id}</p>
 
                     <p className="success-message" style={{ color: '#d9534f', fontWeight: 'bold', padding: '15px', border: '1px dashed #d9534f', borderRadius: '5px', marginTop: '20px', marginBottom: '30px' }}>
-                        ⏳ Pour assurer la disponibilité et valider définitivement votre dossier, notre équipe prendra contact avec vous par téléphone sous peu. Cette étape est nécessaire pour confirmer la réservation.
+                        Pour assurer la disponibilité et valider définitivement votre dossier, notre équipe prendra contact avec vous par téléphone sous peu. Cette étape est nécessaire pour confirmer la réservation.
                     </p>
 
                     <div className="success-details-grid">

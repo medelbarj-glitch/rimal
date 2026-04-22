@@ -369,30 +369,36 @@ export function EditReservationModal({ reservation, locations, vehicles }: EditR
                     <div className="form-group mt-20 location-column">
                         <label className="modal-label">Lieu de Départ</label>
                         <select
-                            value={lieuPriseEnChargeId || ''}
+                            value={lieuPriseEnChargeId ? String(lieuPriseEnChargeId) : (customPriseEnCharge !== null && customPriseEnCharge !== undefined ? 'custom' : '')}
                             onChange={(e) => {
                                 const val = e.target.value;
                                 if (val === '') {
                                     setLieuPriseEnChargeId(null);
+                                    setCustomPriseEnCharge(null);
+                                } else if (val === 'custom') {
+                                    setLieuPriseEnChargeId(null);
+                                    setCustomPriseEnCharge('');
                                 } else {
                                     setLieuPriseEnChargeId(Number(val));
-                                    setCustomPriseEnCharge(null); // Clear custom if standard selected
+                                    setCustomPriseEnCharge(null);
                                 }
                             }}
-                            required={!customPriseEnCharge}
+                            required={!customPriseEnCharge && customPriseEnCharge !== ''}
                         >
-                            <option value="">{customPriseEnCharge ? `Personnalisé: ${customPriseEnCharge}` : 'Sélectionner un lieu'}</option>
+                            <option value="">Sélectionner un lieu</option>
                             {locations.map(loc => (
                                 <option key={loc.id} value={loc.id}>{loc.nom}</option>
                             ))}
+                            <option value="custom" style={{ fontWeight: 'bold' }}>📍 Adresse personnalisée</option>
                         </select>
-                        {customPriseEnCharge && (
+                        {customPriseEnCharge !== null && customPriseEnCharge !== undefined && (
                             <input
                                 type="text"
                                 className="mt-2 text-sm text-gray-600 w-full p-2 border rounded"
                                 value={customPriseEnCharge}
                                 onChange={(e) => setCustomPriseEnCharge(e.target.value)}
                                 placeholder="Adresse personnalisée"
+                                autoFocus
                             />
                         )}
                     </div>
@@ -400,30 +406,36 @@ export function EditReservationModal({ reservation, locations, vehicles }: EditR
                     <div className="form-group location-column">
                         <label className="modal-label">Lieu de Retour</label>
                         <select
-                            value={lieuRetourId || ''}
+                            value={lieuRetourId ? String(lieuRetourId) : (customRetour !== null && customRetour !== undefined ? 'custom' : '')}
                             onChange={(e) => {
                                 const val = e.target.value;
                                 if (val === '') {
                                     setLieuRetourId(null);
+                                    setCustomRetour(null);
+                                } else if (val === 'custom') {
+                                    setLieuRetourId(null);
+                                    setCustomRetour('');
                                 } else {
                                     setLieuRetourId(Number(val));
-                                    setCustomRetour(null); // Clear custom if standard selected
+                                    setCustomRetour(null);
                                 }
                             }}
-                            required={!customRetour}
+                            required={!customRetour && customRetour !== ''}
                         >
-                            <option value="">{customRetour ? `Personnalisé: ${customRetour}` : 'Sélectionner un lieu'}</option>
+                            <option value="">Sélectionner un lieu</option>
                             {locations.map(loc => (
                                 <option key={loc.id} value={loc.id}>{loc.nom}</option>
                             ))}
+                            <option value="custom" style={{ fontWeight: 'bold' }}>📍 Adresse personnalisée</option>
                         </select>
-                        {customRetour && (
+                        {customRetour !== null && customRetour !== undefined && (
                             <input
                                 type="text"
                                 className="mt-2 text-sm text-gray-600 w-full p-2 border rounded"
                                 value={customRetour}
                                 onChange={(e) => setCustomRetour(e.target.value)}
                                 placeholder="Adresse personnalisée"
+                                autoFocus
                             />
                         )}
                     </div>
