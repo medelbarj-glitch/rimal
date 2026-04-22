@@ -29,9 +29,8 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
                             </svg>
                         </div>
                         <h1 className="success-title">Réservation Confirmée !</h1>
-                        <p className="success-message">
-                            Votre demande a été enregistrée avec succès.<br />
-                            Notre équipe vous contactera très prochainement pour finaliser les détails de votre location.
+                        <p className="success-message" style={{ color: '#d9534f', fontWeight: 'bold', padding: '15px', border: '1px dashed #d9534f', borderRadius: '5px', marginTop: '20px' }}>
+                            Pour assurer la disponibilité et valider définitivement votre dossier, notre équipe prendra contact avec vous par téléphone sous peu. Cette étape est nécessaire pour confirmer la réservation.
                         </p>
                         <Link href="/" className="btn-home">
                             Retour à l'accueil
@@ -85,6 +84,10 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
 
                     <h1 className="success-title">Réservation Confirmée !</h1>
                     <p className="success-subtitle">Référence: #{reservation.id}</p>
+
+                    <p className="success-message" style={{ color: '#d9534f', fontWeight: 'bold', padding: '15px', border: '1px dashed #d9534f', borderRadius: '5px', marginTop: '20px', marginBottom: '30px' }}>
+                        ⏳ Pour assurer la disponibilité et valider définitivement votre dossier, notre équipe prendra contact avec vous par téléphone sous peu. Cette étape est nécessaire pour confirmer la réservation.
+                    </p>
 
                     <div className="success-details-grid">
                         <div className="detail-group">
