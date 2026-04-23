@@ -59,12 +59,25 @@ export function AddModelForm() {
 
             <div className="form-row">
                 <div className="form-group">
-                    <label className="form-label">Image (Upload)</label>
+                    <label className="form-label">Image Principale (Miniature)</label>
                     <ImageFileInput
                         name="imageFile"
                         accept="image/png, image/jpeg, image/webp"
                     />
                 </div>
+                <div className="form-group">
+                    <label className="form-label">Images supplémentaires (Galerie détail)</label>
+                    <input 
+                        type="file" 
+                        name="galleryFiles" 
+                        multiple 
+                        accept="image/png, image/jpeg, image/webp"
+                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer', background: '#fff' }}
+                    />
+                </div>
+            </div>
+
+            <div className="form-row">
                 <div className="form-group">
                     <label className="form-label">Nombre de Places</label>
                     <input name="nbPlaces" required type="number" defaultValue={5} />

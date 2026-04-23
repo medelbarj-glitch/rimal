@@ -157,16 +157,18 @@
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.review-author::before {
-    content: '';
-    display: block;
+.review-author-img,
+.review-author-placeholder {
     width: 40px;
     height: 40px;
-    background-color: #eee;
     border-radius: 50%;
-    background-image: url('https://ui-avatars.com/api/?background=B49339&color=fff&name=User&font-size=0.4');
-    background-size: cover;
+    object-fit: cover;
     box-shadow: 0 5px 15px rgba(180, 147, 57, 0.3);
+}
+
+.review-author-placeholder {
+    background-size: cover;
+    background-position: center;
 }
 
 /* Infinite Scroll Animation */
@@ -237,7 +239,8 @@
         padding-top: 10px;
     }
 
-    .review-author::before {
+    .review-author-img,
+    .review-author-placeholder {
         width: 32px;
         height: 32px;
         flex-shrink: 0;

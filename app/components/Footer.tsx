@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
 import { getSettings } from '@/app/actions/settingsActions';
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+    const t = useTranslations("footer");
     const pathname = usePathname();
     const isAdmin = pathname?.startsWith("/admin");
 
@@ -40,16 +42,16 @@ export function Footer() {
             <div className="footer-content">
                 <div className="first-cat">
                     <span>Bouderba Rental Cars</span>
-                    <a href="/#reservations" onClick={(e) => handleSmoothScroll(e, 'reservations')}>Réservations</a>
-                    <a href="/#vehicules" onClick={(e) => handleSmoothScroll(e, 'vehicules')}>Nos Véhicules</a>
-                    <a href="/#localisations" onClick={(e) => handleSmoothScroll(e, 'localisations')}>Nos Localisations</a>
-                    <a href="/#agence" onClick={(e) => handleSmoothScroll(e, 'agence')}>Notre Agence</a>
-                    <a href="/#contact" onClick={(e) => handleSmoothScroll(e, 'contact')}>Nous Contacter</a>
+                    <a href="/#reservations" onClick={(e) => handleSmoothScroll(e, 'reservations')}>{t('reservations')}</a>
+                    <a href="/#vehicules" onClick={(e) => handleSmoothScroll(e, 'vehicules')}>{t('vehicles')}</a>
+                    <a href="/#localisations" onClick={(e) => handleSmoothScroll(e, 'localisations')}>{t('locations')}</a>
+                    <a href="/#agence" onClick={(e) => handleSmoothScroll(e, 'agence')}>{t('agency')}</a>
+                    <a href="/#contact" onClick={(e) => handleSmoothScroll(e, 'contact')}>{t('contact')}</a>
                 </div>
                 <div className="second-cat">
-                    <a href="/legal#conditions">Conditions Générales de Location</a>
-                    <a href="/legal#confidentialite">Politique de Confidentialité</a>
-                    <a href="/legal#mentions">Mentions Légales</a>
+                    <a href="/legal#conditions">{t('terms')}</a>
+                    <a href="/legal#confidentialite">{t('privacy')}</a>
+                    <a href="/legal#mentions">{t('legal')}</a>
                 </div>
                 <div className="third-cat">
                     <a href={`https://wa.me/${cleanPhoneNumber}?text=${message}`} target="_blank" rel="noopener noreferrer">
@@ -61,7 +63,7 @@ export function Footer() {
                 </div>
             </div>
             <div className="footer-bottom">
-                <span>© 2026 Bouderba Rental Cars. Tous droits réservés.</span>
+                <span>© {new Date().getFullYear()} Bouderba Rental Cars. {t('rights')}</span>
             </div>
         </footer>
     );

@@ -75,12 +75,15 @@ export async function createModel(formData: FormData) {
     // Récupération du fichier
     const imageFile = formData.get('imageFile') as File | null;
 
+    // Récupération des fichiers de la galerie
+    const galleryFiles = formData.getAll('galleryFiles') as File[];
+
     let imageUrl = '';
     if (imageFile && imageFile.size > 0) {
         imageUrl = await uploadToCloudinary(imageFile, 'vehicles');
     }
 
-    await prisma.modeleVoiture.create({
+    const nouveauModele = await prisma.modeleVoiture.create({
         data: {
             nom,
             prixParJour,
@@ -92,9 +95,23 @@ export async function createModel(formData: FormData) {
             description_es,
             description_ar,
             description_ma,
-            imageUrl, // Stocke l'URL Cloudinary sécurisée
+            imageUrl, // Stocke l'URL Cloudinary sécurisée principale
         },
     });
+
+    // Upload et création des images de la galerie
+    if (galleryFiles && galleryFiles.length > 0) {
+        const galleryUploads = galleryFiles.filter(file => file.size > 0);
+        for (const file of galleryUploads) {
+            const galleryUrl = await uploadToCloudinary(file, 'vehicles/gallery');
+            await prisma.modeleImage.create({
+                data: {
+                    url: galleryUrl,
+                    modeleId: nouveauModele.id
+                }
+            });
+        }
+    }
 
     revalidatePath('/admin/vehicles');
     revalidatePath('/', 'layout');
@@ -116,6 +133,9 @@ export async function updateModel(id: number, formData: FormData) {
     // Récupération du fichier
     const imageFile = formData.get('imageFile') as File | null;
 
+    // Récupération des fichiers de la galerie
+    const galleryFiles = formData.getAll('galleryFiles') as File[];
+
     const updateData: any = {
         nom,
         prixParJour,
@@ -129,7 +149,7 @@ export async function updateModel(id: number, formData: FormData) {
         description_ma,
     };
 
-    // Gestion du remplacement de l'image
+    // Gestion du remplacement de l'image principale
     if (imageFile && imageFile.size > 0) {
         const oldModel = await prisma.modeleVoiture.findUnique({ where: { id } });
         
@@ -146,6 +166,21 @@ export async function updateModel(id: number, formData: FormData) {
         data: updateData,
     });
 
+    // Upload et création des images de la galerie
+    if (galleryFiles && galleryFiles.length > 0) {
+        const galleryUploads = galleryFiles.filter(file => file.size > 0);
+        for (const file of galleryUploads) {
+            const galleryUrl = await uploadToCloudinary(file, 'vehicles/gallery');
+            await prisma.modeleImage.create({
+                data: {
+                    url: galleryUrl,
+                    modeleId: id
+                }
+            });
+        }
+    }
+
+    revalidatePath(`/admin/vehicles/${id}`);
     revalidatePath('/admin/vehicles');
     revalidatePath('/', 'layout');
 }
@@ -157,9 +192,16 @@ export async function deleteModel(id: number) {
     });
 
     if (modelToDelete) {
-        // Supprime l'image physique avant de supprimer l'entrée DB
+        // Supprime l'image principale
         await deleteFromCloudinary(modelToDelete.imageUrl);
 
+        // Supprime les images de la galerie sur Cloudinary
+        const imagesToDelete = await prisma.modeleImage.findMany({ where: { modeleId: id } });
+        for (const img of imagesToDelete) {
+            await deleteFromCloudinary(img.url);
+        }
+
+        // Note : La suppression en base des modeleImage se fait par cascade (onDelete: Cascade)
         await prisma.modeleVoiture.delete({
             where: { id },
         });
@@ -167,6 +209,25 @@ export async function deleteModel(id: number) {
 
     revalidatePath('/admin/vehicles');
     revalidatePath('/', 'layout');
+}
+
+export async function deleteGalleryImage(imageId: number) {
+    await requireAuth();
+    
+    const imageToDelete = await prisma.modeleImage.findUnique({
+        where: { id: imageId }
+    });
+
+    if (imageToDelete) {
+        await deleteFromCloudinary(imageToDelete.url);
+        await prisma.modeleImage.delete({
+            where: { id: imageId }
+        });
+        
+        revalidatePath(`/admin/vehicles/${imageToDelete.modeleId}`);
+        revalidatePath('/admin/vehicles');
+        revalidatePath('/', 'layout');
+    }
 }
 
 // --- VEHICLE ACTIONS ---

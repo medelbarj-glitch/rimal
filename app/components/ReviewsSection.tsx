@@ -10,6 +10,7 @@ interface GoogleReview {
     relative_time_description: string;
     text: string;
     author_url: string; // Nous n'utiliserons plus celui-ci directement
+    profile_photo_url?: string;
 }
 
 export function ReviewsSection() {
@@ -96,6 +97,11 @@ export function ReviewsSection() {
                             </div>
                             <p className="review-text">"{review.text}"</p>
                             <div className="review-author">
+                                {review.profile_photo_url ? (
+                                    <img src={review.profile_photo_url} alt={review.author_name} className="review-author-img" />
+                                ) : (
+                                    <div className="review-author-placeholder" style={{ backgroundImage: `url('https://ui-avatars.com/api/?background=B49339&color=fff&name=${encodeURIComponent(review.author_name)}&font-size=0.4')`}}></div>
+                                )}
                                 {review.author_name}
                             </div>
                         </a>

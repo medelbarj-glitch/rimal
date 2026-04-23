@@ -40,9 +40,15 @@
   "vehicles": {
     "title": "الطوموبيلات ديالنا",
     "from": "ابتداءً من",
-    "per_day": "/نهار",
-    "reserve": "ريزيرفي",
-    "details": "التفاصيل"
+    "per_day": "nhar",
+    "reserve": "Reserver",
+    "details": "التفاصيل",
+    "description": "3la had jdad",
+    "galerie": "Tsiwrat",
+    "caracteristiques": "Mowasafat",
+    "places": "Blayes",
+    "carburant": "Lmazot",
+    "transmission": "Vitesse"
   },
   "services": {
     "title": "الخدمات الحصرية ديالنا"
@@ -124,7 +130,8 @@
     "step_3_desc": "Nous vous livrons le véhicule à l'endroit convenu ou vous venez le chercher. Profitez de votre trajet !",
     "cta_title": "Prêt à prendre la route ?",
     "cta_desc": "Réservez dès maintenant et profitez d'un service de location premium.",
-    "cta_btn": "Réserver maintenant"
+    "cta_btn": "Réserver maintenant",
+    "find_us": "Fin tl9ana?"
   },
   "legal": {
     "title": "Informations Légales",
@@ -192,5 +199,16 @@
     "ment_4_desc": "Bouderba Rental Cars s'efforce de maintenir les informations de ce site à jour et exactes. Toutefois, nous ne saurions être tenus responsables des erreurs ou omissions, ni des conséquences de leur utilisation.",
     "ment_5_title": "Droit applicable",
     "ment_5_desc": "Le présent site et les présentes mentions légales sont soumis au droit marocain. Tout litige relatif à l'utilisation du site sera soumis à la juridiction compétente au Maroc."
+  },
+  "footer": {
+    "reservations": "Réservations",
+    "vehicles": "Tomobilat dyalna",
+    "locations": "Lblayess dyalna",
+    "agency": "L'agence dyalna",
+    "contact": "Tassl bina",
+    "terms": "Chorot lkiraa",
+    "privacy": "Syassat lkhososya",
+    "legal": "Ichaarat kanounya",
+    "rights": "Ga3 lhokkok mahfoda."
   }
 }

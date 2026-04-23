@@ -220,7 +220,7 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                 {/* ============ LOCATION MAP ============ */}
                 <section className="agency-section">
                     <div className="agency-section-header">
-                        <h2 className="agency-section-title">Où nous trouver ?</h2>
+                        <h2 className="agency-section-title">{t('find_us')}</h2>
                     </div>
                     <div className="agency-map-container" style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
                         <iframe

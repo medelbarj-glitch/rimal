@@ -71,6 +71,9 @@ model ModeleVoiture {
   // Relation: Ce modèle a plusieurs véhicules physiques
   vehicules Vehicule[]
 
+  // Relation: Galerie d'images pour la page détail
+  imagesModele ModeleImage[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -94,6 +97,20 @@ model Vehicule {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("vehicules")
+}
+
+// 2b. LES IMAGES DU MODELE (Galerie)
+model ModeleImage {
+  id        Int           @id @default(autoincrement())
+  url       String        @db.Text
+  
+  // Relation: Cette image appartient à un modèle précis
+  modeleId  Int
+  modele    ModeleVoiture @relation(fields: [modeleId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  @@map("modele_images")
 }
 
 // 3. LA LOCATION (Formulaire de réservation)

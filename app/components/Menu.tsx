@@ -160,7 +160,7 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
               className={`vehicules-items right-menu-items ${activeTab === 'vehicules' && isMenuOpen ? 'active' : ''}`}
             >
               {voitures.map((car) => (
-                <div key={car.id} className="vehicule-item item">
+                <a key={car.id} href={`/${locale}/vehicles/${car.id}`} className="vehicule-item item" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <span className="carName">{car.nom}</span>
                   {car.imageUrl && (
                     <img 
@@ -175,7 +175,7 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
                     <span>{toSentenceCase(car.transmission)}</span>
                     <span>{toSentenceCase(car.fuelType)}</span>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
 

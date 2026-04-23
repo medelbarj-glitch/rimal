@@ -21,7 +21,7 @@ async function verifyToken(token: string) {
 
 const intlMiddleware = createMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Ne pas protéger la page de login elle-même
@@ -58,6 +58,8 @@ export async function middleware(request: NextRequest) {
   // Pour tout le reste (sauf api/_next etc. exclus par le matcher), on délègue au routing i18n
   return intlMiddleware(request);
 }
+
+export default proxy;
 
 export const config = {
   // Le matcher capture toutes les url SAUF api, _next, images, favicon.

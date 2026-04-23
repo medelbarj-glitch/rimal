@@ -40,9 +40,15 @@
   "vehicles": {
     "title": "Our Vehicles",
     "from": "From",
-    "per_day": "/day",
-    "reserve": "Book now",
-    "details": "Details"
+    "per_day": "day",
+    "reserve": "Book",
+    "details": "Details",
+    "description": "About this vehicle",
+    "galerie": "Photo Gallery",
+    "caracteristiques": "Features",
+    "places": "Seats",
+    "carburant": "Fuel",
+    "transmission": "Transmission"
   },
   "services": {
     "title": "Our Exclusive Services"
@@ -124,7 +130,8 @@
     "step_3_desc": "We deliver the vehicle to the agreed location or you come pick it up. Enjoy your ride!",
     "cta_title": "Ready to hit the road?",
     "cta_desc": "Book now and enjoy a premium rental service.",
-    "cta_btn": "Book now"
+    "cta_btn": "Book now",
+    "find_us": "Where to find us?"
   },
   "legal": {
     "title": "Legal Information",
@@ -192,5 +199,16 @@
     "ment_4_desc": "Bouderba Rental Cars strives to keep the information on this site up-to-date and accurate. However, we cannot be held responsible for errors or omissions, nor the consequences of their use.",
     "ment_5_title": "Applicable Law",
     "ment_5_desc": "This site and these legal notices are subject to Moroccan law. Any dispute related to the use of the site will be submitted to the competent jurisdiction in Morocco."
+  },
+  "footer": {
+    "reservations": "Reservations",
+    "vehicles": "Our Vehicles",
+    "locations": "Our Locations",
+    "agency": "Our Agency",
+    "contact": "Contact Us",
+    "terms": "General Rental Conditions",
+    "privacy": "Privacy Policy",
+    "legal": "Legal Notices",
+    "rights": "All rights reserved."
   }
 }

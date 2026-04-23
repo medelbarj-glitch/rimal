@@ -40,9 +40,15 @@
   "vehicles": {
     "title": "Nos Véhicules",
     "from": "À partir de",
-    "per_day": "/jour",
+    "per_day": "jour",
     "reserve": "Réserver",
-    "details": "Détails"
+    "details": "Détails",
+    "description": "À propos de ce véhicule",
+    "galerie": "Galerie Photos",
+    "caracteristiques": "Caractéristiques",
+    "places": "Places",
+    "carburant": "Carburant",
+    "transmission": "Transmission"
   },
   "services": {
     "title": "Nos Services Exclusifs"
@@ -124,7 +130,8 @@
     "step_3_desc": "Nous vous livrons le véhicule à l'endroit convenu ou vous venez le chercher. Profitez de votre trajet !",
     "cta_title": "Prêt à prendre la route ?",
     "cta_desc": "Réservez dès maintenant et profitez d'un service de location premium.",
-    "cta_btn": "Réserver maintenant"
+    "cta_btn": "Réserver maintenant",
+    "find_us": "Où nous trouver ?"
   },
   "legal": {
     "title": "Informations Légales",
@@ -192,5 +199,16 @@
     "ment_4_desc": "Bouderba Rental Cars s'efforce de maintenir les informations de ce site à jour et exactes. Toutefois, nous ne saurions être tenus responsables des erreurs ou omissions, ni des conséquences de leur utilisation.",
     "ment_5_title": "Droit applicable",
     "ment_5_desc": "Le présent site et les présentes mentions légales sont soumis au droit marocain. Tout litige relatif à l'utilisation du site sera soumis à la juridiction compétente au Maroc."
+  },
+  "footer": {
+    "reservations": "Réservations",
+    "vehicles": "Nos Véhicules",
+    "locations": "Nos Localisations",
+    "agency": "Notre Agence",
+    "contact": "Nous Contacter",
+    "terms": "Conditions Générales de Location",
+    "privacy": "Politique de Confidentialité",
+    "legal": "Mentions Légales",
+    "rights": "Tous droits réservés."
   }
 }

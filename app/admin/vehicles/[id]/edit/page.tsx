@@ -14,6 +14,7 @@ export default async function EditVehiclePage({ params }: { params: { id: string
 
     const modele = await prisma.modeleVoiture.findUnique({
         where: { id },
+        include: { imagesModele: true }
     });
 
     if (!modele) {

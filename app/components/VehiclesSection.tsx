@@ -91,7 +91,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
         {voitures.map((car) => (
           <div key={car.id} className="vehicule">
             <div className="vehicule-top-info">
-              <Link href={`/vehicule/${car.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link href={`/vehicles/${car.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <h2>{car.nom}</h2>
               </Link>
               <div className="carInfo">
@@ -101,7 +101,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
               </div>
             </div>
 
-            <Link href={`/vehicule/${car.id}`}>
+            <Link href={`/vehicles/${car.id}`}>
               <img 
                 src={car.imageUrl?.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_500,h_350,c_fill/') : car.imageUrl || undefined} 
                 alt={car.nom} 
@@ -120,7 +120,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
                 <Link href={getReservationUrl(car.id)} className="reserve-button">
                   {t('reserve')}
                 </Link>
-                <Link href={`/vehicule/${car.id}`} className="details-button">
+                <Link href={`/vehicles/${car.id}`} className="details-button">
                   {t('details')}
                 </Link>
               </div>

@@ -1,109 +1,107 @@
+import React from 'react';
 import { prisma } from '@/lib/prisma';
-import Link from 'next/link';
+import { getSettings } from '@/app/actions/settingsActions';
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { getTranslatedField } from '@/lib/translate';
-import { useLocale } from 'next-intl';
-import { VehiclePrice } from '@/app/components/VehiclePrice';
+import { NavbarAndMenu } from '@/app/components/Menu';
+import { Footer } from '@/app/components/Footer';
+import VehicleGallery from './VehicleGallery';
+import '@/styles/vehicle-detail.css';
 
 export const dynamic = 'force-dynamic';
 
-export default async function VehiclePage({ params }: { params: { id: string } }) {
+export default async function VehicleDetailPage({ params }: { params: { locale: string, id: string } }) {
+    const locale = params.locale;
     const id = parseInt(params.id);
-    if (isNaN(id)) return notFound();
 
-    const vehicle = await prisma.modeleVoiture.findUnique({
-        where: { id },
-    });
+    if (isNaN(id)) {
+        notFound();
+    }
 
-    if (!vehicle) return notFound();
+    const [modele, voitures, locations, dbSettings] = await Promise.all([
+        prisma.modeleVoiture.findUnique({
+            where: { id },
+            include: { imagesModele: true }
+        }),
+        prisma.modeleVoiture.findMany(),
+        prisma.location.findMany(),
+        getSettings()
+    ]);
 
-    const locale = useLocale();
+    if (!modele) {
+        notFound();
+    }
+
+    const t = await getTranslations({ locale });
+
+    // Extraction de la description correcte selon la langue
+    let description = modele.description;
+    if (locale === 'en' && (modele as any).description_en) description = (modele as any).description_en;
+    if (locale === 'es' && (modele as any).description_es) description = (modele as any).description_es;
+    if (locale === 'ar' && (modele as any).description_ar) description = (modele as any).description_ar;
+    if (locale === 'ma' && (modele as any).description_ma) description = (modele as any).description_ma;
 
     return (
-        <div className="vehicle-page-container" style={{ padding: '100px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-            <Link href="/" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', marginBottom: '20px', color: 'black', textDecoration: 'none', fontWeight: 'bold' }}>
-                <i className="fas fa-arrow-left" style={{ marginRight: '10px' }}></i> Retour
-            </Link>
+        <div className="vehicle-detail-page">
+            <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={dbSettings?.logoUrl || '/default-logo.png'} />
 
-            <div className="vehicle-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
-                {/* Left: Image */}
-                <div className="vehicle-image-wrapper">
-                    <img
-                        src={vehicle.imageUrl || '/images/placeholder.jpg'}
-                        alt={vehicle.nom}
-                        style={{ width: '100%', borderRadius: '12px', boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
-                    />
+            <section className="vd-hero">
+                <img src={modele.imageUrl || '/images/default-car.jpg'} alt={modele.nom} className="vd-hero-bg" />
+                <div className="vd-hero-overlay"></div>
+                <div className="vd-hero-content">
+                    <h1 className="vd-title">{modele.nom}</h1>
+                    <div className="vd-price-badge">{modele.prixParJour} MAD / {t('vehicles.per_day') || 'jour'}</div>
                 </div>
+            </section>
 
-                {/* Right: Info */}
-                <div className="vehicle-info">
-                    <h1 style={{ fontSize: '3rem', fontFamily: 'Oswald, sans-serif', marginBottom: '10px' }}>{vehicle.nom}</h1>
-                    <p className="vehicle-category" style={{ fontSize: '1.2rem', color: '#666', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '2px' }}>
-                        {vehicle.transmission} / {vehicle.fuelType}
+            <div className="vd-container">
+                {/* Left Column */}
+                <div className="vd-main-content">
+                    <h2 className="vd-section-title">
+                        <i className="fas fa-info-circle"></i> {t('vehicles.description') || 'À propos de ce véhicule'}
+                    </h2>
+                    <p className="vd-description">
+                        {description || "Aucune description détaillée n'est disponible pour ce modèle."}
                     </p>
 
-                    <div className="vehicle-specs" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginBottom: '30px' }}>
-                        <div className="spec-item">
-                            <i className="fas fa-users" style={{ marginRight: '10px' }}></i> {vehicle.nbPlaces} Places
-                        </div>
-                        {/* Valises not in schema, removing or hardcoding for now */}
-                        <div className="spec-item">
-                            <i className="fas fa-suitcase" style={{ marginRight: '10px' }}></i> 2 Valises
-                        </div>
-                        <div className="spec-item">
-                            <i className="fas fa-cog" style={{ marginRight: '10px' }}></i> {vehicle.transmission}
-                        </div>
-                        <div className="spec-item">
-                            <i className="fas fa-gas-pump" style={{ marginRight: '10px' }}></i> {vehicle.fuelType}
-                        </div>
-                        <div className="spec-item">
-                            <i className="fas fa-snowflake" style={{ marginRight: '10px' }}></i> Climatisation
-                        </div>
-                        <div className="spec-item">
-                            <i className="fas fa-music" style={{ marginRight: '10px' }}></i> Bluetooth/Audio
-                        </div>
-                    </div>
-
-                    <div className="vehicle-price" style={{ background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginBottom: '30px' }}>
-                        <VehiclePrice prixParJour={vehicle.prixParJour} />
-                    </div>
-
-                    <div className="vehicle-actions">
-                        <Link
-                            href={`/?vehicleId=${vehicle.id}#reservation`}
-                            className="btn-reserve"
-                            scroll={false}
-                            style={{
-                                display: 'inline-block',
-                                background: 'black',
-                                color: 'white',
-                                padding: '15px 40px',
-                                borderRadius: '50px',
-                                textDecoration: 'none',
-                                fontWeight: 'bold',
-                                fontSize: '1.1rem'
-                            }}
-                        >
-                            Réserver ce véhicule <i className="fas fa-arrow-right" style={{ marginLeft: '10px' }}></i>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            {/* Description Text */}
-            <div className="vehicle-description" style={{ marginTop: '60px' }}>
-                <h3 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Description</h3>
-                <p style={{ lineHeight: '1.8', color: '#444' }}>
-                    {getTranslatedField(vehicle, 'description', locale) || (
+                    {modele.imagesModele && modele.imagesModele.length > 0 && (
                         <>
-                            Profitez d'une expérience de conduite exceptionnelle avec la {vehicle.nom}.
-                            Idéale pour vos séjours à Marrakech, ce véhicule allie confort, sécurité et performance.
-                            Disponible avec options kilométrage illimité et livraison à l'aéroport.
-                            Réservez dès maintenant pour garantir la disponibilité.
+                            <h2 className="vd-section-title" style={{ marginTop: '50px' }}>
+                                <i className="fas fa-camera-retro"></i> {t('vehicles.galerie') || 'Galerie Photos'}
+                            </h2>
+                            <VehicleGallery images={modele.imagesModele.map(img => img.url)} />
                         </>
                     )}
-                </p>
+                </div>
+
+                {/* Right Column (Sidebar) */}
+                <aside className="vd-sidebar">
+                    <h2 className="vd-section-title" style={{ marginBottom: '30px' }}>
+                        <i className="fas fa-cogs"></i> {t('vehicles.caracteristiques') || 'Caractéristiques'}
+                    </h2>
+                    
+                    <div className="vd-specs-list">
+                        <div className="vd-spec-item">
+                            <span className="vd-spec-label"><i className="fas fa-users"></i> {t('vehicles.places') || 'Places'}</span>
+                            <span className="vd-spec-value">{modele.nbPlaces}</span>
+                        </div>
+                        <div className="vd-spec-item">
+                            <span className="vd-spec-label"><i className="fas fa-gas-pump"></i> {t('vehicles.carburant') || 'Carburant'}</span>
+                            <span className="vd-spec-value">{modele.fuelType}</span>
+                        </div>
+                        <div className="vd-spec-item">
+                            <span className="vd-spec-label"><i className="fas fa-cog"></i> {t('vehicles.transmission') || 'Transmission'}</span>
+                            <span className="vd-spec-value">{modele.transmission}</span>
+                        </div>
+                    </div>
+
+                    <a href={`/${locale}/reservation?vehicleId=${modele.id}`} className="vd-book-btn">
+                        {t('vehicles.reserve') || 'Réserver ce modèle'} <i className="fas fa-arrow-right"></i>
+                    </a>
+                </aside>
             </div>
+
+            <Footer />
         </div>
     );
 }

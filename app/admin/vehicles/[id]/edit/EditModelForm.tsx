@@ -4,6 +4,8 @@ import { updateModel } from '@/app/actions/admin';
 import { StatutVehicule, Transmission, FuelType, ModeleVoiture } from '@prisma/client';
 import { useFormStatus } from 'react-dom';
 import { ImageFileInput } from '../../../components/ImageFileInput';
+import { deleteGalleryImage } from '@/app/actions/admin';
+import { useState } from 'react';
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -20,11 +22,18 @@ function SubmitButton() {
 }
 
 interface EditModelFormProps {
-    modele: ModeleVoiture;
+    modele: ModeleVoiture & { imagesModele?: { id: number, url: string }[] };
     onSuccess?: () => void;
 }
 
 export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
+    const [existingImages, setExistingImages] = useState(modele.imagesModele || []);
+
+    const handleDeleteImage = async (imageId: number) => {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) return;
+        await deleteGalleryImage(imageId);
+        setExistingImages(existingImages.filter(img => img.id !== imageId));
+    };
 
     return (
         <form
@@ -50,12 +59,45 @@ export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
 
             <div className="form-row">
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Remplacer l'Image (Optionnel)</label>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Remplacer l'Image Principale (Miniature)</label>
                     <ImageFileInput
                         name="imageFile"
                         accept="image/png, image/jpeg, image/webp"
                     />
                 </div>
+                <div className="form-group">
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Ajouter des photos à la Galerie (Page détail)</label>
+                    <input
+                        type="file"
+                        name="galleryFiles"
+                        multiple
+                        accept="image/png, image/jpeg, image/webp"
+                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer' }}
+                    />
+                </div>
+            </div>
+
+            {existingImages.length > 0 && (
+                <div className="form-group">
+                    <label style={{ display: 'block', marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>Galerie actuelle</label>
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                        {existingImages.map((img) => (
+                            <div key={img.id} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '8px', overflow: 'hidden' }}>
+                                <img src={img.url} alt="Galerie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <button
+                                    type="button"
+                                    onClick={() => handleDeleteImage(img.id)}
+                                    style={{ position: 'absolute', top: '5px', right: '5px', background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '25px', height: '25px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                >
+                                    <i className="fas fa-times"></i>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <div className="form-row">
                 <div className="form-group">
                     <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Nombre de Places</label>
                     <input name="nbPlaces" required type="number" defaultValue={modele.nbPlaces} />
