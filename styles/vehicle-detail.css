@@ -11,12 +11,12 @@
 
 /* ─── MAIN LAYOUT ─── */
 .vd-new-layout {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 40px 2%;
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 50px;
     align-items: start;
 }
 
@@ -30,7 +30,7 @@
 
 .vd-slider-main {
     width: 100%;
-    aspect-ratio: 16/10;
+    aspect-ratio: 4/3;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
