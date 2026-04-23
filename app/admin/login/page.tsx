@@ -13,9 +13,12 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (state.success) {
-      // On success, redirect to admin dashboard
-      router.push('/admin')
-      router.refresh() // Force refresh to ensure layout updates with new auth state
+      // Small delay to ensure the session cookie is fully set before redirect
+      const timer = setTimeout(() => {
+        router.push('/admin')
+        router.refresh()
+      }, 300)
+      return () => clearTimeout(timer)
     }
   }, [state.success, router])
 
