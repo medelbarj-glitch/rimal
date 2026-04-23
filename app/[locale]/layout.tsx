@@ -45,8 +45,65 @@ const oswald = Oswald({
 });
 
 export const metadata: Metadata = {
-  title: "Bouderba Rental Cars",
-  description: "Car rental service",
+  title: {
+    default: "Bouderba Rental Cars | Location de Voiture à Marrakech, Maroc",
+    template: "%s | Bouderba Rental Cars - Location Voiture Marrakech",
+  },
+  description: "Louez une voiture à Marrakech et au Maroc avec Bouderba Rental Cars. Large flotte de véhicules récents, prix compétitifs, livraison aéroport. Réservez en ligne 24h/24.",
+  keywords: [
+    "location voiture marrakech",
+    "location de voiture maroc",
+    "rent a car marrakech",
+    "car rental marrakech",
+    "louer voiture marrakech",
+    "location voiture aéroport marrakech",
+    "agence location voiture marrakech",
+    "voiture de location maroc",
+    "car hire morocco",
+    "rent car morocco",
+    "location pas cher marrakech",
+    "Bouderba Rental Cars",
+    "location véhicule marrakech",
+    "location auto maroc",
+  ],
+  authors: [{ name: "Bouderba Rental Cars" }],
+  creator: "Bouderba Rental Cars",
+  publisher: "Bouderba Rental Cars",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "fr_MA",
+    alternateLocale: ["en_US", "es_ES", "ar_MA"],
+    siteName: "Bouderba Rental Cars",
+    title: "Bouderba Rental Cars | Location de Voiture à Marrakech, Maroc",
+    description: "Louez une voiture à Marrakech et au Maroc. Large flotte, prix compétitifs, livraison aéroport Marrakech-Ménara. Réservez en ligne.",
+    url: "https://www.bouderba-rental.com",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bouderba Rental Cars | Location Voiture Marrakech",
+    description: "Location de voiture à Marrakech et au Maroc. Prix compétitifs, véhicules récents, livraison aéroport.",
+  },
+  alternates: {
+    canonical: "https://www.bouderba-rental.com",
+    languages: {
+      "fr": "https://www.bouderba-rental.com/fr",
+      "en": "https://www.bouderba-rental.com/en",
+      "es": "https://www.bouderba-rental.com/es",
+      "ar": "https://www.bouderba-rental.com/ar",
+    },
+  },
+  category: "travel",
 };
 
 export default async function RootLayout({
@@ -81,6 +138,43 @@ export default async function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" precedence="default" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" precedence="default" />
         <HreflangTags />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "AutoRental",
+              "name": "Bouderba Rental Cars",
+              "description": "Location de voiture à Marrakech et au Maroc. Large flotte de véhicules récents à prix compétitifs avec livraison aéroport.",
+              "url": "https://www.bouderba-rental.com",
+              "telephone": settings?.phoneNumber || "+212 6 67 33 28 34",
+              "email": "contact@bouderba-rental.com",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Marrakech",
+                "addressLocality": "Marrakech",
+                "addressRegion": "Marrakech-Safi",
+                "addressCountry": "MA"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 31.6295,
+                "longitude": -7.9811
+              },
+              "priceRange": "$$",
+              "currenciesAccepted": "MAD, EUR",
+              "paymentAccepted": "Cash, Credit Card",
+              "areaServed": [
+                { "@type": "City", "name": "Marrakech" },
+                { "@type": "Country", "name": "Morocco" }
+              ],
+              "sameAs": [
+                "https://www.instagram.com/bouderba_rental_cars",
+                "https://www.facebook.com/bouderbarentalcars"
+              ]
+            }),
+          }}
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>

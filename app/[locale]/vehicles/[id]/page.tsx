@@ -7,8 +7,63 @@ import { NavbarAndMenu } from '@/app/components/Menu';
 import { Footer } from '@/app/components/Footer';
 import VehicleGallery from './VehicleGallery';
 import '@/styles/vehicle-detail.css';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string, id: string }> }): Promise<Metadata> {
+    const { locale, id: idStr } = await params;
+    const id = parseInt(idStr);
+    if (isNaN(id)) return {};
+
+    const modele = await prisma.modeleVoiture.findUnique({ where: { id } });
+    if (!modele) return {};
+
+    const t = await getTranslations({ locale });
+
+    const titleMap: Record<string, string> = {
+        fr: `Location ${modele.nom} à Marrakech | Bouderba Rental Cars`,
+        en: `Rent ${modele.nom} in Marrakech | Bouderba Rental Cars`,
+        es: `Alquiler ${modele.nom} en Marrakech | Bouderba Rental Cars`,
+        ar: `تأجير ${modele.nom} في مراكش | بودربة لتأجير السيارات`,
+        ma: `كراء ${modele.nom} ف مراكش | بودربة لكراء الطوموبيلات`,
+    };
+
+    const descMap: Record<string, string> = {
+        fr: `Louez la ${modele.nom} à Marrakech dès ${modele.prixParJour} MAD/jour. ${modele.nbPlaces} places, ${modele.transmission}, ${modele.fuelType}. Réservation en ligne, livraison aéroport.`,
+        en: `Rent the ${modele.nom} in Marrakech from ${modele.prixParJour} MAD/day. ${modele.nbPlaces} seats, ${modele.transmission}, ${modele.fuelType}. Online booking, airport delivery.`,
+        es: `Alquile el ${modele.nom} en Marrakech desde ${modele.prixParJour} MAD/día. ${modele.nbPlaces} plazas, ${modele.transmission}, ${modele.fuelType}. Reserva online.`,
+        ar: `استأجر ${modele.nom} في مراكش ابتداءً من ${modele.prixParJour} درهم/يوم. ${modele.nbPlaces} مقاعد. حجز عبر الإنترنت.`,
+        ma: `كري ${modele.nom} ف مراكش من ${modele.prixParJour} درهم/نهار. ${modele.nbPlaces} بلايص. الحجز أونلاين.`,
+    };
+
+    return {
+        title: titleMap[locale] || titleMap.fr,
+        description: descMap[locale] || descMap.fr,
+        keywords: [
+            `location ${modele.nom} marrakech`,
+            `louer ${modele.nom}`,
+            `rent ${modele.nom} marrakech`,
+            "location voiture marrakech",
+            "car rental marrakech",
+            "location voiture maroc",
+        ],
+        openGraph: {
+            title: titleMap[locale] || titleMap.fr,
+            description: descMap[locale] || descMap.fr,
+            type: "website",
+            locale: locale === 'fr' ? 'fr_MA' : locale,
+            siteName: "Bouderba Rental Cars",
+            images: modele.imageUrl ? [{ url: modele.imageUrl, width: 800, height: 600, alt: modele.nom }] : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: titleMap[locale] || titleMap.fr,
+            description: descMap[locale] || descMap.fr,
+            images: modele.imageUrl ? [modele.imageUrl] : [],
+        },
+    };
+}
 
 export default async function VehicleDetailPage({ params }: { params: Promise<{ locale: string, id: string }> }) {
     const resolvedParams = await params;
