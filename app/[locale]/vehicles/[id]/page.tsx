@@ -99,7 +99,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
 
     return (
         <div className="vehicle-detail-page">
-            <NavbarAndMenu voitures={voitures} locations={locations} logoUrl={dbSettings?.logoUrl || '/default-logo.png'} />
+            <NavbarAndMenu voitures={voitures} locations={locations} isOtherPage={true} logoUrl={dbSettings?.logoUrl || '/default-logo.png'} />
 
             <div className="vd-new-layout">
                 {/* Section Gauche : Slider & Images */}

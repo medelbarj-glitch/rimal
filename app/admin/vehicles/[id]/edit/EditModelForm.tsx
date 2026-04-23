@@ -67,12 +67,10 @@ export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
                 </div>
                 <div className="form-group">
                     <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#666' }}>Ajouter des photos à la Galerie (Page détail)</label>
-                    <input
-                        type="file"
+                    <ImageFileInput
                         name="galleryFiles"
-                        multiple
                         accept="image/png, image/jpeg, image/webp"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer' }}
+                        multiple
                     />
                 </div>
             </div>

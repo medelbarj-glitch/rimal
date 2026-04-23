@@ -67,12 +67,10 @@ export function AddModelForm() {
                 </div>
                 <div className="form-group">
                     <label className="form-label">Images supplémentaires (Galerie détail)</label>
-                    <input 
-                        type="file" 
-                        name="galleryFiles" 
-                        multiple 
+                    <ImageFileInput
+                        name="galleryFiles"
                         accept="image/png, image/jpeg, image/webp"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer', background: '#fff' }}
+                        multiple
                     />
                 </div>
             </div>
