@@ -77,7 +77,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
     const [modele, voitures, locations, dbSettings] = await Promise.all([
         prisma.modeleVoiture.findUnique({
             where: { id },
-            include: { imagesModele: true }
+            include: { imagesModele: { orderBy: { ordre: 'asc' } } }
         }),
         prisma.modeleVoiture.findMany(),
         prisma.location.findMany(),

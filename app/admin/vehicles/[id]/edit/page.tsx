@@ -5,8 +5,9 @@ import { notFound } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
-export default async function EditVehiclePage({ params }: { params: { id: string } }) {
-    const id = parseInt(params.id);
+export default async function EditVehiclePage({ params }: { params: Promise<{ id: string }> }) {
+    const resolvedParams = await params;
+    const id = parseInt(resolvedParams.id);
 
     if (isNaN(id)) {
         notFound();
@@ -14,7 +15,7 @@ export default async function EditVehiclePage({ params }: { params: { id: string
 
     const modele = await prisma.modeleVoiture.findUnique({
         where: { id },
-        include: { imagesModele: true }
+        include: { imagesModele: { orderBy: { ordre: 'asc' } } }
     });
 
     if (!modele) {

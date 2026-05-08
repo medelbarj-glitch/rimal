@@ -102,12 +102,13 @@ export async function createModel(formData: FormData) {
     // Upload et création des images de la galerie
     if (galleryFiles && galleryFiles.length > 0) {
         const galleryUploads = galleryFiles.filter(file => file.size > 0);
-        for (const file of galleryUploads) {
-            const galleryUrl = await uploadToCloudinary(file, 'vehicles/gallery');
+        for (let i = 0; i < galleryUploads.length; i++) {
+            const galleryUrl = await uploadToCloudinary(galleryUploads[i], 'vehicles/gallery');
             await prisma.modeleImage.create({
                 data: {
                     url: galleryUrl,
-                    modeleId: nouveauModele.id
+                    modeleId: nouveauModele.id,
+                    ordre: i
                 }
             });
         }
@@ -168,13 +169,21 @@ export async function updateModel(id: number, formData: FormData) {
 
     // Upload et création des images de la galerie
     if (galleryFiles && galleryFiles.length > 0) {
+        // Get the current max order for this model
+        const maxOrder = await prisma.modeleImage.aggregate({
+            where: { modeleId: id },
+            _max: { ordre: true }
+        });
+        let nextOrder = (maxOrder._max.ordre ?? -1) + 1;
+
         const galleryUploads = galleryFiles.filter(file => file.size > 0);
         for (const file of galleryUploads) {
             const galleryUrl = await uploadToCloudinary(file, 'vehicles/gallery');
             await prisma.modeleImage.create({
                 data: {
                     url: galleryUrl,
-                    modeleId: id
+                    modeleId: id,
+                    ordre: nextOrder++
                 }
             });
         }
@@ -228,6 +237,21 @@ export async function deleteGalleryImage(imageId: number) {
         revalidatePath('/admin/vehicles');
         revalidatePath('/', 'layout');
     }
+}
+
+export async function reorderGalleryImages(imageIds: number[]) {
+    await requireAuth();
+    
+    // Update each image's ordre based on its position in the array
+    for (let i = 0; i < imageIds.length; i++) {
+        await prisma.modeleImage.update({
+            where: { id: imageIds[i] },
+            data: { ordre: i }
+        });
+    }
+    
+    revalidatePath('/admin/vehicles');
+    revalidatePath('/', 'layout');
 }
 
 // --- VEHICLE ACTIONS ---

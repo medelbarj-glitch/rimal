@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-    const placeId = "ChIJJz-HVRfvrw0R0vAmKWsptso";
+    const placeId = "ChIJwfaToHDvrw0RLA_AGyBS4n0";
 
     if (!apiKey) {
         console.error("Erreur API Reviews: GOOGLE_MAPS_API_KEY est introuvable dans process.env");

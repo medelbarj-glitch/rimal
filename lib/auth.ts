@@ -34,7 +34,7 @@ export async function createSession(adminId: number, email: string) {
     expires,
     httpOnly: true, // Empêche l'accès via JS (XSS)
     secure: process.env.NODE_ENV === 'production', // Uniquement HTTPS en prod
-    sameSite: 'strict', // Protection CSRF
+    sameSite: 'lax', // Protection CSRF (lax recommandé pour éviter les soucis Chrome)
     path: '/',
   })
 }

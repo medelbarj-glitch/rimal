@@ -4,7 +4,7 @@ import { updateModel } from '@/app/actions/admin';
 import { StatutVehicule, Transmission, FuelType, ModeleVoiture } from '@prisma/client';
 import { useFormStatus } from 'react-dom';
 import { ImageFileInput } from '../../../components/ImageFileInput';
-import { deleteGalleryImage } from '@/app/actions/admin';
+import { deleteGalleryImage, reorderGalleryImages } from '@/app/actions/admin';
 import { useState } from 'react';
 
 function SubmitButton() {
@@ -22,17 +22,39 @@ function SubmitButton() {
 }
 
 interface EditModelFormProps {
-    modele: ModeleVoiture & { imagesModele?: { id: number, url: string }[] };
+    modele: ModeleVoiture & { imagesModele?: { id: number, url: string, ordre: number }[] };
     onSuccess?: () => void;
 }
 
 export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
-    const [existingImages, setExistingImages] = useState(modele.imagesModele || []);
+    const [existingImages, setExistingImages] = useState(
+        (modele.imagesModele || []).sort((a, b) => a.ordre - b.ordre)
+    );
 
     const handleDeleteImage = async (imageId: number) => {
         if (!confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) return;
         await deleteGalleryImage(imageId);
         setExistingImages(existingImages.filter(img => img.id !== imageId));
+    };
+
+    const handleMoveImage = async (index: number, direction: 'left' | 'right') => {
+        const newImages = [...existingImages];
+        const targetIndex = direction === 'left' ? index - 1 : index + 1;
+        if (targetIndex < 0 || targetIndex >= newImages.length) return;
+
+        // Swap
+        [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]];
+        setExistingImages(newImages);
+
+        // Save new order to DB
+        await reorderGalleryImages(newImages.map(img => img.id));
+    };
+
+    const btnStyle: React.CSSProperties = {
+        position: 'absolute', background: 'rgba(0,0,0,0.7)', color: 'white',
+        border: 'none', borderRadius: '50%', width: '22px', height: '22px',
+        cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '10px', zIndex: 2
     };
 
     return (
@@ -77,18 +99,40 @@ export function EditModelForm({ modele, onSuccess }: EditModelFormProps) {
 
             {existingImages.length > 0 && (
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>Galerie actuelle</label>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                        {existingImages.map((img) => (
-                            <div key={img.id} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '8px', overflow: 'hidden' }}>
-                                <img src={img.url} alt="Galerie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                <button
-                                    type="button"
-                                    onClick={() => handleDeleteImage(img.id)}
-                                    style={{ position: 'absolute', top: '5px', right: '5px', background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '25px', height: '25px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                >
-                                    <i className="fas fa-times"></i>
+                    <label style={{ display: 'block', marginBottom: '10px', fontSize: '0.9rem', color: '#666' }}>
+                        Galerie actuelle <span style={{ color: '#999', fontWeight: 'normal' }}>— Utilisez les flèches pour réordonner</span>
+                    </label>
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                        {existingImages.map((img, index) => (
+                            <div key={img.id} style={{ position: 'relative', width: '120px', height: '90px', borderRadius: '8px', overflow: 'hidden', border: '2px solid #eee' }}>
+                                <img src={img.url} alt={`Galerie ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                
+                                {/* Position badge */}
+                                <span style={{ position: 'absolute', top: '4px', left: '4px', background: '#B49339', color: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>
+                                    {index + 1}
+                                </span>
+
+                                {/* Delete button */}
+                                <button type="button" onClick={() => handleDeleteImage(img.id)}
+                                    style={{ ...btnStyle, top: '4px', right: '4px', background: '#e74c3c' }}>
+                                    <i className="fas fa-times" style={{ fontSize: '9px' }}></i>
                                 </button>
+
+                                {/* Move left */}
+                                {index > 0 && (
+                                    <button type="button" onClick={() => handleMoveImage(index, 'left')}
+                                        style={{ ...btnStyle, bottom: '4px', left: '4px' }}>
+                                        <i className="fas fa-chevron-left" style={{ fontSize: '9px' }}></i>
+                                    </button>
+                                )}
+
+                                {/* Move right */}
+                                {index < existingImages.length - 1 && (
+                                    <button type="button" onClick={() => handleMoveImage(index, 'right')}
+                                        style={{ ...btnStyle, bottom: '4px', right: '4px' }}>
+                                        <i className="fas fa-chevron-right" style={{ fontSize: '9px' }}></i>
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>

@@ -103,6 +103,7 @@ model Vehicule {
 model ModeleImage {
   id        Int           @id @default(autoincrement())
   url       String        @db.Text
+  ordre     Int           @default(0)
   
   // Relation: Cette image appartient à un modèle précis
   modeleId  Int
