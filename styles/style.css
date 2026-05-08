@@ -60,7 +60,6 @@ li {
 }
 
 body.no-scroll {
-    /* La magie est ici : */
     overflow: hidden;
 }
 
