@@ -21,7 +21,7 @@ async function verifyToken(token: string) {
 
 const intlMiddleware = createMiddleware(routing);
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Ne pas protéger la page de login elle-même
@@ -59,7 +59,7 @@ export async function proxy(request: NextRequest) {
   return intlMiddleware(request);
 }
 
-export default proxy;
+export default middleware;
 
 export const config = {
   // Le matcher capture toutes les url SAUF api, _next, images, favicon.
