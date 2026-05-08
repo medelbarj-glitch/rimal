@@ -230,7 +230,7 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=place_id:ChIJJz-HVRfvrw0R0vAmKWsptso`}
+                            src={`https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}&q=place_id:ChIJwfaToHDvrw0RLA_AGyBS4n0`}
                         ></iframe>
                     </div>
                 </section>
