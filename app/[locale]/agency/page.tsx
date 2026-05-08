@@ -235,7 +235,7 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                     </div>
                 </section>
 
-                {/* ============ HOW IT WORKS ============ */}
+                {/*============ HOW IT WORKS ============*/}
                 <section className="agency-section">
                     <div className="agency-section-header">
                         <h2 className="agency-section-title">{t('how_it_works_title')}</h2>
