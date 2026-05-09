@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { ReservationActions } from './ReservationActions';
 import { EditReservationModal } from './EditReservationModal';
+import { CreateReservationModal } from './CreateReservationModal';
 import { PriceRecapButton } from './PriceRecapButton';
 
 const prisma = new PrismaClient();
@@ -92,9 +93,12 @@ export default async function ReservationsPage() {
     return (
         <AdminLayout title="Gestion des Réservations">
             <div className="data-grid">
-                <h2 className="reservations-title">
-                    Toutes les Réservations ({reservations.length})
-                </h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <h2 className="reservations-title" style={{ margin: 0 }}>
+                        Toutes les Réservations ({reservations.length})
+                    </h2>
+                    <CreateReservationModal locations={locations} vehicles={vehicles} />
+                </div>
 
                 {reservations.length === 0 ? (
                     <p className="reservations-empty">Aucune réservation trouvée.</p>

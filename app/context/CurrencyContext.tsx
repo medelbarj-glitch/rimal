@@ -20,7 +20,7 @@ interface CurrencyContextType {
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrencyState] = useState<CurrencyCode>('MAD');
+  const [currency, setCurrencyState] = useState<CurrencyCode>('EUR');
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -51,8 +51,10 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     if (isNaN(num)) return String(priceInMad);
 
     if (!isMounted) {
-      // Prevents hydration error by returning base price on first render server-side
-      return `${Math.round(num)} DH`;
+      // Prevents hydration error by returning EUR price on first render server-side
+      const eurObj = currencies.find(c => c.code === 'EUR')!;
+      const converted = num * eurObj.rate;
+      return `${eurObj.symbol}${converted.toFixed(2)}`;
     }
 
     const converted = num * currentCurrencyObj.rate;

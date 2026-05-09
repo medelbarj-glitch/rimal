@@ -11,6 +11,8 @@ body {
     font-family: 'Oswald', sans-serif;
     background-color: #f4f5f7;
     color: #333;
+    width: 100%;
+    overflow: auto;
 }
 
 /* Sidebar */

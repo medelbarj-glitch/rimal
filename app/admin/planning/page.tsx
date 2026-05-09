@@ -1,8 +1,9 @@
 export const dynamic = 'force-dynamic';
 
 import { PrismaClient } from '@prisma/client';
+import React, { Fragment } from 'react';
 import { AdminLayout } from '../components/AdminLayout';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, subMonths, isSameDay, isWithinInterval, parseISO, isWeekend } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, subMonths, isSameDay, isWithinInterval, parseISO, isWeekend, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Link from 'next/link';
 
@@ -64,34 +65,37 @@ export default async function PlanningPage({
         }
     });
 
-    const getReservationForVehicleAndDay = (vehicleId: number, day: Date) => {
-        return reservations.find(r =>
-            r.vehiculeId === vehicleId &&
-            isWithinInterval(day, { start: r.dateDebut, end: r.dateFin })
-        );
+    const getReservationsForVehicleAndDay = (vehicleId: number, day: Date) => {
+        return reservations.filter(r => {
+            if (r.vehiculeId !== vehicleId) return false;
+            const start = startOfDay(r.dateDebut);
+            const end = startOfDay(r.dateFin);
+            return day.getTime() >= start.getTime() && day.getTime() <= end.getTime();
+        }).sort((a, b) => a.dateDebut.getTime() - b.dateDebut.getTime());
     };
 
     return (
         <AdminLayout title="Planning Mensuel">
             <div className="planning-controls">
-                <div className="planning-nav">
-                    <Link href={prevMonthUrl} className="btn-secondary btn-sm">
-                        <i className="fas fa-chevron-left"></i> Mois Préc.
-                    </Link>
-                    <span className="current-week-label">
-                        {format(viewDate, 'MMMM yyyy', { locale: fr })}
-                    </span>
-                    <Link href={nextMonthUrl} className="btn-secondary btn-sm">
-                        Mois Suiv. <i className="fas fa-chevron-right"></i>
-                    </Link>
-                </div>
-                <Link href={currentMonthUrl} className="btn-secondary btn-sm">
-                    Ce mois
+                <Link href={prevMonthUrl} className="nav-btn">
+                    <i className="fas fa-chevron-left"></i> Précédent
+                </Link>
+
+                <span className="current-week-label">
+                    {format(viewDate, 'MMMM yyyy', { locale: fr })}
+                </span>
+
+                <Link href={nextMonthUrl} className="nav-btn">
+                    Suivant <i className="fas fa-chevron-right"></i>
+                </Link>
+
+                <Link href={currentMonthUrl} className="nav-btn today-btn">
+                    Aujourd'hui
                 </Link>
             </div>
 
             <div className="planning-container">
-                <div className="planning-grid" style={{ gridTemplateColumns: `minmax(200px, auto) repeat(${days.length}, minmax(40px, 1fr))` }}>
+                <div className="planning-grid" style={{ gridTemplateColumns: `var(--planning-first-col, minmax(140px, auto)) repeat(${days.length}, minmax(25px, 1fr))` }}>
                     {/* Header Row */}
                     <div className="planning-header-cell empty-corner">Véhicule</div>
                     {days.map(day => (
@@ -103,33 +107,65 @@ export default async function PlanningPage({
 
                     {/* Rows */}
                     {vehicles.map(vehicle => (
-                        <>
-                            <div key={`v-${vehicle.id}`} className="planning-row-header">
-                                <span className="vehicle-name">{vehicle.modele.nom}</span>
-                                <span className="vehicle-plaque">{vehicle.plaque}</span>
+                        <Fragment key={`vehicle-group-${vehicle.id}`}>
+                            <div className="planning-row-header">
+                                <div className="vehicle-info-wrapper">
+                                    {vehicle.modele.imageUrl && (
+                                        <img src={vehicle.modele.imageUrl} alt={vehicle.modele.nom} className="planning-vehicle-img" />
+                                    )}
+                                    <div className="vehicle-text">
+                                        <span className="vehicle-name">{vehicle.modele.nom}</span>
+                                        <span className="vehicle-plaque">{vehicle.plaque}</span>
+                                    </div>
+                                </div>
                             </div>
 
                             {days.map(day => {
-                                const res = getReservationForVehicleAndDay(vehicle.id, day);
-                                const isStart = res ? isSameDay(day, res.dateDebut) : false;
-                                const isEnd = res ? isSameDay(day, res.dateFin) : false;
+                                const dayReservations = getReservationsForVehicleAndDay(vehicle.id, day);
 
                                 return (
                                     <div
                                         key={`cell-${vehicle.id}-${day.toISOString()}`}
-                                        className={`planning-cell ${res ? 'occupied' : ''} ${isStart ? 'res-start' : ''} ${isEnd ? 'res-end' : ''} ${res ? res.status.toLowerCase() : ''} ${isWeekend(day) ? 'weekend-cell' : ''}`}
-                                        title={res ? `${res.clientPrenom} ${res.clientNom} (${res.status})` : ''}
+                                        className={`planning-cell ${isWeekend(day) ? 'weekend-cell' : ''} ${isSameDay(day, today) ? 'is-today' : ''}`}
                                     >
-                                        {/* Only show label on start date or first of month if overlapping */}
-                                        {res && (isStart || isSameDay(day, viewDate)) && (
-                                            <span className="cell-label">
-                                                {res.clientNom}
-                                            </span>
-                                        )}
+                                        {dayReservations.map(res => {
+                                            const isVisible = res.status === 'PENDING' || res.status === 'CONFIRMED';
+                                            if (!isVisible) return null;
+
+                                            const isStart = isSameDay(day, res.dateDebut);
+                                            const isEnd = isSameDay(day, res.dateFin);
+
+                                            return (
+                                                <div
+                                                    key={`pill-${res.id}`}
+                                                    className={`planning-pill-wrapper ${isStart ? 'res-start' : ''} ${isEnd ? 'res-end' : ''} ${res.status.toLowerCase()}`}
+                                                >
+                                                    <div className="planning-pill">
+
+
+                                                        <div className="planning-tooltip">
+                                                            <span className="tooltip-title">Détails Réservation</span>
+                                                            <div className="tooltip-row">
+                                                                <i className="fas fa-user"></i> {res.clientPrenom} {res.clientNom}
+                                                            </div>
+                                                            <div className="tooltip-row">
+                                                                <i className="fas fa-calendar-alt"></i> {format(res.dateDebut, 'dd/MM')} au {format(res.dateFin, 'dd/MM')}
+                                                            </div>
+                                                            <div className="tooltip-row">
+                                                                <i className="fas fa-phone"></i> {res.clientTel}
+                                                            </div>
+                                                            <div className="tooltip-row">
+                                                                <i className="fas fa-info-circle"></i> {res.status}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 );
                             })}
-                        </>
+                        </Fragment>
                     ))}
                 </div>
             </div>

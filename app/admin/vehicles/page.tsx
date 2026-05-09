@@ -9,6 +9,7 @@ export default async function VehiclesPage() {
     const modeles = await prisma.modeleVoiture.findMany({
         include: {
             vehicules: true,
+            imagesModele: true,
         },
         orderBy: {
             createdAt: 'desc',

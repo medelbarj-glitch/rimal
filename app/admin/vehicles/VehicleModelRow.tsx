@@ -6,7 +6,7 @@ import { EditModelForm } from './[id]/edit/EditModelForm';
 import { DeleteModelButton, AddVehicleForm, VehicleItem } from './forms';
 
 interface VehicleModelRowProps {
-    modele: ModeleVoiture & { vehicules: Vehicule[] };
+    modele: ModeleVoiture & { vehicules: Vehicule[], imagesModele?: any[] };
 }
 
 export function VehicleModelRow({ modele }: VehicleModelRowProps) {

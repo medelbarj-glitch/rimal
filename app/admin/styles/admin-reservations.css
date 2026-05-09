@@ -162,227 +162,499 @@
 
 .reservations.admin-override .options {
     z-index: 10001 !important;
+    height: 350px;
+    overflow-y: auto;
 }
 
 /* Planning Grid Styles */
+/* ============================================================
+   PREMIUM PLANNING REDESIGN
+   ============================================================ */
+
+:root {
+    --p-bg: #ffffff;
+    --p-grid-border: #f0f0f0;
+    --p-header-bg: #ffffff;
+    --p-header-text: #1a1a1a;
+    --p-accent-gold: #d4af37;
+    --p-accent-black: #1a1a1a;
+    --p-text-muted: #888888;
+    --p-weekend-bg: #fafafa;
+    --p-today-bg: #fffdf5;
+    --p-today-border: #d4af37;
+
+    /* Status Colors - Premium Palette */
+    --status-confirmed: #2e7d32;
+    /* Rich Green */
+    --status-pending: #f59e0b;
+    /* Amber / Orange-Jaune */
+}
+
 .planning-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+    background: var(--p-bg);
+    padding: 12px;
+    border-radius: 100px;
+    /* Style pilule pour la barre */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--p-grid-border);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 15px;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: #f5f5f5;
+    color: var(--p-accent-black);
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.nav-btn:hover {
+    background: var(--p-accent-black);
+    color: #fff;
+}
+
+.nav-btn.today-btn {
+    background: var(--p-accent-gold);
+    color: #fff;
+}
+
+.nav-btn.today-btn:hover {
+    background: #b8962d;
+}
+
+.nav-btn i {
+    font-size: 0.7rem;
 }
 
 .planning-nav {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .current-week-label {
-    font-weight: 500;
-    font-size: 1.1rem;
     font-family: 'Anton', sans-serif;
-    min-width: 150px;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--p-accent-black);
+    min-width: 200px;
     text-align: center;
 }
 
 .planning-container {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    overflow-x: auto;
+    background: var(--p-bg);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    overflow: visible;
+    /* CRUCIAL: Permet aux tooltips de dépasser */
+    border: 1px solid var(--p-grid-border);
+    position: relative;
+    width: 100%;
+}
+
+/* Maximize width for planning */
+.admin-page-content:has(.planning-container) {
     padding: 20px;
 }
 
 .planning-grid {
     display: grid;
-    border-top: 1px solid #eee;
-    border-left: 1px solid #eee;
+    width: 100%;
 }
 
-.planning-header-cell {
-    padding: 10px 5px;
-    background-color: #f9f9f9;
-    border-right: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    font-weight: bold;
-    text-align: center;
+/* --- Sticky Headers --- */
+.empty-corner {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    background: var(--p-bg);
+    border-bottom: 2px solid var(--p-accent-black);
+    border-right: 1px solid var(--p-grid-border);
+    font-family: 'Anton', sans-serif;
+    padding: 10px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 40px;
+    color: var(--p-accent-black);
+    font-size: 0.9rem;
 }
 
-.empty-corner {
-    background-color: #fff;
-    border-bottom: 2px solid #1a1a1a;
-    font-family: 'Anton', sans-serif;
-    font-size: 1.1rem;
+.day-header {
     position: sticky;
-    left: 0;
-    z-index: 10;
+    top: 0;
+    z-index: 40;
+    background: var(--p-header-bg);
+    border-bottom: 1px solid var(--p-grid-border);
+    border-right: 1px solid var(--p-grid-border);
+    padding: 8px 2px;
+    transition: background 0.3s;
+    text-align: center;
+    /* Centrage des chiffres */
 }
 
 .day-header.weekend {
-    background-color: #f0f0f0;
-    color: #aeaeae;
+    background: var(--p-weekend-bg);
 }
 
 .day-header.today {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border-bottom: 2px solid #2e7d32;
+    background: var(--p-today-bg);
+    border-bottom: 3px solid var(--p-accent-gold);
+}
+
+.day-header.today .day-number {
+    color: var(--p-accent-gold);
 }
 
 .day-name {
+    display: block;
+    font-size: 0.6rem;
     text-transform: uppercase;
-    font-size: 0.8rem;
-    color: #888;
+    color: var(--p-text-muted);
+    font-weight: 700;
+    margin-bottom: 1px;
 }
 
 .day-number {
-    font-size: 1.2rem;
     font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    line-height: 1;
 }
 
+/* --- Row Header (Vehicles) --- */
 .planning-row-header {
-    padding: 15px;
-    border-right: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     position: sticky;
     left: 0;
-    z-index: 5;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    z-index: 30;
+    background: var(--p-bg);
+    border-right: 1px solid var(--p-grid-border);
+    border-bottom: 1px solid var(--p-grid-border);
+    padding: 8px 10px;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.03);
 }
 
-.planning-row-header .vehicle-name {
-    font-weight: bold;
-    font-size: 0.95rem;
-    margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 180px;
+.vehicle-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.planning-row-header .vehicle-plaque {
+.planning-vehicle-img {
+    width: 60px;
+    height: 40px;
+    object-fit: contain;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 2px;
+}
+
+.vehicle-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.vehicle-name {
+    font-weight: 700;
     font-size: 0.8rem;
-    font-family: monospace;
-    color: #666;
-    background: #eee;
-    padding: 2px 5px;
-    border-radius: 4px;
-    align-self: flex-start;
+    color: var(--p-accent-black);
+    white-space: nowrap;
 }
 
+.vehicle-plaque {
+    font-size: 0.7rem;
+    color: var(--p-text-muted);
+    font-family: monospace;
+    background: #f0f0f0;
+    padding: 1px 6px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+/* --- Cells & Pills --- */
 .planning-cell {
-    border-right: 1px solid #f5f5f5;
-    border-bottom: 1px solid #eee;
-    height: 70px;
+    border-right: 1px solid var(--p-grid-border);
+    border-bottom: 1px solid var(--p-grid-border);
+    height: 60px;
     position: relative;
-    transition: background-color 0.2s;
+    padding: 8px 0;
+    display: flex;
+    gap: 2px;
+}
+
+.planning-pill-wrapper {
+    flex: 1;
+    height: 100%;
+    min-width: 0;
+    position: relative;
 }
 
 .planning-cell.weekend-cell {
-    background-color: #fafafa;
+    background: var(--p-weekend-bg);
 }
 
-.planning-cell.occupied {
-    background-color: #a5d6a7;
-    color: #1b5e20;
-    cursor: pointer;
+.planning-cell.is-today {
+    background: var(--p-today-bg);
+}
+
+.planning-pill {
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
-    padding: 0 5px;
-    overflow: hidden;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0 10px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
 }
 
-.planning-cell.occupied:hover {
-    filter: brightness(0.95);
+.planning-pill:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    z-index: 100;
 }
 
-.planning-cell.pending {
-    background-color: #ffe082;
-    color: #ff6f00;
+/* Status Styling */
+.confirmed .planning-pill {
+    background-color: var(--status-confirmed);
 }
 
-.planning-cell.rejected,
-.planning-cell.cancelled {
-    background-color: #ef9a9a;
-    color: #b71c1c;
-    opacity: 0.6;
+.pending .planning-pill {
+    background-color: var(--status-pending);
 }
 
-.planning-cell.completed {
-    background-color: #90caf9;
-    color: #0d47a1;
+/* Les autres statuts n'ont pas de couleur de fond définie, ils resteront donc transparents ou invisibles si on filtre dans le React */
+
+/* Start/End Radius */
+.res-start .planning-pill {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    margin-left: 4px;
 }
 
-.planning-cell.res-start {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    margin-left: 2px;
+.res-end .planning-pill {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    margin-right: 4px;
+}
+
+.res-start.res-end .planning-pill {
+    margin: 0 8px;
+    border-radius: 25px;
 }
 
 .cell-label {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Tooltip Personnalisée --- */
+.planning-tooltip {
+    position: absolute;
+    top: calc(100% + 5px);
+    /* Affichage vers le bas */
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 12px 15px;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    width: 220px;
+    z-index: 9999;
+    /* Z-index très élevé */
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    border: 1px solid #eee;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.planning-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    /* Flèche vers le haut */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
+
+.planning-pill:hover .planning-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-title {
+    font-weight: 800;
+    display: block;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    color: var(--p-accent-gold);
+    text-transform: uppercase;
     font-size: 0.75rem;
-    font-weight: bold;
-    padding-left: 5px;
 }
 
-.location-column {
+.tooltip-row {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
 }
 
-/* Responsive */
+.tooltip-row i {
+    color: var(--p-accent-gold);
+    width: 14px;
+    font-size: 0.8rem;
+}
+
+/* --- Responsive Avancé --- */
+@media (max-width: 1024px) {
+    .planning-grid {
+        min-width: 1000px;
+    }
+}
+
 @media (max-width: 768px) {
-    .reservation-details-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
     .planning-controls {
-        flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
-    }
-
-    .planning-nav {
-        justify-content: space-between;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 15px;
+        padding: 15px;
+        gap: 10px;
         width: 100%;
     }
 
     .current-week-label {
-        min-width: unset;
-        font-size: 1rem;
+        order: 1;
+        width: 100%;
+        text-align: center;
+        font-size: 1.2rem;
+        margin-bottom: 5px;
     }
 
-    .reservation-header {
-        flex-direction: column;
-        align-items: flex-start;
+    .planning-nav {
+        order: 2;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+
+    .nav-btn.today-btn {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .planning-container {
+        overflow-x: auto;
+        border-radius: 15px;
+    }
+
+    .planning-grid {
+        --planning-first-col: minmax(90px, auto);
+        /* Réduit au max sur mobile */
+        min-width: 800px;
+        /* Plus petit pour mobile */
+    }
+
+    .empty-corner {
+        padding: 10px 5px;
+        font-size: 0.9rem;
+    }
+
+    .day-header {
+        padding: 8px 2px;
+    }
+
+    .day-number {
+        font-size: 1.1rem;
+    }
+
+    .day-name {
+        font-size: 0.6rem;
+    }
+
+    .planning-row-header {
+        padding: 8px;
+    }
+
+    .vehicle-info-wrapper {
         gap: 5px;
     }
 
-    .conflict-warning {
-        flex-direction: column;
+    .planning-vehicle-img {
+        display: none;
+    }
+
+    .vehicle-name {
+        font-size: 0.75rem;
+    }
+
+    .vehicle-plaque {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+
+    .planning-cell {
+        height: 55px;
+        /* Hauteur réduite pour voir plus de lignes */
+        padding: 6px 0;
+    }
+
+    .planning-pill {
+        font-size: 0.65rem;
+        padding: 0 5px;
+    }
+
+    /* Ajustement Tooltip sur mobile */
+    .planning-tooltip {
+        width: 180px;
+        padding: 10px;
+        font-size: 0.75rem;
+    }
+
+    .tooltip-row i {
+        font-size: 0.7rem;
     }
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
 }
