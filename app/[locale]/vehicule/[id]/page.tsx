@@ -39,7 +39,6 @@ export default async function VehicleDetailPage({ params }: { params: { locale: 
     if (locale === 'en' && (modele as any).description_en) description = (modele as any).description_en;
     if (locale === 'es' && (modele as any).description_es) description = (modele as any).description_es;
     if (locale === 'ar' && (modele as any).description_ar) description = (modele as any).description_ar;
-    if (locale === 'ma' && (modele as any).description_ma) description = (modele as any).description_ma;
 
     return (
         <div className="vehicle-detail-page">

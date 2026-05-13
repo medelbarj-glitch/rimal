@@ -23,12 +23,11 @@ export default function HreflangTags() {
     return (
         <>
             {routing.locales.map((loc) => {
-                const seoLang = loc === 'ma' ? 'ar-MA' : loc;
                 return (
                     <link 
                         key={loc} 
                         rel="alternate" 
-                        hrefLang={seoLang} 
+                        hrefLang={loc} 
                         href={`${origin}/${loc}${cleanPathname}`} 
                     />
                 );

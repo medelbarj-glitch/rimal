@@ -26,7 +26,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         en: `Rent ${modele.nom} in Marrakech | Bouderba Rental Cars`,
         es: `Alquiler ${modele.nom} en Marrakech | Bouderba Rental Cars`,
         ar: `تأجير ${modele.nom} في مراكش | بودربة لتأجير السيارات`,
-        ma: `كراء ${modele.nom} ف مراكش | بودربة لكراء الطوموبيلات`,
     };
 
     const descMap: Record<string, string> = {
@@ -34,7 +33,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         en: `Rent the ${modele.nom} in Marrakech from ${modele.prixParJour} MAD/day. ${modele.nbPlaces} seats, ${modele.transmission}, ${modele.fuelType}. Online booking, airport delivery.`,
         es: `Alquile el ${modele.nom} en Marrakech desde ${modele.prixParJour} MAD/día. ${modele.nbPlaces} plazas, ${modele.transmission}, ${modele.fuelType}. Reserva online.`,
         ar: `استأجر ${modele.nom} في مراكش ابتداءً من ${modele.prixParJour} درهم/يوم. ${modele.nbPlaces} مقاعد. حجز عبر الإنترنت.`,
-        ma: `كري ${modele.nom} ف مراكش من ${modele.prixParJour} درهم/نهار. ${modele.nbPlaces} بلايص. الحجز أونلاين.`,
     };
 
     return {
@@ -95,7 +93,6 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
     if (locale === 'en' && (modele as any).description_en) description = (modele as any).description_en;
     if (locale === 'es' && (modele as any).description_es) description = (modele as any).description_es;
     if (locale === 'ar' && (modele as any).description_ar) description = (modele as any).description_ar;
-    if (locale === 'ma' && (modele as any).description_ma) description = (modele as any).description_ma;
 
     return (
         <div className="vehicle-detail-page">
