@@ -210,5 +210,15 @@
     "privacy": "Privacy Policy",
     "legal": "Legal Notices",
     "rights": "All rights reserved."
+  },
+  "locations_page": {
+    "title": "Our Locations",
+    "subtitle": "Find us easily in and around Marrakech. We offer various pickup points to make your life easier.",
+    "fees": "Delivery fees:",
+    "no_fees": "No additional fees",
+    "reserve_here": "Book here",
+    "address": "Address:",
+    "hours": "Hours:",
+    "closed": "Closed"
   }
 }

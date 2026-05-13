@@ -44,7 +44,7 @@ export function Footer() {
                     <span>Bouderba Rental Cars</span>
                     <a href="/#reservations" onClick={(e) => handleSmoothScroll(e, 'reservations')}>{t('reservations')}</a>
                     <a href="/#vehicules" onClick={(e) => handleSmoothScroll(e, 'vehicules')}>{t('vehicles')}</a>
-                    <a href="/#localisations" onClick={(e) => handleSmoothScroll(e, 'localisations')}>{t('locations')}</a>
+                    <a href="/locations">{t('locations')}</a>
                     <a href="/agency" onClick={(e) => handleSmoothScroll(e, 'agence')}>{t('agency')}</a>
                     <a href="/agency#contact" onClick={(e) => handleSmoothScroll(e, 'contact')}>{t('contact')}</a>
                 </div>

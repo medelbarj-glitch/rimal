@@ -210,5 +210,15 @@
     "privacy": "Politique de Confidentialité",
     "legal": "Mentions Légales",
     "rights": "Tous droits réservés."
+  },
+  "locations_page": {
+    "title": "Nos Localisations",
+    "subtitle": "Retrouvez-nous facilement à Marrakech et ses environs. Nous proposons différents points de retrait pour vous simplifier la vie.",
+    "fees": "Frais de livraison :",
+    "no_fees": "Sans frais supplémentaires",
+    "reserve_here": "Réserver ici",
+    "address": "Adresse :",
+    "hours": "Horaires :",
+    "closed": "Fermé"
   }
 }

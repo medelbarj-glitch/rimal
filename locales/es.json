@@ -210,5 +210,15 @@
     "privacy": "Política de Privacidad",
     "legal": "Avisos Legales",
     "rights": "Todos los derechos reservados."
+  },
+  "locations_page": {
+    "title": "Nuestras Ubicaciones",
+    "subtitle": "Encuéntrenos fácilmente en Marrakech y sus alrededores. Ofrecemos varios puntos de recogida para facilitarle la vida.",
+    "fees": "Gastos de entrega:",
+    "no_fees": "Sin cargos adicionales",
+    "reserve_here": "Reservar aquí",
+    "address": "Dirección:",
+    "hours": "Horario:",
+    "closed": "Cerrado"
   }
 }

@@ -1,0 +1,229 @@
+/* styles/locations.css */
+
+.locations-page {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* Hero Section */
+.loc-hero {
+  position: relative;
+  width: 100%;
+  height: 45vh;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #111 0%, #333 100%);
+  overflow: hidden;
+  margin-bottom: 60px;
+}
+
+.loc-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.loc-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 0 20px;
+  max-width: 800px;
+}
+
+.loc-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: fadeInDown 0.8s ease-out forwards;
+}
+
+.loc-hero-subtitle {
+  font-size: 1.2rem;
+  font-weight: 300;
+  opacity: 0.9;
+  line-height: 1.6;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Container & Grid */
+.loc-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.loc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+/* Card */
+.loc-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.loc-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+/* Card Image */
+.loc-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.loc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.loc-card:hover .loc-img {
+  transform: scale(1.05);
+}
+
+.loc-fees-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #000;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.loc-fees-badge.free {
+  background: #27ae60;
+}
+
+/* Card Content */
+.loc-info {
+  padding: 30px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.loc-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 15px;
+}
+
+.loc-address {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.loc-address i {
+  color: #e67e22;
+  margin-top: 4px;
+}
+
+/* Hours */
+.loc-hours-section {
+  margin-bottom: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.loc-hours-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.loc-hours-title i {
+  color: #3498db;
+}
+
+.loc-hours-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.loc-hour-item {
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+}
+
+.loc-hour-item.closed {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+/* CTA */
+.loc-book-btn {
+  margin-top: auto;
+  display: block;
+  text-align: center;
+  background: #000;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.loc-book-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .loc-hero-title {
+    font-size: 2.2rem;
+  }
+  
+  .loc-hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .loc-grid {
+    grid-template-columns: 1fr;
+  }
+}

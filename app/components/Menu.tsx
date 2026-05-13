@@ -194,6 +194,10 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
                   </div>
                 </div>
               ))}
+              
+              <a href="/locations" style={{display: 'block', textAlign: 'center', marginTop: '20px', padding: '15px', background: '#111', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold'}}>
+                  {tNav('locations')} &rarr;
+              </a>
             </div>
 
           </div>
