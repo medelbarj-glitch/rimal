@@ -115,7 +115,7 @@ export default async function AgencePage({ params: { locale } }: { params: { loc
                 </section>
 
                 {/* ============ CONTACT + HOURS ============ */}
-                <section className="agency-section">
+                <section className="agency-section" id="contact">
                     <div className="agency-section-header">
                         <h2 className="agency-section-title">{t('contact_title')}</h2>
                     </div>
