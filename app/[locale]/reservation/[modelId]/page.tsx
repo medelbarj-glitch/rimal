@@ -72,6 +72,10 @@ export default async function BookingPage({
                         locations={locations}
                         pricePerDay={model.prixParJour}
                         prixSaisonniers={model.prixSaisonniers}
+                        promotionActive={model.promotionActive}
+                        promotionDateDebut={model.promotionDateDebut}
+                        promotionDateFin={model.promotionDateFin}
+                        promotionPrixParJour={model.promotionPrixParJour}
                     />
                 </div>
             </div>

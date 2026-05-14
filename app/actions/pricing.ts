@@ -61,3 +61,47 @@ export async function deletePrixSaisonnier(id: number) {
         return { success: false, error: error.message || 'Une erreur est survenue.' };
     }
 }
+
+export async function updatePromotion(data: {
+    modeleId: number;
+    promotionActive: boolean;
+    promotionDateDebut: Date | null;
+    promotionDateFin: Date | null;
+    promotionPrixParJour: number | null;
+}) {
+    try {
+        const { modeleId, promotionActive, promotionDateDebut, promotionDateFin, promotionPrixParJour } = data;
+
+        if (!modeleId) {
+            return { success: false, error: 'Modèle ID manquant.' };
+        }
+
+        if (promotionActive && (!promotionDateDebut || !promotionDateFin || !promotionPrixParJour)) {
+            return { success: false, error: 'Tous les champs de promotion doivent être remplis pour l\'activer.' };
+        }
+
+        if (promotionActive && promotionDateDebut && promotionDateFin && new Date(promotionDateFin) <= new Date(promotionDateDebut)) {
+            return { success: false, error: 'La date de fin doit être ultérieure à la date de début.' };
+        }
+
+        const modele = await prisma.modeleVoiture.update({
+            where: { id: modeleId },
+            data: {
+                promotionActive,
+                promotionDateDebut: promotionDateDebut ? new Date(promotionDateDebut) : null,
+                promotionDateFin: promotionDateFin ? new Date(promotionDateFin) : null,
+                promotionPrixParJour: promotionPrixParJour ? Number(promotionPrixParJour) : null
+            }
+        });
+
+        revalidatePath('/admin/pricing');
+        revalidatePath('/[locale]/vehicule/[id]', 'page');
+        revalidatePath('/[locale]/vehicles/[id]', 'page');
+        revalidatePath('/', 'page');
+
+        return { success: true, modele };
+    } catch (error: any) {
+        console.error('Error updating promotion:', error);
+        return { success: false, error: error.message || 'Une erreur est survenue.' };
+    }
+}

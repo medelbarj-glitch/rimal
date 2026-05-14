@@ -40,7 +40,7 @@
   "vehicles": {
     "title": "Our Vehicles",
     "from": "From",
-    "per_day": "day",
+    "per_day": "/ day",
     "reserve": "Book",
     "details": "Details",
     "description": "About this vehicle",

@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../../lib/prisma';
 import { AdminLayout } from '../components/AdminLayout';
 import { PricingManager } from './PricingManager';
-
-const prisma = new PrismaClient();
 
 export default async function PricingPage() {
     // We need model names and their current prices, plus their seasonal prices

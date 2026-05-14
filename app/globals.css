@@ -214,3 +214,73 @@ body {
     box-shadow: 0 0 0 0 rgba(228, 64, 95, 0);
   }
 }
+
+.price-crossed-out {
+  position: relative;
+  color: #999 !important;
+  text-decoration: none !important;
+  /* Remove standard line-through */
+  display: inline-block;
+}
+
+.price-crossed-out::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  width: calc(100% + 4px);
+  height: 2px;
+  background: #ff0844;
+  transform: translateY(-50%) rotate(-15deg);
+  /* Diagonal line */
+  pointer-events: none;
+}
+
+.vehicule .promo-badge-premium {
+  background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%) !important;
+  color: white !important;
+  width: 65px !important;
+  height: 65px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.7rem !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 8px 25px rgba(255, 8, 68, 0.5) !important;
+  animation: pulse-promo 2s infinite !important;
+  border: 2px solid white !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+.vehicule .promo-badge-premium i {
+  font-size: 1.1rem !important;
+  margin-bottom: 2px !important;
+}
+
+.vehicule .price-crossed-out {
+  font-size: 1.2rem !important;
+  margin-right: 8px !important;
+  font-weight: 400 !important;
+}
+
+@keyframes pulse-promo {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 8, 68, 0.6);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4);
+  }
+}

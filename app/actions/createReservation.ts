@@ -100,6 +100,12 @@ export async function createReservation(formData: FormData) {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
     let basePrice = 0;
+    
+    const promoStart = model.promotionDateDebut ? new Date(model.promotionDateDebut) : null;
+    if (promoStart) promoStart.setHours(0,0,0,0);
+    const promoEnd = model.promotionDateFin ? new Date(model.promotionDateFin) : null;
+    if (promoEnd) promoEnd.setHours(23,59,59,999);
+
     // Calculation day by day
     for (let i = 0; i < diffDays; i++) {
         const currentDate = new Date(startDateTime.getTime() + i * 24 * 60 * 60 * 1000);
@@ -112,7 +118,15 @@ export async function createReservation(formData: FormData) {
             return currentDate >= debut && currentDate <= fin;
         });
         
-        basePrice += currentSeason ? currentSeason.prixParJour : model.prixParJour;
+        let dayPrice = currentSeason ? currentSeason.prixParJour : model.prixParJour;
+        
+        if (model.promotionActive && promoStart && promoEnd && model.promotionPrixParJour) {
+            if (currentDate >= promoStart && currentDate <= promoEnd) {
+                dayPrice = model.promotionPrixParJour;
+            }
+        }
+        
+        basePrice += dayPrice;
     }
     
     let totalPrice = basePrice;

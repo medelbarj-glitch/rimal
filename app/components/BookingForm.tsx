@@ -12,6 +12,10 @@ interface BookingFormProps {
     locations: Location[];
     pricePerDay: number;
     prixSaisonniers?: any[];
+    promotionActive?: boolean;
+    promotionDateDebut?: Date | null;
+    promotionDateFin?: Date | null;
+    promotionPrixParJour?: number | null;
 }
 
 // ... imports
@@ -29,7 +33,10 @@ const timeSlots = [
     "16:00", "16:30", "17:00", "17:30", "18:00"
 ];
 
-export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay, prixSaisonniers = [] }: BookingFormProps) {
+export function BookingForm({ 
+    modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay, prixSaisonniers = [],
+    promotionActive, promotionDateDebut, promotionDateFin, promotionPrixParJour
+}: BookingFormProps) {
     const t = useTranslations('booking');
     const tRes = useTranslations('reservation');
     const locale = useLocale();
@@ -62,20 +69,30 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
 
     // Calculate total price
     const calculateTotal = () => {
-        if (!selectedRange?.from || !selectedRange?.to) return { total: 0, days: 0, locFees: 0 };
+        if (!selectedRange?.from || !selectedRange?.to) return { total: 0, totalBase: 0, days: 0, locFees: 0, hasPromo: false };
         const start = new Date(`${format(selectedRange.from, 'yyyy-MM-dd')}T${startTime}`);
         const end = new Date(`${format(selectedRange.to, 'yyyy-MM-dd')}T${returnTime}`);
 
-        if (isNaN(start.getTime()) || isNaN(end.getTime())) return { total: 0, days: 0, locFees: 0 };
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) return { total: 0, totalBase: 0, days: 0, locFees: 0, hasPromo: false };
 
         const diffTime = end.getTime() - start.getTime();
-        if (diffTime <= 0) return { total: 0, days: 0, locFees: 0 };
+        if (diffTime <= 0) return { total: 0, totalBase: 0, days: 0, locFees: 0, hasPromo: false };
 
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         
         let total = 0;
+        let totalBase = 0;
+        let hasPromo = false;
+
+        const promoStart = promotionDateDebut ? new Date(promotionDateDebut) : null;
+        if (promoStart) promoStart.setHours(0,0,0,0);
+        const promoEnd = promotionDateFin ? new Date(promotionDateFin) : null;
+        if (promoEnd) promoEnd.setHours(23,59,59,999);
+
         for (let i = 0; i < diffDays; i++) {
             const currentDate = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+            
+            // Calcul base price (avec saisonniers)
             const currentSeason = prixSaisonniers.find(s => {
                 const debut = new Date(s.dateDebut);
                 const fin = new Date(s.dateFin);
@@ -83,7 +100,18 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
                 fin.setHours(23,59,59,999);
                 return currentDate >= debut && currentDate <= fin;
             });
-            total += currentSeason ? currentSeason.prixParJour : pricePerDay;
+            const dayBasePrice = currentSeason ? currentSeason.prixParJour : pricePerDay;
+            totalBase += dayBasePrice;
+
+            // Calcul promo price
+            let dayPromoPrice = dayBasePrice;
+            if (promotionActive && promoStart && promoEnd && promotionPrixParJour) {
+                if (currentDate >= promoStart && currentDate <= promoEnd) {
+                    dayPromoPrice = promotionPrixParJour;
+                    hasPromo = true;
+                }
+            }
+            total += dayPromoPrice;
         }
 
         // Calculation logic strictly mirroring server action
@@ -107,12 +135,13 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
         }
 
         total += locFees;
+        totalBase += locFees;
 
-        return { total, days: diffDays, locFees };
+        return { total, totalBase, days: diffDays, locFees, hasPromo };
     };
 
     const calculation = calculateTotal();
-    const { total: totalPrice, days, locFees } = calculation;
+    const { total: totalPrice, totalBase, days, locFees, hasPromo } = calculation;
 
     async function handleSubmit(formData: FormData) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -165,9 +194,23 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
                                     <strong>+ {formatPrice(locFees)}</strong>
                                 </div>
                             )}
-                            <div className="summary-total">
-                                <span>{t('total_estimated')}</span>
-                                <strong>{formatPrice(totalPrice)}</strong>
+                            <div className="summary-total" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+                                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span>{t('total_estimated')}</span>
+                                    {hasPromo ? (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                            <span className="promo-badge-premium" style={{ marginBottom: '4px', fontSize: '0.65rem' }}>
+                                                <i className="fas fa-bolt"></i> Promo
+                                            </span>
+                                            <div>
+                                                <span className="price-crossed-out" style={{ color: '#999', fontSize: '0.85rem', marginRight: '6px' }}>{formatPrice(totalBase)}</span>
+                                                <strong style={{ color: '#ff0844', fontSize: '1.2rem' }}>{formatPrice(totalPrice)}</strong>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <strong>{formatPrice(totalPrice)}</strong>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

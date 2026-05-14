@@ -40,7 +40,7 @@
   "vehicles": {
     "title": "Nuestros Vehículos",
     "from": "Desde",
-    "per_day": "día",
+    "per_day": "/ día",
     "reserve": "Reservar",
     "details": "Detalles",
     "description": "Acerca de este vehículo",

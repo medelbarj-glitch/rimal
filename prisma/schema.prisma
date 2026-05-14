@@ -68,6 +68,12 @@ model ModeleVoiture {
   transmission Transmission @default(MANUELLE)
   fuelType     FuelType     @default(ESSENCE) @map("fuel_type")
 
+  // Promotion
+  promotionActive      Boolean   @default(false) @map("promotion_active")
+  promotionDateDebut   DateTime? @map("promotion_date_debut")
+  promotionDateFin     DateTime? @map("promotion_date_fin")
+  promotionPrixParJour Int?      @map("promotion_prix_par_jour")
+
   // Relation: Ce modèle a plusieurs véhicules physiques
   vehicules Vehicule[]
 
