@@ -31,6 +31,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: titleMap[locale] || titleMap.fr,
         description: descMap[locale] || descMap.fr,
+        alternates: {
+            canonical: `https://www.bouderba-rental.com/${locale}/locations`,
+            languages: {
+                fr: 'https://www.bouderba-rental.com/fr/locations',
+                en: 'https://www.bouderba-rental.com/en/locations',
+                es: 'https://www.bouderba-rental.com/es/locations',
+                ar: 'https://www.bouderba-rental.com/ar/locations',
+            },
+        },
     };
 }
 

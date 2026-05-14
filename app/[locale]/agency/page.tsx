@@ -10,6 +10,15 @@ export async function generateMetadata({ params: { locale } }: any) {
     return {
         title: `${t('title')} | Bouderba Rental Cars`,
         description: t('subtitle'),
+        alternates: {
+            canonical: `https://www.bouderba-rental.com/${locale}/agency`,
+            languages: {
+                fr: 'https://www.bouderba-rental.com/fr/agency',
+                en: 'https://www.bouderba-rental.com/en/agency',
+                es: 'https://www.bouderba-rental.com/es/agency',
+                ar: 'https://www.bouderba-rental.com/ar/agency',
+            },
+        },
     };
 }
 

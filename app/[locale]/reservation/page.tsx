@@ -11,6 +11,23 @@ import '../../../styles/reservation.css';
 // Force dynamic rendering because we use searchParams
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return {
+    title: 'Réservation | Bouderba Rental Cars – Location de Voiture Marrakech',
+    description: 'Réservez votre voiture de location à Marrakech en quelques clics. Choisissez parmi notre flotte de véhicules récents, indiquez vos dates et confirmez votre réservation en ligne.',
+    alternates: {
+      canonical: `https://www.bouderba-rental.com/${locale}/reservation`,
+      languages: {
+        fr: 'https://www.bouderba-rental.com/fr/reservation',
+        en: 'https://www.bouderba-rental.com/en/reservation',
+        es: 'https://www.bouderba-rental.com/es/reservation',
+        ar: 'https://www.bouderba-rental.com/ar/reservation',
+      },
+    },
+  };
+}
+
 export default async function ReservationPage({
     searchParams,
 }: {

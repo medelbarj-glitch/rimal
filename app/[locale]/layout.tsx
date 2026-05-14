@@ -141,38 +141,100 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "AutoRental",
-              "name": "Bouderba Rental Cars",
-              "description": "Location de voiture à Marrakech et au Maroc. Large flotte de véhicules récents à prix compétitifs avec livraison aéroport.",
-              "url": "https://www.bouderba-rental.com",
-              "telephone": settings?.phoneNumber || "+212 6 67 33 28 34",
-              "email": "contact@bouderba-rental.com",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "Marrakech",
-                "addressLocality": "Marrakech",
-                "addressRegion": "Marrakech-Safi",
-                "addressCountry": "MA"
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Bouderba Rental Cars",
+                "url": "https://www.bouderba-rental.com",
+                "description": "Location de voiture à Marrakech et au Maroc. Large flotte de véhicules récents à prix compétitifs avec livraison aéroport.",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://www.bouderba-rental.com/fr/reservation?q={search_term_string}"
+                  },
+                  "query-input": "required name=search_term_string"
+                },
+                "hasPart": [
+                  {
+                    "@type": "WebPage",
+                    "@id": "https://www.bouderba-rental.com/fr",
+                    "name": "Accueil",
+                    "description": "Page d'accueil de Bouderba Rental Cars – location de voiture à Marrakech",
+                    "url": "https://www.bouderba-rental.com/fr"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "@id": "https://www.bouderba-rental.com/fr/reservation",
+                    "name": "Réservation",
+                    "description": "Réservez votre voiture en ligne facilement et rapidement",
+                    "url": "https://www.bouderba-rental.com/fr/reservation"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "@id": "https://www.bouderba-rental.com/fr/agency",
+                    "name": "Notre Agence",
+                    "description": "Découvrez Bouderba Rental Cars – notre histoire, nos valeurs et nos coordonnées",
+                    "url": "https://www.bouderba-rental.com/fr/agency"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "@id": "https://www.bouderba-rental.com/fr/locations",
+                    "name": "Nos Localisations",
+                    "description": "Retrouvez tous nos points de retrait et de livraison à Marrakech",
+                    "url": "https://www.bouderba-rental.com/fr/locations"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "@id": "https://www.bouderba-rental.com/fr/legal",
+                    "name": "Conditions Générales",
+                    "description": "Conditions générales de location, politique de confidentialité et mentions légales",
+                    "url": "https://www.bouderba-rental.com/fr/legal"
+                  }
+                ]
               },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 31.6295,
-                "longitude": -7.9811
-              },
-              "priceRange": "$$",
-              "currenciesAccepted": "MAD, EUR",
-              "paymentAccepted": "Cash, Credit Card",
-              "areaServed": [
-                { "@type": "City", "name": "Marrakech" },
-                { "@type": "Country", "name": "Morocco" }
-              ],
-              "sameAs": [
-                "https://www.instagram.com/bouderba_rental_cars",
-                "https://www.facebook.com/bouderbarentalcars"
-              ]
-            }),
+              {
+                "@context": "https://schema.org",
+                "@type": "AutoRental",
+                "name": "Bouderba Rental Cars",
+                "description": "Location de voiture à Marrakech et au Maroc. Large flotte de véhicules récents à prix compétitifs avec livraison aéroport.",
+                "url": "https://www.bouderba-rental.com",
+                "telephone": settings?.phoneNumber || "+212 6 67 33 28 34",
+                "email": "contact@bouderba-rental.com",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "Marrakech",
+                  "addressLocality": "Marrakech",
+                  "addressRegion": "Marrakech-Safi",
+                  "addressCountry": "MA"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 31.6295,
+                  "longitude": -7.9811
+                },
+                "priceRange": "$$",
+                "currenciesAccepted": "MAD, EUR",
+                "paymentAccepted": "Cash, Credit Card",
+                "openingHoursSpecification": [
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                    "opens": "09:00",
+                    "closes": "20:00"
+                  }
+                ],
+                "areaServed": [
+                  { "@type": "City", "name": "Marrakech" },
+                  { "@type": "Country", "name": "Morocco" }
+                ],
+                "sameAs": [
+                  "https://www.instagram.com/bouderba.rental.cars",
+                  "https://www.facebook.com/bouderbarentalcars"
+                ]
+              }
+            ]),
           }}
         />
       </head>
