@@ -187,6 +187,20 @@ export default async function RootLayout({
           </CurrencyProvider>
         </NextIntlClientProvider>
 
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-R4PYLVXV0R"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-R4PYLVXV0R');
+          `}
+        </Script>
+
         <Script src="https://cdn.jsdelivr.net/npm/flatpickr" strategy="lazyOnload" />
       </body>
     </html>
