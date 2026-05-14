@@ -1,7 +1,6 @@
 // Fichier : app/components/VehiclesSection.tsx
 
-"use client"; // Obligatoire, car IntersectionObserver est une API du navigateur
-// Fichier : app/components/VehiclesSection.tsx
+"use client";
 
 "use client"; // Obligatoire, car IntersectionObserver est une API du navigateur
 
@@ -102,9 +101,9 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
             </div>
 
             <Link href={`/vehicles/${car.id}`}>
-              <img 
-                src={car.imageUrl?.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_500,h_350,c_fill/') : car.imageUrl || undefined} 
-                alt={car.nom} 
+              <img
+                src={car.imageUrl?.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_500,h_350,c_fill/') : car.imageUrl || undefined}
+                alt={car.nom}
                 style={{ cursor: 'pointer' }}
                 width="500"
                 height="350"
