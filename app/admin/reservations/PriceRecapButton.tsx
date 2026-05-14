@@ -32,7 +32,21 @@ export function PriceRecapButton({ reservation }: { reservation: ReservationWith
 
     // Creating logic matched server: we sum up fees.
     const totalFees = pickupFee + returnFee;
-    const basePrice = days * reservation.vehicule.modele.prixParJour;
+    let basePrice = 0;
+    for (let i = 0; i < days; i++) {
+        const currentDate = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+        // We know from page.tsx that prixSaisonniers is included.
+        // But to be safe with types, let's cast or assume it's there.
+        const model = reservation.vehicule.modele as any;
+        const currentSeason = model.prixSaisonniers?.find((s: any) => {
+            const debut = new Date(s.dateDebut);
+            const fin = new Date(s.dateFin);
+            debut.setHours(0,0,0,0);
+            fin.setHours(23,59,59,999);
+            return currentDate >= debut && currentDate <= fin;
+        });
+        basePrice += currentSeason ? currentSeason.prixParJour : model.prixParJour;
+    }
 
     // Note: The stored reservation.prixTotal SHOULD match basePrice + totalFees.
     // If it doesn't (due to manual edits or bugs), we show what we calculate vs stored.
@@ -57,7 +71,7 @@ export function PriceRecapButton({ reservation }: { reservation: ReservationWith
                         </div>
                         <div className="modal-body">
                             <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                <span>Location base ({days}j x {reservation.vehicule.modele.prixParJour}DH)</span>
+                                <span>Location base ({days}j)</span>
                                 <strong>{basePrice} DH</strong>
                             </div>
 

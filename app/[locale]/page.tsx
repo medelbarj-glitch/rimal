@@ -58,7 +58,9 @@ export default async function Home() {
         orderBy: { createdAt: 'asc' }
     });
 
-    const voitures = await prisma.modeleVoiture.findMany();
+    const voitures = await prisma.modeleVoiture.findMany({
+        include: { prixSaisonniers: true }
+    });
     const locations = await prisma.location.findMany();
     const settings = await prisma.setting.findUnique({ where: { id: 1 } });
     const logoUrl = settings?.logoUrl || '/default-logo.png';

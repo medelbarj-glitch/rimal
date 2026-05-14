@@ -21,7 +21,7 @@ export default async function VehicleDetailPage({ params }: { params: { locale: 
     const [modele, voitures, locations, dbSettings] = await Promise.all([
         prisma.modeleVoiture.findUnique({
             where: { id },
-            include: { imagesModele: true }
+            include: { imagesModele: true, prixSaisonniers: true }
         }),
         prisma.modeleVoiture.findMany(),
         prisma.location.findMany(),
@@ -33,6 +33,11 @@ export default async function VehicleDetailPage({ params }: { params: { locale: 
     }
 
     const t = await getTranslations({ locale });
+
+    const prixSaisonniers = (modele as any).prixSaisonniers || [];
+    const minPrice = prixSaisonniers.length > 0 
+        ? Math.min(modele.prixParJour, ...prixSaisonniers.map((s: any) => s.prixParJour)) 
+        : modele.prixParJour;
 
     // Extraction de la description correcte selon la langue
     let description = modele.description;
@@ -49,7 +54,7 @@ export default async function VehicleDetailPage({ params }: { params: { locale: 
                 <div className="vd-hero-overlay"></div>
                 <div className="vd-hero-content">
                     <h1 className="vd-title">{modele.nom}</h1>
-                    <div className="vd-price-badge">{modele.prixParJour} MAD / {t('vehicles.per_day') || 'jour'}</div>
+                    <div className="vd-price-badge"><span style={{fontSize:'0.8em'}}>{t('vehicles.from') || 'À partir de'}</span> {minPrice} MAD / {t('vehicles.per_day') || 'jour'}</div>
                 </div>
             </section>
 

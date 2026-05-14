@@ -90,12 +90,32 @@ export async function createReservation(formData: FormData) {
     }
 
     // Calculate price
-    const model = await prisma.modeleVoiture.findUnique({ where: { id: modelId } });
+    const model = await prisma.modeleVoiture.findUnique({ 
+        where: { id: modelId },
+        include: { prixSaisonniers: true }
+    });
     if (!model) return { error: 'Modèle introuvable.' };
 
     const diffTime = Math.abs(endDateTime.getTime() - startDateTime.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    let totalPrice = diffDays * model.prixParJour;
+    
+    let basePrice = 0;
+    // Calculation day by day
+    for (let i = 0; i < diffDays; i++) {
+        const currentDate = new Date(startDateTime.getTime() + i * 24 * 60 * 60 * 1000);
+        // Reset time for safe comparison if dates are just day-based, but since we are within range it's fine.
+        const currentSeason = model.prixSaisonniers.find(s => {
+            const debut = new Date(s.dateDebut);
+            const fin = new Date(s.dateFin);
+            debut.setHours(0,0,0,0);
+            fin.setHours(23,59,59,999);
+            return currentDate >= debut && currentDate <= fin;
+        });
+        
+        basePrice += currentSeason ? currentSeason.prixParJour : model.prixParJour;
+    }
+    
+    let totalPrice = basePrice;
 
     // Add Location Fees
     if (locationId) {
@@ -166,7 +186,7 @@ export async function createReservation(formData: FormData) {
     // 1. Pickup Fee.
     // 2. Return Fee.
     // Resetting total price calculation to be clean.
-    totalPrice = diffDays * model.prixParJour;
+    totalPrice = basePrice;
 
     if (locationId) {
         const loc = await prisma.location.findUnique({ where: { id: locationId } });

@@ -16,7 +16,9 @@ export default async function ReservationsPage() {
         include: {
             vehicule: {
                 include: {
-                    modele: true,
+                    modele: {
+                        include: { prixSaisonniers: true }
+                    },
                 },
             },
             lieuPriseEnCharge: true,

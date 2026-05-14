@@ -11,6 +11,7 @@ interface BookingFormProps {
     searchParams: { [key: string]: string | string[] | undefined };
     locations: Location[];
     pricePerDay: number;
+    prixSaisonniers?: any[];
 }
 
 // ... imports
@@ -28,7 +29,7 @@ const timeSlots = [
     "16:00", "16:30", "17:00", "17:30", "18:00"
 ];
 
-export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay }: BookingFormProps) {
+export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay, prixSaisonniers = [] }: BookingFormProps) {
     const t = useTranslations('booking');
     const tRes = useTranslations('reservation');
     const locale = useLocale();
@@ -71,7 +72,20 @@ export function BookingForm({ modelId, modelName, modelImageUrl, searchParams, l
         if (diffTime <= 0) return { total: 0, days: 0, locFees: 0 };
 
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        let total = diffDays * pricePerDay;
+        
+        let total = 0;
+        for (let i = 0; i < diffDays; i++) {
+            const currentDate = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+            const currentSeason = prixSaisonniers.find(s => {
+                const debut = new Date(s.dateDebut);
+                const fin = new Date(s.dateFin);
+                debut.setHours(0,0,0,0);
+                fin.setHours(23,59,59,999);
+                return currentDate >= debut && currentDate <= fin;
+            });
+            total += currentSeason ? currentSeason.prixParJour : pricePerDay;
+        }
+
         // Calculation logic strictly mirroring server action
         let locFees = 0;
 

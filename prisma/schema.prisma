@@ -74,6 +74,9 @@ model ModeleVoiture {
   // Relation: Galerie d'images pour la page détail
   imagesModele ModeleImage[]
 
+  // Relation: Prix saisonniers (plages de dates)
+  prixSaisonniers PrixSaisonnier[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -269,4 +272,20 @@ model Setting {
   hoursFriday    String? @default("09:00 — 20:00")
   hoursSaturday  String? @default("10:00 — 18:00")
   hoursSunday    String? @default("Sur rendez-vous")
+}
+
+model PrixSaisonnier {
+  id          Int      @id @default(autoincrement())
+  nom         String?
+  dateDebut   DateTime @map("date_debut")
+  dateFin     DateTime @map("date_fin")
+  prixParJour Int      @map("prix_par_jour")
+
+  modeleId    Int
+  modele      ModeleVoiture @relation(fields: [modeleId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("prix_saisonniers")
 }

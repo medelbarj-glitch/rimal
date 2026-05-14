@@ -61,6 +61,9 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                         <Link href="/admin/vehicles" className={`nav-item ${isActive('/admin/vehicles')}`} onClick={() => setIsSidebarOpen(false)}>
                             <i className="fas fa-car"></i> Véhicules
                         </Link>
+                        <Link href="/admin/pricing" className={`nav-item ${isActive('/admin/pricing')}`} onClick={() => setIsSidebarOpen(false)}>
+                            <i className="fas fa-tags"></i> Tarification
+                        </Link>
                         <Link href="/admin/locations" className={`nav-item ${isActive('/admin/locations')}`} onClick={() => setIsSidebarOpen(false)}>
                             <i className="fas fa-map-marker-alt"></i> Lieux
                         </Link>

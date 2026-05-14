@@ -22,6 +22,7 @@ export default async function BookingPage({
 
     const model = await prisma.modeleVoiture.findUnique({
         where: { id: modelId },
+        include: { prixSaisonniers: true }
     });
 
     if (!model) return notFound();
@@ -37,12 +38,24 @@ export default async function BookingPage({
         const end = new Date(endDateStr);
         const diffTime = Math.abs(end.getTime() - start.getTime());
         days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        totalPrice = days * model.prixParJour;
+        
+        // Seasonal logic
+        for (let i = 0; i < days; i++) {
+            const currentDate = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+            const currentSeason = model.prixSaisonniers.find(s => {
+                const debut = new Date(s.dateDebut);
+                const fin = new Date(s.dateFin);
+                debut.setHours(0,0,0,0);
+                fin.setHours(23,59,59,999);
+                return currentDate >= debut && currentDate <= fin;
+            });
+            totalPrice += currentSeason ? currentSeason.prixParJour : model.prixParJour;
+        }
     }
 
     const locations = await prisma.location.findMany();
 
-    const voitures = await prisma.modeleVoiture.findMany();
+    const voitures = await prisma.modeleVoiture.findMany({ include: { prixSaisonniers: true }});
     const settings = await prisma.setting.findUnique({ where: { id: 1 } });
     const logoUrl = settings?.logoUrl || '/default-logo.png';
 
@@ -58,6 +71,7 @@ export default async function BookingPage({
                         searchParams={resolvedSearchParams}
                         locations={locations}
                         pricePerDay={model.prixParJour}
+                        prixSaisonniers={model.prixSaisonniers}
                     />
                 </div>
             </div>

@@ -14,7 +14,7 @@ import { useCurrency } from '../context/CurrencyContext';
 
 // 1. Définir les "props" que ce composant reçoit
 interface VehiclesSectionProps {
-  voitures: ModeleVoiture[]; // Il reçoit les voitures du serveur
+  voitures: (ModeleVoiture & { prixSaisonniers?: any[] })[]; // Il reçoit les voitures du serveur
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
@@ -114,7 +114,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
 
             <div className="vehicule-bottom-info">
               <span className="price">
-                {t('from')} <strong>{formatPrice(car.prixParJour)}</strong> {t('per_day')}
+                {t('from')} <strong>{formatPrice(car.prixSaisonniers && car.prixSaisonniers.length > 0 ? Math.min(car.prixParJour, ...car.prixSaisonniers.map(s => s.prixParJour)) : car.prixParJour)}</strong> {t('per_day')}
               </span>
               <div className="buttons-container">
                 <Link href={getReservationUrl(car.id)} className="reserve-button">
