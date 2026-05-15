@@ -55,6 +55,11 @@ export default async function BookingPage({
 
     const locations = await prisma.location.findMany();
 
+    const reservationOptions = await prisma.optionReservation.findMany({
+        where: { actif: true },
+        orderBy: { createdAt: 'asc' },
+    });
+
     const voitures = await prisma.modeleVoiture.findMany({ include: { prixSaisonniers: true }});
     const settings = await prisma.setting.findUnique({ where: { id: 1 } });
     const logoUrl = settings?.logoUrl || '/default-logo.png';
@@ -76,6 +81,7 @@ export default async function BookingPage({
                         promotionDateDebut={model.promotionDateDebut}
                         promotionDateFin={model.promotionDateFin}
                         promotionPrixParJour={model.promotionPrixParJour}
+                        reservationOptions={reservationOptions}
                     />
                 </div>
             </div>

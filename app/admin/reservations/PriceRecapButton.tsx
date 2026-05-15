@@ -9,6 +9,15 @@ type ReservationWithDetails = Reservation & {
     };
     lieuPriseEnCharge: Location | null;
     lieuRetour: Location | null;
+    options?: {
+        id: number;
+        quantite: number;
+        prixUnitaire: number;
+        option: {
+            nom: string;
+            perDay: boolean;
+        };
+    }[];
 };
 
 export function PriceRecapButton({ reservation }: { reservation: ReservationWithDetails }) {
@@ -90,6 +99,31 @@ export function PriceRecapButton({ reservation }: { reservation: ReservationWith
                             )}
 
                             <hr style={{ margin: '15px 0', border: '0', borderTop: '1px solid #eee' }} />
+
+                            {/* Options breakdown */}
+                            {reservation.options && reservation.options.length > 0 && (
+                                <>
+                                    <div style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
+                                        <i className="fas fa-puzzle-piece" style={{ marginRight: '5px', color: '#B49339' }}></i>
+                                        Options
+                                    </div>
+                                    {reservation.options.map((ro) => {
+                                        const optTotal = ro.option.perDay 
+                                            ? ro.prixUnitaire * ro.quantite * days 
+                                            : ro.prixUnitaire * ro.quantite;
+                                        return (
+                                            <div key={ro.id} className="price-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', color: '#666', fontSize: '0.85rem' }}>
+                                                <span>
+                                                    {ro.option.nom} ×{ro.quantite}
+                                                    {ro.option.perDay ? ` (×${days}j)` : ''}
+                                                </span>
+                                                <span>+ {optTotal} DH</span>
+                                            </div>
+                                        );
+                                    })}
+                                    <hr style={{ margin: '15px 0', border: '0', borderTop: '1px solid #eee' }} />
+                                </>
+                            )}
 
                             <div className="price-row total" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem' }}>
                                 <span>Total Enregistré</span>

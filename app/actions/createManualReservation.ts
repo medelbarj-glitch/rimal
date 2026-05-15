@@ -19,6 +19,7 @@ export async function createManualReservation(data: {
     clientTel: string;
     status: string;
     note: string | null;
+    options?: { optionId: number; quantite: number; prixUnitaire: number }[];
 }) {
     try {
         const {
@@ -37,6 +38,7 @@ export async function createManualReservation(data: {
             status,
             note
         } = data;
+        const options = data.options || [];
 
         if (!vehiculeId || !dateDebut || !dateFin || !clientNom || !clientPrenom || !clientTel) {
             return { success: false, error: 'Les champs obligatoires ne sont pas remplis.' };
@@ -62,6 +64,13 @@ export async function createManualReservation(data: {
                 clientTel,
                 status: status as StatusReservation,
                 note: note || undefined,
+                options: options.length > 0 ? {
+                    create: options.map(o => ({
+                        optionId: o.optionId,
+                        quantite: o.quantite,
+                        prixUnitaire: o.prixUnitaire,
+                    }))
+                } : undefined,
             }
         });
 

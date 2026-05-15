@@ -182,6 +182,9 @@ model Reservation {
 
   note String?
 
+  // Relation: Options choisies pour cette réservation
+  options ReservationOption[]
+
   @@map("reservations")
 }
 
@@ -315,4 +318,44 @@ model Service {
   updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@map("services")
+}
+
+// --- Options de réservation (Catalogue) ---
+model OptionReservation {
+  id          Int      @id @default(autoincrement())
+  nom         String
+  nom_en      String?
+  nom_es      String?
+  nom_ar      String?
+  nom_ma      String?
+  prix        Int      // Prix unitaire en DH
+  icon        String   @default("fa-star") // Classe FontAwesome
+  actif       Boolean  @default(true)
+  perDay      Boolean  @default(false) @map("per_day") // true = prix par jour, false = prix fixe
+  maxQuantite Int      @default(1) @map("max_quantite") // Quantité max par réservation
+
+  // Relation: Cette option a été choisie dans des réservations
+  reservations ReservationOption[]
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("options_reservation")
+}
+
+// --- Table pivot: Réservation <-> Option ---
+model ReservationOption {
+  id            Int               @id @default(autoincrement())
+  quantite      Int               @default(1)
+  prixUnitaire  Int               @map("prix_unitaire") // Prix snapshot au moment de la résa
+
+  // Relations
+  reservationId Int
+  reservation   Reservation       @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  optionId      Int
+  option        OptionReservation  @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@unique([reservationId, optionId])
+  @@map("reservation_options")
 }

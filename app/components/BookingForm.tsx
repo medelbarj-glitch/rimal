@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createReservation } from '../actions/createReservation';
-import { Location } from '@prisma/client';
+import { Location, OptionReservation } from '@prisma/client';
 
 interface BookingFormProps {
     modelId: number;
@@ -16,6 +16,7 @@ interface BookingFormProps {
     promotionDateDebut?: Date | null;
     promotionDateFin?: Date | null;
     promotionPrixParJour?: number | null;
+    reservationOptions?: OptionReservation[];
 }
 
 // ... imports
@@ -35,7 +36,8 @@ const timeSlots = [
 
 export function BookingForm({ 
     modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay, prixSaisonniers = [],
-    promotionActive, promotionDateDebut, promotionDateFin, promotionPrixParJour
+    promotionActive, promotionDateDebut, promotionDateFin, promotionPrixParJour,
+    reservationOptions = []
 }: BookingFormProps) {
     const t = useTranslations('booking');
     const tRes = useTranslations('reservation');
@@ -67,9 +69,28 @@ export function BookingForm({
     const [customPickupText, setCustomPickupText] = useState(searchParams.customLocation as string || '');
     const [customReturnText, setCustomReturnText] = useState(searchParams.customReturnLocation as string || '');
 
+    // State for selected options
+    const [selectedOptions, setSelectedOptions] = useState<Record<number, number>>({}); // { optionId: quantity }
+
+    const toggleOption = (optionId: number, maxQty: number) => {
+        setSelectedOptions(prev => {
+            if (prev[optionId]) {
+                const { [optionId]: _, ...rest } = prev;
+                return rest;
+            }
+            return { ...prev, [optionId]: 1 };
+        });
+    };
+
+    const setOptionQuantity = (optionId: number, qty: number, maxQty: number) => {
+        if (qty < 1) qty = 1;
+        if (qty > maxQty) qty = maxQty;
+        setSelectedOptions(prev => ({ ...prev, [optionId]: qty }));
+    };
+
     // Calculate total price
     const calculateTotal = () => {
-        if (!selectedRange?.from || !selectedRange?.to) return { total: 0, totalBase: 0, days: 0, locFees: 0, hasPromo: false };
+        if (!selectedRange?.from || !selectedRange?.to) return { total: 0, totalBase: 0, days: 0, locFees: 0, optionsFees: 0, hasPromo: false };
         const start = new Date(`${format(selectedRange.from, 'yyyy-MM-dd')}T${startTime}`);
         const end = new Date(`${format(selectedRange.to, 'yyyy-MM-dd')}T${returnTime}`);
 
@@ -137,11 +158,27 @@ export function BookingForm({
         total += locFees;
         totalBase += locFees;
 
-        return { total, totalBase, days: diffDays, locFees, hasPromo };
+        // Calculate options cost
+        let optionsFees = 0;
+        Object.entries(selectedOptions).forEach(([optionIdStr, qty]) => {
+            const opt = reservationOptions.find(o => o.id === parseInt(optionIdStr));
+            if (opt) {
+                if (opt.perDay) {
+                    optionsFees += opt.prix * qty * diffDays;
+                } else {
+                    optionsFees += opt.prix * qty;
+                }
+            }
+        });
+
+        total += optionsFees;
+        totalBase += optionsFees;
+
+        return { total, totalBase, days: diffDays, locFees, optionsFees, hasPromo };
     };
 
     const calculation = calculateTotal();
-    const { total: totalPrice, totalBase, days, locFees, hasPromo } = calculation;
+    const { total: totalPrice, totalBase, days, locFees, optionsFees = 0, hasPromo } = calculation;
 
     async function handleSubmit(formData: FormData) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -192,6 +229,12 @@ export function BookingForm({
                                 <div className="summary-row fees">
                                     <span>{t('location_fees')}</span>
                                     <strong>+ {formatPrice(locFees)}</strong>
+                                </div>
+                            )}
+                            {optionsFees > 0 && (
+                                <div className="summary-row fees">
+                                    <span>{t('options_fees')}</span>
+                                    <strong>+ {formatPrice(optionsFees)}</strong>
                                 </div>
                             )}
                             <div className="summary-total" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
@@ -358,6 +401,64 @@ export function BookingForm({
                                 </div>
 
                             </div>
+
+                            {/* Options Section */}
+                            {reservationOptions.length > 0 && (
+                                <>
+                                    <h3>{t('options_title')}</h3>
+                                    <div className="booking-options-grid">
+                                        {reservationOptions.map((opt) => {
+                                            const isSelected = !!selectedOptions[opt.id];
+                                            const qty = selectedOptions[opt.id] || 0;
+                                            const optName = getTranslatedField(opt, 'nom', locale);
+                                            return (
+                                                <div
+                                                    key={opt.id}
+                                                    className={`booking-option-card ${isSelected ? 'selected' : ''}`}
+                                                    onClick={() => toggleOption(opt.id, opt.maxQuantite)}
+                                                >
+                                                    <div className="booking-option-icon">
+                                                        <i className={`fas ${opt.icon}`}></i>
+                                                    </div>
+                                                    <div className="booking-option-info">
+                                                        <span className="booking-option-name">{optName}</span>
+                                                        <span className="booking-option-price">
+                                                            {formatPrice(opt.prix)}{opt.perDay ? ` / ${t('day')}` : ''}
+                                                        </span>
+                                                    </div>
+                                                    <div className="booking-option-check">
+                                                        <i className={`fas ${isSelected ? 'fa-check-circle' : 'fa-circle'}`}></i>
+                                                    </div>
+                                                    {isSelected && opt.maxQuantite > 1 && (
+                                                        <div className="booking-option-qty" onClick={(e) => e.stopPropagation()}>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setOptionQuantity(opt.id, qty - 1, opt.maxQuantite)}
+                                                                className="qty-btn"
+                                                            >
+                                                                −
+                                                            </button>
+                                                            <span>{qty}</span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setOptionQuantity(opt.id, qty + 1, opt.maxQuantite)}
+                                                                className="qty-btn"
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                    {/* Hidden inputs for selected options */}
+                                    {Object.entries(selectedOptions).map(([optId, qty]) => (
+                                        <input key={optId} type="hidden" name={`option_${optId}`} value={qty} />
+                                    ))}
+                                </>
+                            )}
+
                             <h3>{t('details')}</h3>
                             <div className="form-grid">
                                 <div className="form-group">

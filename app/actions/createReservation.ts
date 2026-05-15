@@ -215,6 +215,52 @@ export async function createReservation(formData: FormData) {
         if (loc) totalPrice += loc.fraisSupplementaires;
     }
 
+    // --- Parse selected options ---
+    const selectedOptions: { optionId: number; quantity: number }[] = [];
+    for (const [key, value] of formData.entries()) {
+        if (key.startsWith('option_')) {
+            const optionId = parseInt(key.replace('option_', ''));
+            const qty = parseInt(value as string);
+            if (!isNaN(optionId) && !isNaN(qty) && qty > 0) {
+                selectedOptions.push({ optionId, quantity: qty });
+            }
+        }
+    }
+
+    // Fetch option details and calculate costs
+    let optionsCost = 0;
+    const optionDetails: { optionId: number; quantity: number; prixUnitaire: number; nom: string; perDay: boolean; total: number }[] = [];
+    if (selectedOptions.length > 0) {
+        const optionIds = selectedOptions.map(o => o.optionId);
+        const options = await prisma.optionReservation.findMany({
+            where: { id: { in: optionIds }, actif: true }
+        });
+
+        for (const sel of selectedOptions) {
+            const opt = options.find(o => o.id === sel.optionId);
+            if (!opt) continue;
+            // Clamp quantity to maxQuantite
+            const qty = Math.min(sel.quantity, opt.maxQuantite);
+            let cost: number;
+            if (opt.perDay) {
+                cost = opt.prix * qty * diffDays;
+            } else {
+                cost = opt.prix * qty;
+            }
+            optionsCost += cost;
+            optionDetails.push({
+                optionId: opt.id,
+                quantity: qty,
+                prixUnitaire: opt.prix,
+                nom: opt.nom,
+                perDay: opt.perDay,
+                total: cost,
+            });
+        }
+    }
+
+    totalPrice += optionsCost;
+
 
     let reservation;
     try {
@@ -241,6 +287,15 @@ export async function createReservation(formData: FormData) {
                 // Custom fields
                 customPriseEnCharge: customLocation || undefined,
                 customRetour: customReturnLocation || customLocation || undefined,
+
+                // Create linked option entries
+                options: optionDetails.length > 0 ? {
+                    create: optionDetails.map(od => ({
+                        optionId: od.optionId,
+                        quantite: od.quantity,
+                        prixUnitaire: od.prixUnitaire,
+                    }))
+                } : undefined,
             }
         });
     } catch (e) {
@@ -285,6 +340,11 @@ export async function createReservation(formData: FormData) {
                 <li><strong>📍 Retour :</strong> ${returnName}</li>
                 <li><strong>💶 Prix total estimé :</strong> <span style="color: #28a745; font-weight: bold;">${totalPrice} DH</span></li>
             </ul>
+            ${optionDetails.length > 0 ? `
+            <h3 style="font-size: 16px; margin-top: 15px; margin-bottom: 10px; color: #1a1a1a;">Options sélectionnées :</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; line-height: 1.8;">
+                ${optionDetails.map(od => `<li>✅ ${od.nom} × ${od.quantity}${od.perDay ? ` (${od.prixUnitaire} DH/jour)` : ` (${od.prixUnitaire} DH)`} = <strong>${od.total} DH</strong></li>`).join('')}
+            </ul>` : ''}
         </div>
         
         <p style="font-size: 16px; font-weight: bold; color: #d9534f; border: 1px dashed #d9534f; padding: 15px; border-radius: 5px; text-align: center;">

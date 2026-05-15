@@ -23,6 +23,11 @@ export default async function ReservationsPage() {
             },
             lieuPriseEnCharge: true,
             lieuRetour: true,
+            options: {
+                include: {
+                    option: true,
+                }
+            },
         },
         orderBy: {
             createdAt: 'desc',
@@ -136,6 +141,23 @@ export default async function ReservationsPage() {
                                                     {res.lieuRetour ? res.lieuRetour.nom : <span style={{ color: '#B49339', fontWeight: 'bold' }}>{res.customRetour || 'Même adresse'}</span>}
                                                 </div>
                                                 {res.note ? <div className="info-row"><i className="fa-regular fa-note-sticky info-icon"></i> {res.note}</div> : null}
+                                                {(res as any).options && (res as any).options.length > 0 && (
+                                                    <div className="info-row" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '4px' }}>
+                                                        <i className="fas fa-puzzle-piece info-icon"></i>
+                                                        {(res as any).options.map((ro: any) => (
+                                                            <span key={ro.id} style={{
+                                                                background: 'rgba(180,147,57,0.1)',
+                                                                color: '#8A6D26',
+                                                                padding: '2px 8px',
+                                                                borderRadius: '10px',
+                                                                fontSize: '0.75rem',
+                                                                fontWeight: 600,
+                                                            }}>
+                                                                {ro.option.nom} ×{ro.quantite}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </div>
                                             <div>
                                                 <div className="client-name"><i className="fas fa-user info-icon"></i> {res.clientPrenom} {res.clientNom}</div>

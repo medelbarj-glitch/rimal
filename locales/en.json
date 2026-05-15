@@ -101,7 +101,10 @@
     "phone": "Phone *",
     "phone_placeholder": "+44 00 00 00 00",
     "processing": "Processing...",
-    "confirm": "Confirm booking"
+    "confirm": "Confirm booking",
+    "options_title": "Additional options",
+    "options_fees": "Options:",
+    "day": "day"
   },
   "agency": {
     "title": "Our Agency",

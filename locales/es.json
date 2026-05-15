@@ -101,7 +101,10 @@
     "phone": "Teléfono *",
     "phone_placeholder": "06 00 00 00 00",
     "processing": "Procesando...",
-    "confirm": "Confirmar reserva"
+    "confirm": "Confirmar reserva",
+    "options_title": "Opciones adicionales",
+    "options_fees": "Opciones:",
+    "day": "día"
   },
   "agency": {
     "title": "Nuestra Agencia",

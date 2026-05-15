@@ -101,7 +101,10 @@
     "phone": "الهاتف *",
     "phone_placeholder": "06 00 00 00 00",
     "processing": "جارٍ المعالجة...",
-    "confirm": "تأكيد الحجز"
+    "confirm": "تأكيد الحجز",
+    "options_title": "خيارات إضافية",
+    "options_fees": "الخيارات :",
+    "day": "يوم"
   },
   "agency": {
     "title": "وكالتنا",
