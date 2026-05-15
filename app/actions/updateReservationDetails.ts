@@ -33,6 +33,7 @@ export async function updateReservationDetails(id: number, data: ReservationUpda
         await prisma.reservation.update({
             where: { id },
             data: {
+                dateDebut: data.dateDebut,
                 dateFin: data.dateFin,
                 lieuPriseEnChargeId: data.lieuPriseEnChargeId || null, // Convert 0 to null safety check
                 lieuRetourId: data.lieuRetourId || null,
