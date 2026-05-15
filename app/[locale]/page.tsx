@@ -41,17 +41,10 @@ export default async function Home() {
         subtitle: getTranslatedField(image, 'subtitle', locale) || '',
     }));
 
-    // LOAD SERVICES FROM JSON
-    let servicesData = [];
-    try {
-        const fs = require('fs/promises');
-        const path = require('path');
-        const filePath = path.join(process.cwd(), 'data', 'services.json');
-        const fileContent = await fs.readFile(filePath, 'utf-8');
-        servicesData = JSON.parse(fileContent);
-    } catch (e) {
-        console.error("Error loading services", e);
-    }
+    // LOAD SERVICES FROM DB
+    const servicesData = await prisma.service.findMany({
+        orderBy: { ordre: 'asc' }
+    });
 
     // LOAD EXPERIENCE FROM DB
     const experienceData = await prisma.experience.findMany({

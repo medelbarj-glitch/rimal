@@ -295,3 +295,24 @@ model PrixSaisonnier {
 
   @@map("prix_saisonniers")
 }
+
+model Service {
+  id              Int      @id @default(autoincrement())
+  icon            String   @default("fa-star")
+  title           String
+  title_en        String?
+  title_es        String?
+  title_ar        String?
+  title_ma        String?
+  description     String   @db.Text
+  description_en  String?  @db.Text
+  description_es  String?  @db.Text
+  description_ar  String?  @db.Text
+  description_ma  String?  @db.Text
+  ordre           Int      @default(0)
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("services")
+}

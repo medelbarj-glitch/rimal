@@ -1,5 +1,3 @@
-import fs from 'fs/promises';
-import path from 'path';
 import { PrismaClient } from '@prisma/client';
 import { AdminLayout } from '@/app/admin/components/AdminLayout';
 import { StyleModal } from './StyleModal';
@@ -20,15 +18,10 @@ export default async function StylePage() {
         },
     });
 
-    // Load Services from JSON
-    const servicesPath = path.join(process.cwd(), 'data', 'services.json');
-    let services = [];
-    try {
-        const data = await fs.readFile(servicesPath, 'utf-8');
-        services = JSON.parse(data);
-    } catch (e) {
-        services = [];
-    }
+    // Load Services from DB
+    const services = await prisma.service.findMany({
+        orderBy: { ordre: 'asc' }
+    });
 
     // Load Experience from DB
     const experiences = await prisma.experience.findMany({

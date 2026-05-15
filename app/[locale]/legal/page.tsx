@@ -67,41 +67,74 @@ export default async function LegalPage({ params: { locale } }: { params: { loca
                         </div>
 
                         <div className="legal-content">
+                            {/* Article 1 */}
                             <div className="legal-block">
                                 <h3>{t('cond_1_title')}</h3>
                                 <p>{t('cond_1_desc')}</p>
-                                <ul>
-                                    <li>{t.rich('cond_1_li1', { strong: (chunks) => <strong>{chunks}</strong> })}</li>
-                                    <li>{t.rich('cond_1_li2', { strong: (chunks) => <strong>{chunks}</strong> })}</li>
-                                    <li>{t('cond_1_li3')}</li>
-                                    <li>{t('cond_1_li4')}</li>
-                                </ul>
+                                <p>{t('cond_1_desc2')}</p>
+                                <p>{t('cond_1_desc3')}</p>
                             </div>
 
+                            {/* Article 2 */}
                             <div className="legal-block">
                                 <h3>{t('cond_2_title')}</h3>
                                 <p>{t('cond_2_desc1')}</p>
-                                <p>{t.rich('cond_2_desc2', { strong: (chunks) => <strong>{chunks}</strong> })}</p>
+                                <p>{t('cond_2_desc2')}</p>
+                                <p>{t('cond_2_desc3')}</p>
                             </div>
 
+                            {/* Article 3 */}
                             <div className="legal-block">
                                 <h3>{t('cond_3_title')}</h3>
                                 <p>{t('cond_3_desc')}</p>
-                                <ul>
-                                    <li>{t('cond_3_li1')}</li>
-                                    <li>{t('cond_3_li2')}</li>
-                                    <li>{t('cond_3_li3')}</li>
-                                </ul>
+                                <p>{t('cond_3_desc2')}</p>
+                                <p>{t('cond_3_desc3')}</p>
+                                <p>{t('cond_3_desc4')}</p>
+                                <p>{t('cond_3_desc5')}</p>
                             </div>
 
+                            {/* Article 4 */}
                             <div className="legal-block">
                                 <h3>{t('cond_4_title')}</h3>
                                 <p>{t('cond_4_desc')}</p>
+                                <p>{t('cond_4_desc2')}</p>
                             </div>
 
+                            {/* Article 5 */}
                             <div className="legal-block">
                                 <h3>{t('cond_5_title')}</h3>
                                 <p>{t('cond_5_desc')}</p>
+                                <p>{t('cond_5_desc2')}</p>
+                                <p>{t('cond_5_desc3')}</p>
+                                <p>{t('cond_5_desc4')}</p>
+                                <p>{t('cond_5_desc5')}</p>
+                                <p>{t('cond_5_desc6')}</p>
+                                <p>{t('cond_5_desc7')}</p>
+                                <p>{t('cond_5_desc8')}</p>
+                            </div>
+
+                            {/* Article 6 */}
+                            <div className="legal-block">
+                                <h3>{t('cond_6_title')}</h3>
+                                <p>{t('cond_6_desc')}</p>
+                            </div>
+
+                            {/* Article 7 */}
+                            <div className="legal-block">
+                                <h3>{t('cond_7_title')}</h3>
+                                <p>{t('cond_7_desc')}</p>
+                            </div>
+
+                            {/* Article 8 */}
+                            <div className="legal-block">
+                                <h3>{t('cond_8_title')}</h3>
+                                <p>{t('cond_8_desc')}</p>
+                            </div>
+
+                            {/* Article 9 */}
+                            <div className="legal-block">
+                                <h3>{t('cond_9_title')}</h3>
+                                <p>{t('cond_9_desc')}</p>
                             </div>
                         </div>
                     </section>
