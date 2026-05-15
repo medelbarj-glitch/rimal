@@ -11,7 +11,7 @@ import 'react-day-picker/dist/style.css';
 interface VehicleWithReservations {
     id: number;
     plaque: string;
-    modele: { nom: string };
+    modele: { nom: string, fuelType: string, transmission: string };
     reservations: {
         id: number;
         dateDebut: Date;
@@ -227,7 +227,7 @@ export function EditReservationModal({ reservation, locations, vehicles }: EditR
                         >
                             {vehicles.map(v => (
                                 <option key={v.id} value={v.id}>
-                                    {v.modele.nom} - {v.plaque}
+                                    {v.modele.nom} ({v.modele.fuelType} - {v.modele.transmission}) - {v.plaque}
                                 </option>
                             ))}
                         </select>

@@ -129,7 +129,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
               )}
               <div className="vehicule-top-info">
                 <Link href={`/vehicles/${car.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <h2>{car.nom}</h2>
+                  <h2>{car.nom} <span style={{ fontSize: '0.9rem', fontWeight: 'normal', opacity: 0.7 }}>({toSentenceCase(car.fuelType)} - {toSentenceCase(car.transmission)})</span></h2>
                 </Link>
                 <div className="carInfo">
                   {/* On utilise les vrais champs de la BDD */}

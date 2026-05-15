@@ -94,14 +94,14 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
         <div className="logo">
           <a href="/">
             {logoUrl !== '/default-logo.png' ? (
-              <img 
-                src={logoUrl && logoUrl.includes('cloudinary') && !logoUrl.includes('upload/f_auto') ? logoUrl.replace('/upload/', '/upload/f_auto,q_auto,w_300/') : logoUrl} 
-                alt="Bouderba Rental Cars Logo" 
-                fetchPriority="high" 
-                loading="eager" 
-                width="180" 
-                height="60" 
-                style={{ objectFit: 'contain' }} 
+              <img
+                src={logoUrl && logoUrl.includes('cloudinary') && !logoUrl.includes('upload/f_auto') ? logoUrl.replace('/upload/', '/upload/f_auto,q_auto,w_300/') : logoUrl}
+                alt="Bouderba Rental Cars Logo"
+                fetchPriority="high"
+                loading="eager"
+                width="180"
+                height="60"
+                style={{ objectFit: 'contain' }}
               />
             ) : (
               'Bouderba Rental Cars'
@@ -173,10 +173,10 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
                 <a key={car.id} href={`/${locale}/vehicles/${car.id}`} className="vehicule-item item" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <span className="carName">{car.nom}</span>
                   {car.imageUrl && (
-                    <img 
-                      src={car.imageUrl.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400,h_300,c_fill/') : car.imageUrl} 
-                      alt={car.nom} 
-                      width="400" 
+                    <img
+                      src={car.imageUrl.includes('cloudinary') ? car.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400,h_300,c_fill/') : car.imageUrl}
+                      alt={car.nom}
+                      width="400"
                       height="300"
                       loading="lazy"
                     />
@@ -204,9 +204,9 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
                   </div>
                 </div>
               ))}
-              
-              <a href="/locations" style={{display: 'block', textAlign: 'center', marginTop: '20px', padding: '15px', background: '#111', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold'}}>
-                  {tNav('locations')} &rarr;
+
+              <a href="/locations" style={{ display: 'block', textAlign: 'center', marginTop: '20px', padding: '15px', background: '#111', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold' }}>
+                {tNav('locations')} &rarr;
               </a>
             </div>
 

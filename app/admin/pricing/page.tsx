@@ -33,7 +33,12 @@ export default async function PricingPage() {
                                         <img src={modele.imageUrl} alt={modele.nom} className="model-image" style={{ width: '80px', height: 'auto', borderRadius: '5px' }} />
                                     )}
                                     <div>
-                                        <h3 className="model-title" style={{ margin: '0 0 5px 0' }}>{modele.nom}</h3>
+                                        <h3 className="model-title" style={{ margin: '0 0 5px 0' }}>
+                                            {modele.nom} 
+                                            <span style={{ fontSize: '0.85rem', fontWeight: 'normal', color: '#666', marginLeft: '10px' }}>
+                                                ({modele.fuelType} - {modele.transmission})
+                                            </span>
+                                        </h3>
                                         <p className="model-details" style={{ margin: 0 }}>
                                             Prix de base par défaut : <strong className="model-price">{modele.prixParJour} DH/jour</strong>
                                         </p>
