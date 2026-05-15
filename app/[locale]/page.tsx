@@ -41,12 +41,10 @@ export default async function Home() {
         subtitle: getTranslatedField(image, 'subtitle', locale) || '',
     }));
 
-    // LOAD SERVICES FROM DB
     const servicesData = await prisma.service.findMany({
         orderBy: { ordre: 'asc' }
     });
 
-    // LOAD EXPERIENCE FROM DB
     const experienceData = await prisma.experience.findMany({
         orderBy: { createdAt: 'asc' }
     });
