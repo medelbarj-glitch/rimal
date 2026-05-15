@@ -283,3 +283,245 @@ body {
     box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4);
   }
 }
+
+/* =============================================
+   DISCOVER MARRAKECH SECTION (Homepage)
+   ============================================= */
+.discover-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 4% 5rem;
+}
+
+.discover-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.discover-label {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #B49339;
+    margin-bottom: 1.2rem;
+    padding: 6px 20px;
+    border: 1px solid rgba(180, 147, 57, 0.25);
+    border-radius: 50px;
+    width: fit-content;
+}
+
+.discover-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #121212;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.discover-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #B49339, transparent);
+}
+
+.discover-subtitle {
+    color: #777;
+    font-size: 1.02rem;
+    margin-top: 1.5rem;
+    line-height: 1.7;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.discover-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* --- Card --- */
+.discover-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.discover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.1);
+    border-color: rgba(180, 147, 57, 0.2);
+}
+
+/* Visual top area */
+.discover-card-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem 2rem;
+    background: linear-gradient(135deg, #f8f6f1 0%, #f0ede5 100%);
+}
+
+.discover-card-dark .discover-card-visual {
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+}
+
+.discover-card-emoji {
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.discover-card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #B49339, #8A6D26);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(180, 147, 57, 0.3);
+}
+
+/* Body */
+.discover-card-body {
+    padding: 1.8rem 2rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.discover-card-body h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.6rem;
+    color: #121212;
+}
+
+.discover-card-dark .discover-card-body h3 {
+    color: #121212;
+}
+
+.discover-card-desc {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #777;
+    margin: 0 0 1.2rem;
+}
+
+/* Highlights list */
+.discover-card-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.discover-card-highlights li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.discover-card-highlights li i {
+    color: #B49339;
+    font-size: 0.8rem;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* CTA */
+.discover-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #B49339;
+    margin-top: auto;
+    transition: gap 0.3s ease;
+}
+
+.discover-card:hover .discover-card-cta {
+    gap: 14px;
+}
+
+.discover-card-cta i {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.discover-card:hover .discover-card-cta i {
+    transform: translateX(3px);
+}
+
+/* Dark card variant */
+.discover-card-dark {
+    background: #121212;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.discover-card-dark:hover {
+    border-color: rgba(180, 147, 57, 0.3);
+}
+
+.discover-card-dark .discover-card-body h3 {
+    color: #fff;
+}
+
+.discover-card-dark .discover-card-desc {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.discover-card-dark .discover-card-highlights li {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 768px) {
+    .discover-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .discover-card-emoji {
+        font-size: 3rem;
+    }
+}

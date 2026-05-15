@@ -90,6 +90,64 @@ export default async function Home() {
                 <ExperienceSection experiences={experienceData} />
             </ScrollReveal>
 
+            {/* Discover Marrakech Section */}
+            <ScrollReveal>
+                <section className="discover-section">
+                    <div className="discover-header">
+                        <span className="discover-label">{t('discover.label')}</span>
+                        <h2 className="discover-title">{t('discover.title')}</h2>
+                        <p className="discover-subtitle">{t('discover.subtitle')}</p>
+                    </div>
+                    <div className="discover-grid">
+
+                        {/* Guide Card */}
+                        <a href={`/${locale}/guide-marrakech`} className="discover-card">
+                            <div className="discover-card-visual">
+                                <span className="discover-card-emoji">🕌</span>
+                                <div className="discover-card-badge">
+                                    <i className="fas fa-compass"></i>
+                                </div>
+                            </div>
+                            <div className="discover-card-body">
+                                <h3>{t('discover.guide_title')}</h3>
+                                <p className="discover-card-desc">{t('discover.guide_desc')}</p>
+                                <ul className="discover-card-highlights">
+                                    <li><i className="fas fa-star"></i> {t('discover.guide_h1')}</li>
+                                    <li><i className="fas fa-utensils"></i> {t('discover.guide_h2')}</li>
+                                    <li><i className="fas fa-spa"></i> {t('discover.guide_h3')}</li>
+                                </ul>
+                                <span className="discover-card-cta">
+                                    {t('discover.guide_cta')} <i className="fas fa-arrow-right"></i>
+                                </span>
+                            </div>
+                        </a>
+
+                        {/* Itineraires Card */}
+                        <a href={`/${locale}/itineraires`} className="discover-card discover-card-dark">
+                            <div className="discover-card-visual">
+                                <span className="discover-card-emoji">🏜️</span>
+                                <div className="discover-card-badge">
+                                    <i className="fas fa-route"></i>
+                                </div>
+                            </div>
+                            <div className="discover-card-body">
+                                <h3>{t('discover.itin_title')}</h3>
+                                <p className="discover-card-desc">{t('discover.itin_desc')}</p>
+                                <ul className="discover-card-highlights">
+                                    <li><i className="fas fa-wind"></i> {t('discover.itin_h1')}</li>
+                                    <li><i className="fas fa-mountain"></i> {t('discover.itin_h2')}</li>
+                                    <li><i className="fas fa-water"></i> {t('discover.itin_h3')}</li>
+                                </ul>
+                                <span className="discover-card-cta">
+                                    {t('discover.itin_cta')} <i className="fas fa-arrow-right"></i>
+                                </span>
+                            </div>
+                        </a>
+
+                    </div>
+                </section>
+            </ScrollReveal>
+
             {/* New Reviews Section */}
             <ScrollReveal>
                 <ReviewsSection />

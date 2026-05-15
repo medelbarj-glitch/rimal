@@ -47,6 +47,8 @@ export function Footer() {
                     <a href="/locations">{t('locations')}</a>
                     <a href="/agency" onClick={(e) => handleSmoothScroll(e, 'agence')}>{t('agency')}</a>
                     <a href="/agency#contact" onClick={(e) => handleSmoothScroll(e, 'contact')}>{t('contact')}</a>
+                    <a href="/guide-marrakech">{t('guide')}</a>
+                    <a href="/itineraires">{t('itineraires')}</a>
                 </div>
                 <div className="second-cat">
                     <a href="/legal#conditions">{t('terms')}</a>

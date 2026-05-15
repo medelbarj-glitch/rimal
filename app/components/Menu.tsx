@@ -149,6 +149,16 @@ export function NavbarAndMenu({ voitures, locations, isOtherPage = false, logoUr
                 {arrow_svg()}
               </a>
 
+              <a href="/guide-marrakech">
+                <span>{tNav('guide')}</span>
+                {arrow_svg()}
+              </a>
+
+              <a href="/itineraires">
+                <span>{tNav('itineraires')}</span>
+                {arrow_svg()}
+              </a>
+
             </div>
           </div>
 

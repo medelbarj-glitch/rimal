@@ -1,0 +1,413 @@
+/* styles/itineraires.css — Itinéraires & Road Trips Premium Page */
+
+/* =============================================
+   PAGE WRAPPER
+   ============================================= */
+.itin-page {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fdfdfd 0%, #f4f5f8 100%);
+    font-family: var(--font-inter, 'Inter', sans-serif);
+    color: #1a1a1a;
+}
+
+/* =============================================
+   HERO
+   ============================================= */
+.itin-hero {
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    padding: 10rem 4% 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.itin-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 130%, rgba(180, 147, 57, 0.2) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.itin-hero-content {
+    max-width: 750px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.itin-hero-label {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #B49339;
+    margin-bottom: 1.5rem;
+    padding: 6px 20px;
+    border: 1px solid rgba(180, 147, 57, 0.3);
+    border-radius: 50px;
+}
+
+.itin-hero-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #fff;
+    margin: 0 0 1.5rem;
+    line-height: 1;
+}
+
+.itin-hero-subtitle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* =============================================
+   ROUTE SECTION
+   ============================================= */
+.itin-routes {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 4%;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+/* =============================================
+   ROUTE CARD
+   ============================================= */
+.itin-route {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s ease;
+}
+
+.itin-route:hover {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+    border-color: rgba(180, 147, 57, 0.15);
+}
+
+/* Header */
+.itin-route-header {
+    background: linear-gradient(135deg, #121212, #1e1e1e);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.itin-route-header::before {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(180, 147, 57, 0.12) 0%, transparent 55%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.itin-route-name {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+    margin: 0 0 0.8rem;
+    position: relative;
+}
+
+.itin-route-desc {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0;
+    position: relative;
+}
+
+/* Stats bar */
+.itin-route-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.itin-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.itin-stat-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(180, 147, 57, 0.15);
+    border-radius: 10px;
+    color: #B49339;
+    font-size: 0.9rem;
+}
+
+.itin-stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.itin-stat-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.itin-stat-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+/* Body (POIs + tip) */
+.itin-route-body {
+    padding: 2.5rem;
+}
+
+.itin-route-body h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #121212;
+    margin: 0 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.itin-route-body h3 i {
+    color: #B49339;
+}
+
+/* Timeline */
+.itin-timeline {
+    position: relative;
+    padding-left: 2.5rem;
+}
+
+.itin-timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: linear-gradient(180deg, #B49339, rgba(180, 147, 57, 0.2));
+}
+
+.itin-poi {
+    position: relative;
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.itin-poi:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.itin-poi::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 5px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border: 3px solid #B49339;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(180, 147, 57, 0.25);
+    z-index: 1;
+}
+
+.itin-poi h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.4rem;
+    color: #121212;
+}
+
+.itin-poi p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #777;
+    margin: 0;
+}
+
+/* Tip */
+.itin-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
+    background: rgba(180, 147, 57, 0.06);
+    border-radius: 14px;
+    border-left: 3px solid #B49339;
+}
+
+.itin-tip i {
+    color: #B49339;
+    margin-top: 2px;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.itin-tip p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #8A6D26;
+    margin: 0;
+}
+
+/* Book button */
+.itin-route-footer {
+    padding: 0 2.5rem 2.5rem;
+}
+
+.itin-book-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(135deg, #111 0%, #000 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+}
+
+.itin-book-btn:hover {
+    background: linear-gradient(135deg, #B49339 0%, #8A6D26 100%);
+    box-shadow: 0 12px 30px rgba(180, 147, 57, 0.35);
+    transform: translateY(-2px);
+}
+
+/* =============================================
+   CTA
+   ============================================= */
+.itin-cta {
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    padding: 5rem 4%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.itin-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(180, 147, 57, 0.12) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+.itin-cta h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #fff;
+    margin: 0 0 1rem;
+    position: relative;
+}
+
+.itin-cta p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.itin-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(135deg, #B49339 0%, #8A6D26 100%);
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(180, 147, 57, 0.35);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.itin-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(180, 147, 57, 0.5);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+    .itin-hero {
+        padding: 8rem 5% 3.5rem;
+    }
+
+    .itin-route-header {
+        padding: 2rem;
+    }
+
+    .itin-route-body {
+        padding: 2rem;
+    }
+
+    .itin-route-footer {
+        padding: 0 2rem 2rem;
+    }
+
+    .itin-route-stats {
+        gap: 1rem;
+    }
+
+    .itin-routes {
+        padding: 2.5rem 5%;
+        gap: 3rem;
+    }
+}

@@ -14,6 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/locations', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/legal', priority: 0.5, changeFrequency: 'yearly' as const },
     { path: '/vehicles', priority: 0.7, changeFrequency: 'weekly' as const },
+    { path: '/guide-marrakech', priority: 0.7, changeFrequency: 'monthly' as const },
+    { path: '/itineraires', priority: 0.7, changeFrequency: 'monthly' as const },
   ];
 
   const localizedEntries: MetadataRoute.Sitemap = [];
