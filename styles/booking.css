@@ -82,8 +82,8 @@
     position: sticky;
     top: 7rem;
     flex: 1;
-    min-width: 320px;
-    max-width: 600px;
+    min-width: 380px;
+    max-width: 650px;
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
