@@ -42,14 +42,32 @@ import { getTranslatedField } from '@/lib/translate';
 export default async function Home() {
     const t = await getTranslations();
     const locale = await getLocale();
-    // 2. RÉCUPÉRER LES IMAGES DU SLIDER DEPUIS LA BDD
-    // Je suppose que votre modèle s'appelle 'backgroundImage'
-    const sliderImagesFromDb = await prisma.backgroundImage.findMany({
-        // Vous pouvez ajouter un 'orderBy' si vous voulez
-        orderBy: {
-            createdAt: 'asc', // Par exemple, pour les avoir dans l'ordre de création
-        },
-    });
+    // 2. RÉCUPÉRER LES DONNÉES EN PARALLÈLE DEPUIS LA BDD AVEC Promise.all
+    const [
+        sliderImagesFromDb,
+        servicesData,
+        experienceData,
+        voitures,
+        locations,
+        settings
+    ] = await Promise.all([
+        prisma.backgroundImage.findMany({
+            orderBy: {
+                createdAt: 'asc',
+            },
+        }),
+        prisma.service.findMany({
+            orderBy: { ordre: 'asc' }
+        }),
+        prisma.experience.findMany({
+            orderBy: { createdAt: 'asc' }
+        }),
+        prisma.modeleVoiture.findMany({
+            include: { prixSaisonniers: true }
+        }),
+        prisma.location.findMany(),
+        prisma.setting.findUnique({ where: { id: 1 } })
+    ]);
 
     const sliderData = sliderImagesFromDb.map((image: BackgroundImage) => ({
         src: image.url,
@@ -57,19 +75,6 @@ export default async function Home() {
         subtitle: getTranslatedField(image, 'subtitle', locale) || '',
     }));
 
-    const servicesData = await prisma.service.findMany({
-        orderBy: { ordre: 'asc' }
-    });
-
-    const experienceData = await prisma.experience.findMany({
-        orderBy: { createdAt: 'asc' }
-    });
-
-    const voitures = await prisma.modeleVoiture.findMany({
-        include: { prixSaisonniers: true }
-    });
-    const locations = await prisma.location.findMany();
-    const settings = await prisma.setting.findUnique({ where: { id: 1 } });
     const logoUrl = settings?.logoUrl || '/default-logo.png';
     return (
         <>

@@ -5,6 +5,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 // Définir le type de données que le slider attend
 type SliderImage = {
@@ -20,7 +22,7 @@ interface ImageSliderProps {
 }
 
 export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
-  
+  const t = useTranslations('vehicles');
   const [currentIndex, setCurrentIndex] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -92,6 +94,9 @@ export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
       <div className="slider-text" key={currentIndex}>
         <h1>{currentImage.title}</h1>
         <p>{currentImage.subtitle}</p>
+        <Link href="#reservations" className="slider-reserve-button">
+          {t('reserve')}
+        </Link>
       </div>
 
       <div className="slider-indicators">
