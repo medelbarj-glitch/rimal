@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Utilisation d'ISR (cache + update régulier) au lieu de force-dynamic
 
 import React from 'react';
 import type { Metadata } from 'next';
@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 // Importation des polices et bibliothèques
 import { prisma } from '../../lib/prisma'; // Connexion à la BDD
+import { getVoitures, getLocations, getSettings } from '../../lib/data'; // Fonctions mémoïsées
 import { ImageSlider } from '../components/ImageSlider';
 import { BackgroundImage, ModeleVoiture } from '@prisma/client';
 import { NavbarAndMenu } from '../components/Menu';
@@ -62,11 +63,9 @@ export default async function Home() {
         prisma.experience.findMany({
             orderBy: { createdAt: 'asc' }
         }),
-        prisma.modeleVoiture.findMany({
-            include: { prixSaisonniers: true }
-        }),
-        prisma.location.findMany(),
-        prisma.setting.findUnique({ where: { id: 1 } })
+        getVoitures(),
+        getLocations(),
+        getSettings()
     ]);
 
     const sliderData = sliderImagesFromDb.map((image: BackgroundImage) => ({

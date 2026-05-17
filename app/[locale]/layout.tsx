@@ -14,14 +14,14 @@ import "../../styles/navbar.css";
 import "../../styles/style.css";
 import "../../styles/language-switcher.css";
 
-import { prisma } from '../../lib/prisma';
+// import { prisma } from '../../lib/prisma';
+import { getVoitures, getLocations, getSettings } from '../../lib/data';
 import NavbarWrapper from "../components/NavbarWrapper";
 import HreflangTags from "../components/HreflangTags";
 import { Footer } from "../components/Footer";
 import { SocialButton } from "../components/SocialButton";
 import { DeferredStyles } from "../components/DeferredStyles";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
-import { checkExpiredReservations } from "../actions/checkExpiredReservations";
 import { CurrencyProvider } from "../context/CurrencyContext";
 
 import { NextIntlClientProvider } from 'next-intl';
@@ -118,14 +118,11 @@ export default async function RootLayout({
     notFound();
   }
 
-  // Vérification automatique des réservations expirées
-  await checkExpiredReservations();
-
-  // RÉCUPÉRATION : On récupère les voitures ET les lieux en parallèle pour gagner du temps
+  // RÉCUPÉRATION : On récupère les données via les fonctions mémoïsées (évite les doublons avec page.tsx)
   const [voitures, locations, settings] = await Promise.all([
-    prisma.modeleVoiture.findMany(),
-    prisma.location.findMany(),
-    prisma.setting.findUnique({ where: { id: 1 } })
+    getVoitures(),
+    getLocations(),
+    getSettings()
   ]);
 
   const messages = await getMessages();
