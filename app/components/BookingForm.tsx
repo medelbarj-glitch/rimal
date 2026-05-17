@@ -26,7 +26,7 @@ import { format } from 'date-fns';
 import { useTranslations, useLocale } from 'next-intl';
 import { getTranslatedField } from '@/lib/translate';
 import { useCurrency } from '../context/CurrencyContext';
-// ...
+import { countryCodes, CountryCode } from '@/lib/countries';
 
 const timeSlots = [
     "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -34,7 +34,7 @@ const timeSlots = [
     "16:00", "16:30", "17:00", "17:30", "18:00"
 ];
 
-export function BookingForm({ 
+export function BookingForm({
     modelId, modelName, modelImageUrl, searchParams, locations, pricePerDay, prixSaisonniers = [],
     promotionActive, promotionDateDebut, promotionDateFin, promotionPrixParJour,
     reservationOptions = []
@@ -58,6 +58,50 @@ export function BookingForm({
 
     const [startTime, setStartTime] = useState(searchParams.startTime as string || '10:00');
     const [returnTime, setReturnTime] = useState(searchParams.returnTime as string || '10:00');
+
+    // Phone number state
+    const [selectedCountry, setSelectedCountry] = useState<CountryCode>(
+        countryCodes.find(c => c.code === '+33') || countryCodes[0]
+    );
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [showCountryOptions, setShowCountryOptions] = useState(false);
+    const [countrySearch, setCountrySearch] = useState('');
+    const countryOptionsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (countryOptionsRef.current && !countryOptionsRef.current.contains(event.target as Node)) {
+                setShowCountryOptions(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const filteredCountries = countryCodes.filter(c => {
+        if (!countrySearch) return true;
+        
+        const normalize = (str: string) => 
+            str.toLowerCase()
+               .normalize("NFD")
+               .replace(/[\u0300-\u036f]/g, "") // Enlever les accents
+               .replace(/[^a-z0-9]/g, "");     // Enlever tirets, espaces, etc.
+
+        // Si la recherche contient des chiffres, on cherche par indicatif
+        const queryDigits = countrySearch.replace(/[^0-9]/g, "");
+        if (queryDigits) {
+            const codeDigits = c.code.replace(/[^0-9]/g, "");
+            return codeDigits.includes(queryDigits);
+        }
+
+        // Sinon, recherche intelligente par nom (insensible aux accents, tirets, espaces et pluriels simples)
+        const queryWords = countrySearch.split(/[\s-]+/).map(normalize).filter(Boolean);
+        const countryWords = c.name.split(/[\s-]+/).map(normalize).filter(Boolean);
+
+        return queryWords.every(qWord => 
+            countryWords.some(cWord => cWord.includes(qWord))
+        );
+    });
 
     // State for locations to calculate fees
     const [locationId, setLocationId] = useState<string>(searchParams.location as string || '');
@@ -100,25 +144,25 @@ export function BookingForm({
         if (diffTime <= 0) return { total: 0, totalBase: 0, days: 0, locFees: 0, hasPromo: false };
 
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
+
         let total = 0;
         let totalBase = 0;
         let hasPromo = false;
 
         const promoStart = promotionDateDebut ? new Date(promotionDateDebut) : null;
-        if (promoStart) promoStart.setHours(0,0,0,0);
+        if (promoStart) promoStart.setHours(0, 0, 0, 0);
         const promoEnd = promotionDateFin ? new Date(promotionDateFin) : null;
-        if (promoEnd) promoEnd.setHours(23,59,59,999);
+        if (promoEnd) promoEnd.setHours(23, 59, 59, 999);
 
         for (let i = 0; i < diffDays; i++) {
             const currentDate = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
-            
+
             // Calcul base price (avec saisonniers)
             const currentSeason = prixSaisonniers.find(s => {
                 const debut = new Date(s.dateDebut);
                 const fin = new Date(s.dateFin);
-                debut.setHours(0,0,0,0);
-                fin.setHours(23,59,59,999);
+                debut.setHours(0, 0, 0, 0);
+                fin.setHours(23, 59, 59, 999);
                 return currentDate >= debut && currentDate <= fin;
             });
             const dayBasePrice = currentSeason ? currentSeason.prixParJour : pricePerDay;
@@ -476,9 +520,72 @@ export function BookingForm({
                                     <input type="email" id="email" name="email" placeholder={t('email_placeholder')} required />
                                 </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="phone">{t('phone')}</label>
-                                    <input type="tel" id="phone" name="phone" placeholder={t('phone_placeholder')} required />
+                                <div className="form-group phone-group-container booking-style">
+                                    <label htmlFor="phoneInput">{t('phone')}</label>
+                                    <div className="phone-input-group">
+                                        <div className="country-selector-wrapper" ref={countryOptionsRef} style={{ position: 'relative', width: '35%' }}>
+                                            <div
+                                                className="choose-hour"
+                                                onClick={() => setShowCountryOptions(!showCountryOptions)}
+                                            >
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <span style={{ fontSize: '1.2rem' }}>{selectedCountry.flag}</span>
+                                                    <span>{selectedCountry.code}</span>
+                                                </span>
+                                                <i className={`fas fa-chevron-${showCountryOptions ? 'up' : 'down'}`}></i>
+                                            </div>
+
+                                            {showCountryOptions && (
+                                                <div className="options" style={{ width: '250px', bottom: 'calc(100% + 8px)', top: 'auto', maxHeight: '400px' }}>
+                                                    <div style={{ padding: '8px' }}>
+                                                        <input
+                                                            type="text"
+                                                            placeholder={t('search_country', { defaultMessage: 'Rechercher...' })}
+                                                            value={countrySearch}
+                                                            onChange={(e) => setCountrySearch(e.target.value)}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            style={{
+                                                                width: '100%', padding: '8px 12px', borderRadius: '8px',
+                                                                border: '1px solid #ddd', fontSize: '0.9rem',
+                                                                backgroundColor: '#fff'
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <ul style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                                                        {filteredCountries.map((c, i) => (
+                                                            <li
+                                                                key={`${c.code}-${i}`}
+                                                                onClick={() => {
+                                                                    setSelectedCountry(c);
+                                                                    setShowCountryOptions(false);
+                                                                    setCountrySearch('');
+                                                                }}
+                                                                style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                                                            >
+                                                                <span style={{ fontSize: '1.2rem' }}>{c.flag}</span>
+                                                                <span style={{ fontWeight: 600 }}>{c.code}</span>
+                                                                <span style={{ color: '#666', fontSize: '0.85rem' }}>{c.name}</span>
+                                                            </li>
+                                                        ))}
+                                                        {filteredCountries.length === 0 && (
+                                                            <li style={{ textAlign: 'center', color: '#999' }}>Aucun résultat</li>
+                                                        )}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <input
+                                            type="tel"
+                                            id="phoneInput"
+                                            value={phoneNumber}
+                                            onChange={(e) => setPhoneNumber(e.target.value)}
+                                            placeholder={t('phone_placeholder')}
+                                            required
+                                            className="phone-number-input"
+                                            style={{ width: '65%' }}
+                                        />
+                                    </div>
+                                    <input type="hidden" name="phone" value={`${selectedCountry.code} ${phoneNumber}`} />
                                 </div>
                             </div>
                         </div>

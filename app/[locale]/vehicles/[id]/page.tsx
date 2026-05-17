@@ -46,6 +46,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             "car rental marrakech",
             "location voiture maroc",
         ],
+        alternates: {
+            canonical: `https://www.bouderba-rental.com/${locale}/vehicles/${id}`,
+            languages: {
+                fr: `https://www.bouderba-rental.com/fr/vehicles/${id}`,
+                en: `https://www.bouderba-rental.com/en/vehicles/${id}`,
+                es: `https://www.bouderba-rental.com/es/vehicles/${id}`,
+                ar: `https://www.bouderba-rental.com/ar/vehicles/${id}`,
+            },
+        },
         openGraph: {
             title: titleMap[locale] || titleMap.fr,
             description: descMap[locale] || descMap.fr,

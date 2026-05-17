@@ -977,4 +977,42 @@
     .booking-options-grid {
         grid-template-columns: 1fr 1fr;
     }
-}
+}
+/* ===================================================
+   Phone Input Group
+   =================================================== */
+.phone-group-container {
+    position: relative;
+}
+
+.phone-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.country-code-select {
+    width: 35% !important;
+    padding-left: 10px !important;
+    padding-right: 25px !important;
+    background-position: right 0.8rem center !important;
+}
+
+.phone-number-input {
+    width: 65% !important;
+}
+
+@media (max-width: 480px) {
+    .phone-input-group {
+        gap: 6px;
+    }
+    .country-code-select {
+        width: 40% !important;
+        padding-left: 8px !important;
+        padding-right: 20px !important;
+    }
+    .phone-number-input {
+        width: 60% !important;
+    }
+}
+

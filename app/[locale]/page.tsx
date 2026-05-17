@@ -1,6 +1,22 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const { locale } = await params;
+    return {
+        alternates: {
+            canonical: `https://www.bouderba-rental.com/${locale}`,
+            languages: {
+                fr: 'https://www.bouderba-rental.com/fr',
+                en: 'https://www.bouderba-rental.com/en',
+                es: 'https://www.bouderba-rental.com/es',
+                ar: 'https://www.bouderba-rental.com/ar',
+            },
+        },
+    };
+}
 
 // Importation des polices et bibliothèques
 import { prisma } from '../../lib/prisma'; // Connexion à la BDD

@@ -95,7 +95,6 @@ export const metadata: Metadata = {
     description: "Location de voiture à Marrakech et au Maroc. Prix compétitifs, véhicules récents, livraison aéroport.",
   },
   alternates: {
-    canonical: "https://www.bouderba-rental.com",
     languages: {
       "fr": "https://www.bouderba-rental.com/fr",
       "en": "https://www.bouderba-rental.com/en",
