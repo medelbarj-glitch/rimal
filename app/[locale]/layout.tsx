@@ -15,7 +15,7 @@ import "../../styles/style.css";
 import "../../styles/language-switcher.css";
 
 // import { prisma } from '../../lib/prisma';
-import { getVoitures, getLocations, getSettings } from '../../lib/data';
+import { getSettings } from '../../lib/data';
 import NavbarWrapper from "../components/NavbarWrapper";
 import HreflangTags from "../components/HreflangTags";
 import { Footer } from "../components/Footer";
@@ -42,7 +42,7 @@ const geistMono = Geist_Mono({
 
 const oswald = Oswald({
   subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700'],
+  weight: ['400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -118,12 +118,8 @@ export default async function RootLayout({
     notFound();
   }
 
-  // RÉCUPÉRATION : On récupère les données via les fonctions mémoïsées (évite les doublons avec page.tsx)
-  const [voitures, locations, settings] = await Promise.all([
-    getVoitures(),
-    getLocations(),
-    getSettings()
-  ]);
+  // RÉCUPÉRATION : On ne récupère que ce qui est utile pour le layout (settings)
+  const settings = await getSettings();
 
   const messages = await getMessages();
 
@@ -259,8 +255,6 @@ export default async function RootLayout({
             gtag('config', 'G-R4PYLVXV0R');
           `}
         </Script>
-
-        <Script src="https://cdn.jsdelivr.net/npm/flatpickr" strategy="lazyOnload" />
       </body>
     </html>
   );

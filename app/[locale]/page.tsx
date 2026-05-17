@@ -41,10 +41,10 @@ import { getTranslations, getLocale } from 'next-intl/server';
 import { getTranslatedField } from '@/lib/translate';
 
 export default async function Home() {
-    const t = await getTranslations();
-    const locale = await getLocale();
-    // 2. RÉCUPÉRER LES DONNÉES EN PARALLÈLE DEPUIS LA BDD AVEC Promise.all
+    // Lancement de toutes les promesses en parallèle (Traductions + BDD) pour éviter l'effet "Cascade"
     const [
+        t,
+        locale,
         sliderImagesFromDb,
         servicesData,
         experienceData,
@@ -52,6 +52,8 @@ export default async function Home() {
         locations,
         settings
     ] = await Promise.all([
+        getTranslations(),
+        getLocale(),
         prisma.backgroundImage.findMany({
             orderBy: {
                 createdAt: 'asc',
