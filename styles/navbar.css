@@ -216,17 +216,6 @@
     pointer-events: none;
 }
 
-/* Separator line */
-.menu-overlay-left::after {
-    content: '';
-    position: absolute;
-    top: 180px;
-    left: 2.5rem;
-    right: 2.5rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(180, 147, 57, 0.3), transparent);
-}
-
 .items {
     display: flex;
     flex-direction: column;
