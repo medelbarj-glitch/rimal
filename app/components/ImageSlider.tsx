@@ -57,7 +57,7 @@ export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
     // 1. On change l'image
     setCurrentIndex(index);
     // 2. On réinitialise le timer !
-    resetInterval(); 
+    resetInterval();
   };
   // =======================================================
 
@@ -77,8 +77,8 @@ export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
           alt={img.title || `Slider Image ${i}`}
           fill
           priority={i === 0} // TRÈS IMPORTANT: Précharge la première image pour le LCP
-          style={{ 
-            objectFit: 'cover', 
+          style={{
+            objectFit: 'cover',
             objectPosition: 'center',
             opacity: i === currentIndex ? 1 : 0,
             transition: 'opacity 0.5s ease-in-out',
@@ -87,14 +87,14 @@ export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
           sizes="100vw"
         />
       ))}
-      
+
       <div className="overlay"></div>
 
       {/* Le 'key' force l'animation CSS à se relancer */}
       <div className="slider-text" key={currentIndex}>
         <h1>{currentImage.title}</h1>
         <p>{currentImage.subtitle}</p>
-        <Link href="#reservations" className="slider-reserve-button">
+        <Link href="/reservation" className="slider-reserve-button">
           {t('reserve')}
         </Link>
       </div>
