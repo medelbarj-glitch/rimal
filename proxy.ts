@@ -56,7 +56,28 @@ export async function middleware(request: NextRequest) {
   }
 
   // Pour tout le reste (sauf api/_next etc. exclus par le matcher), on délègue au routing i18n
-  return intlMiddleware(request);
+  const intlResponse = intlMiddleware(request);
+
+  // Redirection de bouderba-rental.com vers www.bouderba-rental.com en conservant la langue
+  const host = request.headers.get('host');
+  if (host === 'bouderba-rental.com') {
+    if (intlResponse.headers.has('location')) {
+      // S'il y a déjà une redirection (ex: ajout de la langue par next-intl)
+      const location = intlResponse.headers.get('location')!;
+      const redirectUrl = new URL(location, request.url);
+      redirectUrl.host = 'www.bouderba-rental.com';
+      redirectUrl.protocol = 'https:';
+      return NextResponse.redirect(redirectUrl, intlResponse.status);
+    } else {
+      // Sinon (la langue est déjà dans l'URL), on redirige simplement la requête vers www
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.host = 'www.bouderba-rental.com';
+      redirectUrl.protocol = 'https:';
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+  }
+
+  return intlResponse;
 }
 
 export default middleware;
