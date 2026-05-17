@@ -19,6 +19,7 @@ import NavbarWrapper from "../components/NavbarWrapper";
 import HreflangTags from "../components/HreflangTags";
 import { Footer } from "../components/Footer";
 import { SocialButton } from "../components/SocialButton";
+import { DeferredStyles } from "../components/DeferredStyles";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { checkExpiredReservations } from "../actions/checkExpiredReservations";
 import { CurrencyProvider } from "../context/CurrencyContext";
@@ -134,8 +135,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" precedence="default" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" precedence="default" />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
         <HreflangTags />
         <script
           type="application/ld+json"
@@ -238,6 +238,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+        <DeferredStyles />
         <NextIntlClientProvider messages={messages}>
           <CurrencyProvider>
             <main>{children}</main>
