@@ -65,13 +65,15 @@ export async function middleware(request: NextRequest) {
       // S'il y a déjà une redirection (ex: ajout de la langue par next-intl)
       const location = intlResponse.headers.get('location')!;
       const redirectUrl = new URL(location, request.url);
-      redirectUrl.host = 'www.bouderba-rental.com';
+      redirectUrl.hostname = 'www.bouderba-rental.com';
+      redirectUrl.port = '';
       redirectUrl.protocol = 'https:';
       return NextResponse.redirect(redirectUrl, intlResponse.status);
     } else {
       // Sinon (la langue est déjà dans l'URL), on redirige simplement la requête vers www
       const redirectUrl = request.nextUrl.clone();
-      redirectUrl.host = 'www.bouderba-rental.com';
+      redirectUrl.hostname = 'www.bouderba-rental.com';
+      redirectUrl.port = '';
       redirectUrl.protocol = 'https:';
       return NextResponse.redirect(redirectUrl, 308);
     }
