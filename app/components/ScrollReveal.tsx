@@ -8,7 +8,7 @@ interface ScrollRevealProps {
     threshold?: number; // 0.0 to 1.0 (how much of the element must vary)
     className?: string; // Additional classes
     delay?: string; // 'delay-100', etc.
-    id?: string; // Optional element ID
+    id?: string;
 }
 
 export function ScrollReveal({
