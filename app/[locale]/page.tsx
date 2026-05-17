@@ -78,19 +78,17 @@ export default async function Home() {
             {/* Slider doesn't need reveal usually, or can be separate */}
             <ImageSlider images={sliderData} interval={5000} />
 
-            <ScrollReveal delay="delay-100" className="reservation-wrapper-fix" id="reservations">
+            <div className="reservation-wrapper-fix" id="reservations">
                 <ReservationForm locations={locations} hours={timeSlots} />
-            </ScrollReveal>
+            </div>
 
             {/* New Services Section */}
             <ScrollReveal>
                 <ServicesSection services={servicesData} />
             </ScrollReveal>
 
-            <ScrollReveal>
-                <h1 className="vehicules-title" id="vehicules">{t('vehicles.title')}</h1>
-                <VehiclesSection voitures={voitures} />
-            </ScrollReveal>
+            <h1 className="vehicules-title" id="vehicules">{t('vehicles.title')}</h1>
+            <VehiclesSection voitures={voitures} />
 
             {/* New Experience Section */}
             <ScrollReveal>

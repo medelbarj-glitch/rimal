@@ -35,16 +35,7 @@
     transform: translateX(-50%);
 }
 
-.vehicules {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
 
-.vehicules.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 .vehicules .vehicules-container {
     width: 100%;
@@ -272,11 +263,5 @@
 @media screen and (max-width: 768px) {
     .vehicules-title {
         font-size: 3rem;
-    }
-
-    .vehicules {
-        opacity: 0;
-        transform: translateY(50px);
-        transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
     }
 }

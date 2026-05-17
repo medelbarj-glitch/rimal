@@ -4,7 +4,7 @@
 
 "use client"; // Obligatoire, car IntersectionObserver est une API du navigateur
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 // Importe le type de données de Prisma (la page serveur nous les enverra)
 import { ModeleVoiture } from '@prisma/client';
 import Link from 'next/link';
@@ -20,39 +20,6 @@ interface VehiclesSectionProps {
 export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps) {
   const t = useTranslations('vehicles');
   const { formatPrice } = useCurrency();
-
-  // 2. Remplacer document.querySelector par des "états" et "refs"
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement | null>(null); // Pour pointer vers la div .vehicules
-
-  // 3. Conversion de votre IntersectionObserver
-  // useEffect se lance quand le composant est "monté" (chargé)
-  useEffect(() => {
-
-    // La logique de l'observer est identique
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0]; // On n'observe qu'un élément
-        if (entry.isIntersecting) {
-          setIsVisible(true); // On met à jour l'état
-          observer.unobserve(entry.target); // On arrête d'observer (animation 1 fois)
-        }
-      },
-      { threshold: 0.2 } // 20% visible
-    );
-
-    // On attache l'observer à notre élément (la div .vehicules)
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    // Fonction de "nettoyage" (quand le composant est retiré)
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []); // Le tableau vide [] signifie "lance ceci 1 seule fois"
 
   function toSentenceCase(str: string): string {
     if (!str) return ''; // Gère les cas où la chaîne est vide
@@ -107,8 +74,7 @@ export function VehiclesSection({ voitures, searchParams }: VehiclesSectionProps
   // Remplace votre 'fetch' et 'innerHTML'
   return (
     <div
-      className={`vehicules ${isVisible ? 'visible' : ''}`}
-      ref={sectionRef} // On lie la ref à cette div
+      className="vehicules"
     >
       {/* <h1>Nos Véhicules</h1> */}
       <div className="vehicules-container">
