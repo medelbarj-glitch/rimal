@@ -4,6 +4,8 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
+import Image from 'next/image';
+
 // Définir le type de données que le slider attend
 type SliderImage = {
   src: string;
@@ -64,15 +66,26 @@ export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
   const currentImage = images[currentIndex];
 
   return (
-    // Le 'div' principal gère l'image de fond
-    <div 
-      className="imageSlider" 
-      style={{
-        backgroundImage: `url(${currentImage.src})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
+    <div className="imageSlider">
+      {/* Preload first image for LCP, lazy load others */}
+      {images.map((img, i) => (
+        <Image
+          key={img.src}
+          src={img.src}
+          alt={img.title || `Slider Image ${i}`}
+          fill
+          priority={i === 0} // TRÈS IMPORTANT: Précharge la première image pour le LCP
+          style={{ 
+            objectFit: 'cover', 
+            objectPosition: 'center',
+            opacity: i === currentIndex ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out',
+            zIndex: 0
+          }}
+          sizes="100vw"
+        />
+      ))}
+      
       <div className="overlay"></div>
 
       {/* Le 'key' force l'animation CSS à se relancer */}
@@ -86,7 +99,7 @@ export function ImageSlider({ images, interval = 5000 }: ImageSliderProps) {
           <div
             key={i}
             className={`indicator ${i === currentIndex ? 'active' : ''}`}
-            onClick={() => goToSlide(i)} // Ajoute un 'onClick' à chaque bouton
+            onClick={() => goToSlide(i)}
           />
         ))}
       </div>
