@@ -4,7 +4,7 @@ import { carRentalSchema, generateFaqSchema, generateBreadcrumbSchema } from '@/
 
 const META_MRE = {
   title: 'Location Voiture MRE Marrakech – Offres Spéciales Marocains du Monde | Bouderba',
-  description: 'Location de voiture à Marrakech pour les MRE. Tarifs préférentiels, livraison à domicile ou aéroport, contrat simple. Profitez de votre séjour au Maroc – Bouderba Car Rental.',
+  description: "Location de voiture à Marrakech pour les MRE. Tarifs préférentiels, livraison à domicile ou aéroport, contrat simple. Profitez de votre séjour au Maroc – Bouderba Car Rental.",
   keywords: 'location voiture MRE marrakech, voiture pour MRE maroc, location voiture marocain monde, rent car mre marrakech, location voiture maroc mre',
   canonical: 'https://www.bouderba-rental.com/fr/location-voiture-mre-marrakech',
 };
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   title: META_MRE.title,
   description: META_MRE.description,
   keywords: META_MRE.keywords,
-  alternates: { canonical: META_MRE.canonical, languages: { fr: META_MRE.canonical, 'x-default': META_MRE.canonical } },
+  alternates: {
+    canonical: META_MRE.canonical,
+    languages: { fr: META_MRE.canonical, 'x-default': META_MRE.canonical },
+  },
   openGraph: {
     title: META_MRE.title,
     description: META_MRE.description,
@@ -26,15 +29,15 @@ export const metadata: Metadata = {
 };
 
 const faqs = [
-  { question: 'Quels documents faut-il pour louer une voiture en tant que MRE ?', answer: "Il vous faut votre permis de conduire étranger (ou international), votre CNIE ou passeport marocain, et une carte bancaire. Aucun justificatif de résidence marocain n'est exigé." },
-  { question: 'Avez-vous des tarifs préférentiels pour les MRE ?', answer: 'Oui, nous proposons des tarifs MRE spéciaux pour les séjours de 7 jours et plus. Contactez-nous directement pour obtenir votre devis personnalisé.' },
-  { question: 'Puis-je traverser la frontière avec la voiture louée ?', answer: 'Les véhicules sont autorisés sur tout le territoire marocain. Pour un passage de frontière internationale, merci de nous contacter au préalable.' },
-  { question: 'La voiture peut-elle être livrée à mon riad ou hôtel ?', answer: 'Absolument. Nous livrons et récupérons votre véhicule à l'adresse de votre choix à Marrakech et dans les environs, sans supplément.' },
+  { question: "Quels documents faut-il pour louer une voiture en tant que MRE ?", answer: "Il vous faut votre permis de conduire étranger (ou international), votre CNIE ou passeport marocain, et une carte bancaire. Aucun justificatif de résidence marocain n'est exigé." },
+  { question: 'Avez-vous des tarifs préférentiels pour les MRE ?', answer: "Oui, nous proposons des tarifs MRE spéciaux pour les séjours de 7 jours et plus. Contactez-nous directement pour obtenir votre devis personnalisé." },
+  { question: 'Puis-je traverser la frontière avec la voiture louée ?', answer: "Les véhicules sont autorisés sur tout le territoire marocain. Pour un passage de frontière internationale, merci de nous contacter au préalable." },
+  { question: 'La voiture peut-elle être livrée à mon riad ou hôtel ?', answer: "Absolument. Nous livrons et récupérons votre véhicule à l'adresse de votre choix à Marrakech et dans les environs, sans supplément." },
 ];
 
 const breadcrumbs = [
   { name: 'Accueil', url: 'https://www.bouderba-rental.com/fr' },
-  { name: 'Location voiture MRE Marrakech', url: 'https://www.bouderba-rental.com/fr/location-voiture-mre-marrakech' },
+  { name: 'Location voiture MRE Marrakech', url: META_MRE.canonical },
 ];
 
 const mreCarRentalSchema = {
@@ -62,8 +65,12 @@ export default function MREPage() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
               Location Voiture MRE<br /><span className="text-yellow-300">Marrakech – Offre Spéciale</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">Tarifs préférentiels pour les Marocains du Monde · Livraison incluse · Contrat simplifié</p>
-            <Link href="/fr#reservation" className="bg-white text-green-800 font-bold px-8 py-4 rounded-full text-lg hover:bg-yellow-100 transition-colors inline-block">Obtenir mon devis MRE</Link>
+            <p className="text-xl md:text-2xl mb-8 opacity-90">
+              Tarifs préférentiels pour les Marocains du Monde · Livraison incluse · Contrat simplifié
+            </p>
+            <Link href="/fr#reservation" className="bg-white text-green-800 font-bold px-8 py-4 rounded-full text-lg hover:bg-yellow-100 transition-colors inline-block">
+              Obtenir mon devis MRE
+            </Link>
           </div>
         </section>
         <section className="py-16 px-4 bg-white">
@@ -73,7 +80,7 @@ export default function MREPage() {
               {[
                 { icon: '🌍', title: 'Permis étranger accepté', desc: 'Votre permis de conduire européen ou international est valide sans formalité supplémentaire.' },
                 { icon: '💶', title: 'Paiement en euros accepté', desc: 'Payez en MAD, EUR ou par carte bancaire internationale. Aucun problème de change.' },
-                { icon: '🏠', title: 'Livraison à domicile', desc: 'Livraison à votre riad, hôtel, chez la famille – partout à Marrakech et environs.' },
+                { icon: '🏠', title: 'Livraison à domicile', desc: "Livraison à votre riad, hôtel, chez la famille – partout à Marrakech et environs." },
                 { icon: '📅', title: 'Tarifs dégressifs longue durée', desc: 'Plus vous louez longtemps, moins vous payez. Tarifs spéciaux dès 7 jours.' },
                 { icon: '🚗', title: 'Flotte récente et entretenue', desc: 'Véhicules récents, climatisés, révisés avant chaque location.' },
                 { icon: '📞', title: 'Support WhatsApp bilingue', desc: 'Notre équipe répond en français, arabe et anglais via WhatsApp.' },
@@ -92,7 +99,14 @@ export default function MREPage() {
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Tarifs spéciaux MRE – Location longue durée</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-left">
-                <thead><tr className="bg-green-700 text-white"><th className="px-4 py-3 rounded-tl-lg">Durée</th><th className="px-4 py-3">Citadine</th><th className="px-4 py-3">SUV</th><th className="px-4 py-3 rounded-tr-lg">Inclus</th></tr></thead>
+                <thead>
+                  <tr className="bg-green-700 text-white">
+                    <th className="px-4 py-3 rounded-tl-lg">Durée</th>
+                    <th className="px-4 py-3">Citadine</th>
+                    <th className="px-4 py-3">SUV</th>
+                    <th className="px-4 py-3 rounded-tr-lg">Inclus</th>
+                  </tr>
+                </thead>
                 <tbody>
                   {[
                     { dur: '1–6 jours', cit: '150 MAD/j', suv: '300 MAD/j', inc: 'Assurance, GPS' },
@@ -114,12 +128,13 @@ export default function MREPage() {
         </section>
         <section className="py-16 px-4 bg-white">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Questions fréquentes – MRE & location de voiture Marrakech</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Questions fréquentes – MRE &amp; location de voiture Marrakech</h2>
             <div className="space-y-6">
               {faqs.map((faq) => (
                 <details key={faq.question} className="bg-gray-50 rounded-xl p-6 group">
                   <summary className="font-semibold text-lg text-gray-800 cursor-pointer list-none flex justify-between items-center">
-                    {faq.question}<span className="text-green-700 text-xl group-open:rotate-45 transition-transform">+</span>
+                    {faq.question}
+                    <span className="text-green-700 text-xl group-open:rotate-45 transition-transform">+</span>
                   </summary>
                   <p className="mt-3 text-gray-600">{faq.answer}</p>
                 </details>
