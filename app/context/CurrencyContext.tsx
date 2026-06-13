@@ -2,12 +2,19 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-export type CurrencyCode = 'MAD' | 'EUR' | 'USD';
+export type CurrencyCode = 'MAD' | 'EUR' | 'USD' | 'GBP' | 'CAD' | 'AED' | 'SAR' | 'SEK' | 'NOK' | 'DKK';
 
 export const currencies: { code: CurrencyCode; symbol: string; label: string; rate: number }[] = [
-  { code: 'MAD', symbol: 'DH', label: 'Dirham (MAD)', rate: 1 },
-  { code: 'EUR', symbol: '€', label: 'Euro (EUR)', rate: 0.093 }, // 1 MAD = 0.093 EUR (~10.75 MAD = 1 EUR)
-  { code: 'USD', symbol: '$', label: 'Dollar (USD)', rate: 0.100 }, // 1 MAD = 0.10 USD (~10 MAD = 1 USD)
+  { code: 'MAD', symbol: 'DH',  label: 'Dirham (MAD)',               rate: 1 },
+  { code: 'EUR', symbol: '€',   label: 'Euro (EUR)',                  rate: 0.091 },
+  { code: 'USD', symbol: '$',   label: 'Dollar US (USD)',             rate: 0.099 },
+  { code: 'GBP', symbol: '£',   label: 'Livre sterling (GBP)',        rate: 0.078 },
+  { code: 'CAD', symbol: 'CA$', label: 'Dollar canadien (CAD)',       rate: 0.135 },
+  { code: 'AED', symbol: 'AED', label: 'Dirham EAU (AED)',            rate: 0.364 },
+  { code: 'SAR', symbol: 'SAR', label: 'Riyal saoudien (SAR)',        rate: 0.372 },
+  { code: 'SEK', symbol: 'kr',  label: 'Couronne suédoise (SEK)',     rate: 1.02  },
+  { code: 'NOK', symbol: 'kr',  label: 'Couronne norvégienne (NOK)',  rate: 1.05  },
+  { code: 'DKK', symbol: 'kr',  label: 'Couronne danoise (DKK)',      rate: 0.68  },
 ];
 
 interface CurrencyContextType {
@@ -25,7 +32,11 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setIsMounted(true);
-    // Load from local storage on mount
+    const cookieMatch = document.cookie.match(/preferred_currency=([^;]+)/);
+    if (cookieMatch && currencies.find(c => c.code === cookieMatch[1])) {
+      setCurrencyState(cookieMatch[1] as CurrencyCode);
+      return;
+    }
     const saved = localStorage.getItem('user_currency') as CurrencyCode;
     if (saved && currencies.find(c => c.code === saved)) {
       setCurrencyState(saved);
@@ -35,37 +46,21 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   const setCurrency = (code: CurrencyCode) => {
     setCurrencyState(code);
     localStorage.setItem('user_currency', code);
+    document.cookie = `preferred_currency=${code}; max-age=86400; path=/; samesite=lax`;
   };
 
   const currentCurrencyObj = currencies.find(c => c.code === currency) || currencies[0];
 
   const formatPrice = (priceInMad: number | string | undefined | null): string => {
-    if (priceInMad === undefined || priceInMad === null || priceInMad === '') {
-      return '';
-    }
-    
-    // We only format the number visually to avoid hydration mismatches
-    // and layout shifts.
+    if (priceInMad === undefined || priceInMad === null || priceInMad === '') return '';
     const num = typeof priceInMad === 'string' ? parseFloat(priceInMad) : priceInMad;
-    
     if (isNaN(num)) return String(priceInMad);
-
     if (!isMounted) {
-      // Prevents hydration error by returning EUR price on first render server-side
       const eurObj = currencies.find(c => c.code === 'EUR')!;
-      const converted = num * eurObj.rate;
-      return `${eurObj.symbol}${converted.toFixed(2)}`;
+      return `${eurObj.symbol}${(num * eurObj.rate).toFixed(0)}`;
     }
-
     const converted = num * currentCurrencyObj.rate;
-    
-    // Format depending on currency
-    if (currency === 'MAD') {
-      return `${Math.round(converted)} ${currentCurrencyObj.symbol}`;
-    }
-    
-    // For EUR and USD, we can show 2 decimals if we want, or round to int
-    return `${currentCurrencyObj.symbol}${converted.toFixed(2)}`;
+    return `${currentCurrencyObj.symbol}${converted.toFixed(0)}`;
   };
 
   return (
@@ -76,9 +71,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useCurrency() {
-  const context = useContext(CurrencyContext);
-  if (context === undefined) {
-    throw new Error('useCurrency must be used within a CurrencyProvider');
-  }
-  return context;
+  const ctx = useContext(CurrencyContext);
+  if (!ctx) throw new Error('useCurrency must be used within CurrencyProvider');
+  return ctx;
 }
